@@ -7,15 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": [
-			"**",
-			"!dist",
-			"!.astro",
-			"!.vscode",
-			"!.env",
-			"!.wrangler",
-			"!node_modules"
-		]
+		"includes": ["**", "!dist", "!.astro", "!.vscode", "!.env", "!node_modules"]
 	},
 	"formatter": {
 		"enabled": true,

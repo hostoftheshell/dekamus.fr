@@ -1,13 +1,14 @@
 // @ts-check
 
-// import cloudflare from "@astrojs/cloudflare";
 import { defineConfig, fontProviders } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "static",
-	// adapter: cloudflare(),
-
+	output: "static",
+	trailingSlash: "ignore",
+	build: {
+		format: "directory",
+	},
 	fonts: [
 		{
 			provider: fontProviders.fontsource(),

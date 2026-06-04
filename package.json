@@ -1,5 +1,5 @@
 {
-	"name": "",
+	"name": "dekamus",
 	"type": "module",
 	"version": "0.0.1",
 	"engines": {
@@ -11,17 +11,14 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"generate-types": "wrangler types",
 		"check": "biome check .",
 		"check:fix": "biome check --write ."
 	},
 	"dependencies": {
-		"@astrojs/cloudflare": "^13.6.1",
 		"astro": "^6.4.4"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.16",
-		"wrangler": "^4.98.0"
+		"@biomejs/biome": "^2.4.16"
 	},
 	"overrides": {
 		"vite": "^7"
