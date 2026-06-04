@@ -4,5 +4,8 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+  workerd: true
 minimumReleaseAgeExclude:
   - astro@6.4.4
+  - miniflare@4.20260603.0
+  - wrangler@4.98.0
