@@ -3,10 +3,556 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<h1>DEKAMUS</h1>
+	<main class="type-specimen" aria-label="Type specimen">
+		<section class="col">
+			<div class="col-header">
+				<span class="col-header-label">Light surface · #f7f6f1</span>
+				<div class="swatches">
+					<div
+						class="swatch"
+						style="background:#111317"
+						title="#111317 primary"
+					></div>
+					<div
+						class="swatch"
+						style="background:#f7f6f1;border-color:rgba(0,0,0,.18)"
+						title="#f7f6f1 secondary"
+					></div>
+					<div
+						class="swatch"
+						style="background:#5a5d65"
+						title="#5a5d65 muted"
+					></div>
+					<div
+						class="swatch"
+						style="background:#9498a2"
+						title="#9498a2 faint"
+					></div>
+					<div
+						class="swatch"
+						style="background:#8badb8"
+						title="#8badb8 darkaccent"
+					></div>
+					<div
+						class="swatch"
+						style="background:#1c2e33"
+						title="#1c2e33 darkhighlight"
+					></div>
+					<div
+						class="swatch"
+						style="background:#5f1b36"
+						title="#5f1b36 lightaccent"
+					></div>
+					<div
+						class="swatch"
+						style="background:#f0e0e6;border-color:rgba(0,0,0,.12)"
+						title="#f0e0e6 lighthighlight"
+					></div>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h1 · Syne 800</span>
+				<p class="t-h1">Dekamus<br><span class="a-light">association</span></p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(32–56px)</span>
+					<span class="spec-item"><span>leading</span>1.00</span>
+					<span class="spec-item"><span>tracking</span>−0.03em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h2 · Syne 700</span>
+				<p class="t-h2">The weight of<br>written thought</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(38–51px)</span>
+					<span class="spec-item"><span>leading</span>1.08</span>
+					<span class="spec-item"><span>tracking</span>−0.02em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h3 · Source Serif 4 600</span>
+				<p class="t-h3">A sentence holds<br>its own gravity</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(27–35px)</span>
+					<span class="spec-item"><span>leading</span>1.20</span>
+					<span class="spec-item"><span>tracking</span>−0.01em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h4 · Source Serif 4 600</span>
+				<p class="t-h4">Contrast builds clarity between structure and flow</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(19–24px)</span>
+					<span class="spec-item"><span>leading</span>1.30</span>
+					<span class="spec-item"><span>tracking</span>0em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">body lead · Source Serif 4 400</span>
+				<p class="t-lead">
+					Reading is a performance of the eye across space. The rhythm of a
+					paragraph lives in its leading—too tight and the eye loses its path;
+					too loose and the reader floats untethered between lines.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(17–19px)</span>
+					<span class="spec-item"><span>leading</span>1.75</span>
+					<span class="spec-item"><span>tracking</span>0.01em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">body · Source Serif 4 400</span>
+				<p class="t-body">
+					The paragraph is the unit of thought. Each line break is a breath,
+					each sentence a step. Good spacing lets the meaning settle before the
+					next idea arrives, quietly, without interruption. Typography is
+					invisible architecture—most felt when it fails.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(16–17px)</span>
+					<span class="spec-item"><span>leading</span>1.70</span>
+					<span class="spec-item"><span>tracking</span>0.005em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">small · Source Serif 4 400</span>
+				<p class="t-small" style="color:var(--muted)">
+					Footnotes carry the weight of evidence. At smaller sizes, leading must
+					increase proportionally—the eye needs more air between lines to follow
+					text without effort or fatigue.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>13.4px</span>
+					<span class="spec-item"><span>leading</span>1.65</span>
+					<span class="spec-item"><span>tracking</span>0.01em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">caption · Source Serif 4 300 Italic</span>
+				<p class="t-caption" style="color:var(--muted)">
+					Fig. 1 — Visual hierarchy emerges from contrast in weight, size, and
+					spatial rhythm rather than from decoration alone. The page breathes
+					when type is trusted to do the work.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>12.3px</span>
+					<span class="spec-item"><span>leading</span>1.60</span>
+					<span class="spec-item"><span>tracking</span>0.02em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">mono · Victor Mono Italic 400</span>
+				<p class="t-mono" style="color:var(--lightaccent)">
+					const rhythm = lineHeight * fontSize;<br>// spacing makes prose
+					readable
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>14px</span>
+					<span class="spec-item"><span>leading</span>1.60</span>
+					<span class="spec-item"><span>tracking</span>0.03em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">mono sm · Victor Mono Italic 400</span>
+				<p class="t-mono-sm" style="color:var(--faint)">
+					font-size: 12px; line-height: 1.55; letter-spacing: 0.04em;
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>12.3px</span>
+					<span class="spec-item"><span>leading</span>1.55</span>
+					<span class="spec-item"><span>tracking</span>0.04em</span>
+				</div>
+			</div>
+		</section>
+
+		<div class="rule"></div>
+
+		<section class="col col--dark">
+			<div class="col-header">
+				<span class="col-header-label">Dark surface · #111317</span>
+				<div class="swatches">
+					<div
+						class="swatch"
+						style="background:#f7f6f1;border-color:rgba(255,255,255,.08)"
+						title="#f7f6f1"
+					></div>
+					<div
+						class="swatch"
+						style="background:#111317;border-color:rgba(255,255,255,.12)"
+						title="#111317"
+					></div>
+					<div class="swatch" style="background:#5a5d65" title="#5a5d65"></div>
+					<div class="swatch" style="background:#9498a2" title="#9498a2"></div>
+					<div class="swatch" style="background:#8badb8" title="#8badb8"></div>
+					<div class="swatch" style="background:#1c2e33" title="#1c2e33"></div>
+					<div class="swatch" style="background:#5f1b36" title="#5f1b36"></div>
+					<div
+						class="swatch"
+						style="background:#f0e0e6;border-color:rgba(0,0,0,.15)"
+						title="#f0e0e6"
+					></div>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h1 · Syne 800</span>
+				<p class="t-h1">
+					Association<br><span style="color:#8badb8">dekamus</span>
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(32–56px)</span>
+					<span class="spec-item"><span>leading</span>1.00</span>
+					<span class="spec-item"><span>tracking</span>−0.03em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h2 · Syne 700</span>
+				<p class="t-h2">The weight of<br>written thought</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(38–51px)</span>
+					<span class="spec-item"><span>leading</span>1.08</span>
+					<span class="spec-item"><span>tracking</span>−0.02em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h3 · Source Serif 4 600</span>
+				<p class="t-h3">A sentence holds<br>its own gravity</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(27–35px)</span>
+					<span class="spec-item"><span>leading</span>1.20</span>
+					<span class="spec-item"><span>tracking</span>−0.01em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">h4 · Source Serif 4 600</span>
+				<p class="t-h4">Contrast builds clarity between structure and flow</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(19–24px)</span>
+					<span class="spec-item"><span>leading</span>1.30</span>
+					<span class="spec-item"><span>tracking</span>0em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">body lead · Source Serif 4 400</span>
+				<p class="t-lead">
+					Reading is a performance of the eye across space. The rhythm of a
+					paragraph lives in its leading—too tight and the eye loses its path;
+					too loose and the reader floats untethered between lines.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(17–19px)</span>
+					<span class="spec-item"><span>leading</span>1.75</span>
+					<span class="spec-item"><span>tracking</span>0.01em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">body · Source Serif 4 400</span>
+				<p class="t-body">
+					The paragraph is the unit of thought. Each line break is a breath,
+					each sentence a step. Good spacing lets the meaning settle before the
+					next idea arrives, quietly, without interruption. Typography is
+					invisible architecture—most felt when it fails.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>clamp(16–17px)</span>
+					<span class="spec-item"><span>leading</span>1.70</span>
+					<span class="spec-item"><span>tracking</span>0.005em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">small · Source Serif 4 400</span>
+				<p class="t-small" style="color:#9498a2">
+					Footnotes carry the weight of evidence. At smaller sizes, leading must
+					increase proportionally—the eye needs more air between lines to follow
+					text without effort or fatigue.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>13.4px</span>
+					<span class="spec-item"><span>leading</span>1.65</span>
+					<span class="spec-item"><span>tracking</span>0.01em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">caption · Source Serif 4 300 Italic</span>
+				<p class="t-caption" style="color:#9498a2">
+					Fig. 1 — Visual hierarchy emerges from contrast in weight, size, and
+					spatial rhythm rather than from decoration alone. The page breathes
+					when type is trusted to do the work.
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>12.3px</span>
+					<span class="spec-item"><span>leading</span>1.60</span>
+					<span class="spec-item"><span>tracking</span>0.02em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">mono · Victor Mono Italic 400</span>
+				<p class="t-mono" style="color:#8badb8">
+					const rhythm = lineHeight * fontSize;<br>// spacing makes prose
+					readable
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>14px</span>
+					<span class="spec-item"><span>leading</span>1.60</span>
+					<span class="spec-item"><span>tracking</span>0.03em</span>
+				</div>
+			</div>
+
+			<div class="block">
+				<span class="meta">mono sm · Victor Mono Italic 400</span>
+				<p class="t-mono-sm" style="color:#5a5d65">
+					font-size: 12px; line-height: 1.55; letter-spacing: 0.04em;
+				</p>
+				<div class="spec">
+					<span class="spec-item"><span>size</span>12.3px</span>
+					<span class="spec-item"><span>leading</span>1.55</span>
+					<span class="spec-item"><span>tracking</span>0.04em</span>
+				</div>
+			</div>
+		</section>
+	</main>
 </Layout>
+
 <style>
-h1 {
-	font-family: var(--font-source-serif-4);
+.type-specimen {
+	--primary: #111317;
+	--secondary: #f7f6f1;
+	--muted: #5a5d65;
+	--faint: #9498a2;
+	--darkaccent: #8badb8;
+	--darkhighlight: #1c2e33;
+	--lightaccent: #5f1b36;
+	--lighthighlight: #f0e0e6;
+	--font-heading: var(--font-syne);
+	--font-body: var(--font-source-serif-4);
+	--font-mono: var(--font-victor-mono);
+	--sp-3: 0.75rem;
+	--sp-4: 1rem;
+	--sp-8: 2rem;
+	--sp-10: 2.5rem;
+	--sp-12: 3rem;
+
+	display: flex;
+	min-height: 100vh;
+	background: var(--secondary);
+	color: var(--primary);
+	font-family: var(--font-body);
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+.type-specimen,
+.type-specimen * {
+	box-sizing: border-box;
+}
+
+.col {
+	display: flex;
+	flex: 1 1 50%;
+	flex-direction: column;
+	padding: var(--sp-12) var(--sp-10);
+}
+
+.col--dark {
+	background: var(--primary);
+	color: var(--secondary);
+}
+
+.rule {
+	width: 1px;
+	flex-shrink: 0;
+	background: oklch(from #5a5d65 l c h / 22%);
+}
+
+.col-header {
+	margin-bottom: 0;
+	padding-bottom: var(--sp-8);
+	border-bottom: 1px solid oklch(from #9498a2 l c h / 25%);
+}
+
+.col-header-label {
+	display: block;
+	margin-bottom: var(--sp-3);
+	color: var(--faint);
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-style: italic;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.swatches {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-top: var(--sp-3);
+}
+
+.swatch {
+	width: 20px;
+	height: 20px;
+	border: 1px solid oklch(from #111 l c h / 10%);
+	border-radius: 4px;
+}
+
+.block {
+	padding: var(--sp-8) 0;
+	border-bottom: 1px solid oklch(from #9498a2 l c h / 18%);
+}
+
+.block:last-child {
+	border-bottom: none;
+}
+
+.meta {
+	display: block;
+	margin-bottom: var(--sp-3);
+	color: var(--faint);
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-style: italic;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.spec {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-4);
+	margin-top: var(--sp-3);
+}
+
+.spec-item {
+	color: var(--faint);
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-style: italic;
+	letter-spacing: 0.1em;
+	white-space: nowrap;
+}
+
+.spec-item span {
+	margin-right: 2px;
+	opacity: 0.55;
+}
+
+.t-h1 {
+	font-family: var(--font-heading);
+	font-size: clamp(3.2rem, 5.5vw, 3.5rem);
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.03em;
+}
+
+.t-h2 {
+	font-family: var(--font-heading);
+	font-size: clamp(2.4rem, 3.8vw, 3.2rem);
+	font-weight: 700;
+	line-height: 1.08;
+	letter-spacing: -0.02em;
+}
+
+.t-h3 {
+	font-family: var(--font-body);
+	font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+}
+
+.t-h4 {
+	font-family: var(--font-body);
+	font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+	font-weight: 600;
+	line-height: 1.3;
+	letter-spacing: 0;
+}
+
+.t-lead {
+	font-family: var(--font-body);
+	font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+	font-weight: 400;
+	line-height: 1.75;
+	letter-spacing: 0.01em;
+}
+
+.t-body {
+	font-family: var(--font-body);
+	font-size: clamp(1rem, 1.1vw, 1.075rem);
+	font-weight: 400;
+	line-height: 1.7;
+	letter-spacing: 0.005em;
+}
+
+.t-small {
+	font-family: var(--font-body);
+	font-size: 0.8375rem;
+	font-weight: 400;
+	line-height: 1.65;
+	letter-spacing: 0.01em;
+}
+
+.t-caption {
+	font-family: var(--font-body);
+	font-size: 0.77rem;
+	font-style: italic;
+	font-weight: 300;
+	line-height: 1.6;
+	letter-spacing: 0.02em;
+}
+
+.t-mono {
+	font-family: var(--font-mono);
+	font-size: 0.875rem;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 1.6;
+	letter-spacing: 0.03em;
+}
+
+.t-mono-sm {
+	font-family: var(--font-mono);
+	font-size: 0.77rem;
+	font-style: italic;
+	font-weight: 400;
+	line-height: 1.55;
+	letter-spacing: 0.04em;
+}
+
+.a-dark {
+	color: var(--darkaccent);
+}
+
+.a-light {
+	color: var(--lightaccent);
+}
+
+.a-dhl {
+	color: var(--darkhighlight);
+}
+
+.col--dark .a-light {
+	color: var(--lighthighlight);
+}
+
+.col--dark .a-muted {
+	color: #9498a2;
 }
 </style>
