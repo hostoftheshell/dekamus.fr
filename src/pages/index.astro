@@ -350,6 +350,7 @@ import Layout from "../layouts/Layout.astro";
 	--sp-12: 3rem;
 
 	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
 	background: var(--secondary);
 	color: var(--primary);
@@ -365,7 +366,7 @@ import Layout from "../layouts/Layout.astro";
 
 .col {
 	display: flex;
-	flex: 1 1 50%;
+	flex: none;
 	flex-direction: column;
 	padding: var(--sp-12) var(--sp-10);
 }
@@ -376,7 +377,8 @@ import Layout from "../layouts/Layout.astro";
 }
 
 .rule {
-	width: 1px;
+	width: 100%;
+	height: 1px;
 	flex-shrink: 0;
 	background: oklch(from #5a5d65 l c h / 22%);
 }
