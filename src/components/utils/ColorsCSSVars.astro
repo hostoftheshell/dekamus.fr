@@ -1,0 +1,17 @@
+---
+import { ColorData, paletteToLightDarkCSSVars } from "@config/colors";
+
+const themeVars = paletteToLightDarkCSSVars(
+	ColorData.colors.light,
+	ColorData.colors.dark,
+);
+
+const css = `
+:root {
+  color-scheme: light dark;
+${themeVars}
+}
+`;
+---
+
+<style is:global set:html={css}></style>

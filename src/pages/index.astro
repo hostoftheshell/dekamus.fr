@@ -1,366 +1,317 @@
 ---
+import { ColorData, paletteToCSSVars } from "@config/colors";
+import type { ColorToken } from "@config/types";
 import Layout from "../layouts/Layout.astro";
+
+const tokenGroups: { label: string; tokens: ColorToken[] }[] = [
+	{
+		label: "Base",
+		tokens: [
+			"primary",
+			"secondary",
+			"muted",
+			"faint",
+			"accent",
+			"highlight",
+			"disabled",
+		],
+	},
+	{ label: "Surfaces", tokens: ["bgAlt", "bgWarm", "bgCard"] },
+	{
+		label: "Alt cards",
+		tokens: ["altCard_1", "altCard_2", "altCard_3", "altCard_4"],
+	},
+	{ label: "Info", tokens: ["fgInfo", "bgInfo", "bdInfo"] },
+	{ label: "Warning", tokens: ["fgWarning", "bgWarning", "bdWarning"] },
+	{ label: "Alert", tokens: ["fgAlert", "bgAlert", "bdAlert"] },
+	{ label: "Success", tokens: ["fgSuccess", "bgSuccess", "bdSuccess"] },
+];
+
+const darkPaletteCSS = paletteToCSSVars(ColorData.colors.dark);
+const colDarkCSS = `.col--dark {\n${darkPaletteCSS}\n\tbackground: var(--color-secondary);\n\tcolor: var(--color-primary);\n}`;
+
+const altCards = [
+	{ token: "altCard_1" as const, label: "Alt 1" },
+	{ token: "altCard_2" as const, label: "Alt 2" },
+	{ token: "altCard_3" as const, label: "Alt 3" },
+	{ token: "altCard_4" as const, label: "Alt 4" },
+];
+
+const alerts = [
+	{ kind: "Info", fg: "fgInfo", bg: "bgInfo", bd: "bdInfo" },
+	{ kind: "Warning", fg: "fgWarning", bg: "bgWarning", bd: "bdWarning" },
+	{ kind: "Alert", fg: "fgAlert", bg: "bgAlert", bd: "bdAlert" },
+	{ kind: "Success", fg: "fgSuccess", bg: "bgSuccess", bd: "bdSuccess" },
+] as const;
 ---
 
 <Layout>
-	<main class="type-specimen" aria-label="Type specimen">
+	<main class="ds" aria-label="Design system mockup">
 		<section class="col">
-			<div class="col-header">
-				<span class="col-header-label">Light surface · #f7f6f1</span>
-				<div class="swatches">
-					<div
-						class="swatch"
-						style="background:#111317"
-						title="#111317 primary"
-					></div>
-					<div
-						class="swatch"
-						style="background:#f7f6f1;border-color:rgba(0,0,0,.18)"
-						title="#f7f6f1 secondary"
-					></div>
-					<div
-						class="swatch"
-						style="background:#5a5d65"
-						title="#5a5d65 muted"
-					></div>
-					<div
-						class="swatch"
-						style="background:#9498a2"
-						title="#9498a2 faint"
-					></div>
-					<div
-						class="swatch"
-						style="background:#8badb8"
-						title="#8badb8 darkaccent"
-					></div>
-					<div
-						class="swatch"
-						style="background:#1c2e33"
-						title="#1c2e33 darkhighlight"
-					></div>
-					<div
-						class="swatch"
-						style="background:#5f1b36"
-						title="#5f1b36 lightaccent"
-					></div>
-					<div
-						class="swatch"
-						style="background:#f0e0e6;border-color:rgba(0,0,0,.12)"
-						title="#f0e0e6 lighthighlight"
-					></div>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h1 · Syne 800</span>
-				<p class="t-h1">Dekamus<br><span class="a-light">association</span></p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(56–80px)</span>
-					<span class="spec-item"><span>leading</span>1.00</span>
-					<span class="spec-item"><span>tracking</span>−0.03em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h2 · Syne 700</span>
-				<p class="t-h2">The weight of<br>written thought</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(38–51px)</span>
-					<span class="spec-item"><span>leading</span>1.08</span>
-					<span class="spec-item"><span>tracking</span>−0.02em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h3 · Source Serif 4 600</span>
-				<p class="t-h3">A sentence holds<br>its own gravity</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(27–35px)</span>
-					<span class="spec-item"><span>leading</span>1.20</span>
-					<span class="spec-item"><span>tracking</span>−0.01em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h4 · Source Serif 4 600</span>
-				<p class="t-h4">Contrast builds clarity between structure and flow</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(19–24px)</span>
-					<span class="spec-item"><span>leading</span>1.30</span>
-					<span class="spec-item"><span>tracking</span>0em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">body lead · Source Serif 4 400</span>
+			<header class="ds-header">
+				<p class="meta">Design system · Light Dark theme</p>
+				<h1 class="t-h1">
+					Dekamus<br><span class="a-accent">association</span>
+				</h1>
 				<p class="t-lead">
-					Reading is a performance of the eye across space. The rhythm of a
-					paragraph lives in its leading—too tight and the eye loses its path;
-					too loose and the reader floats untethered between lines.
+					Color tokens, typography, and components driven by
+					<code class="t-mono-sm">config/colors.ts</code>
+					and
+					<code class="t-mono-sm">ColorsCSSVars.astro</code>.
 				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(17–19px)</span>
-					<span class="spec-item"><span>leading</span>1.75</span>
-					<span class="spec-item"><span>tracking</span>0.01em</span>
-				</div>
-			</div>
+				<span class="ds-chip">highlight token</span>
+			</header>
 
-			<div class="block">
-				<span class="meta">body · Source Serif 4 400</span>
-				<p class="t-body">
-					The paragraph is the unit of thought. Each line break is a breath,
-					each sentence a step. Good spacing lets the meaning settle before the
-					next idea arrives, quietly, without interruption. Typography is
-					invisible architecture—most felt when it fails.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(16–17px)</span>
-					<span class="spec-item"><span>leading</span>1.70</span>
-					<span class="spec-item"><span>tracking</span>0.005em</span>
-				</div>
-			</div>
+			<section class="ds-section" aria-labelledby="light-colors">
+				<h2 id="light-colors" class="ds-section-title">Colors</h2>
+				{tokenGroups.map((group) => (
+						<div class="ds-group">
+							<h3 class="ds-group-label">{group.label}</h3>
+							<div class="ds-swatches">
+								{group.tokens.map((token) => (
+									<div class="ds-swatch">
+										<div
+											class="ds-swatch-color"
+											style={`background:var(--color-${token})`}
+											title={token}
+										/>
+										<span class="ds-swatch-name">{token}</span>
+									</div>
+								))}
+							</div>
+						</div>
+					))}
+			</section>
 
-			<div class="block">
-				<span class="meta">small · Source Serif 4 400</span>
-				<p class="t-small" style="color:var(--muted)">
-					Footnotes carry the weight of evidence. At smaller sizes, leading must
-					increase proportionally—the eye needs more air between lines to follow
-					text without effort or fatigue.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>13.4px</span>
-					<span class="spec-item"><span>leading</span>1.65</span>
-					<span class="spec-item"><span>tracking</span>0.01em</span>
-				</div>
-			</div>
+			<section class="ds-section" aria-labelledby="light-type">
+				<h2 id="light-type" class="ds-section-title">Typography</h2>
 
-			<div class="block">
-				<span class="meta">caption · Source Serif 4 300 Italic</span>
-				<p class="t-caption" style="color:var(--muted)">
-					Fig. 1 — Visual hierarchy emerges from contrast in weight, size, and
-					spatial rhythm rather than from decoration alone. The page breathes
-					when type is trusted to do the work.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>12.3px</span>
-					<span class="spec-item"><span>leading</span>1.60</span>
-					<span class="spec-item"><span>tracking</span>0.02em</span>
+				<div class="block">
+					<span class="meta">h1 · Syne 800</span>
+					<p class="t-h1">
+						Dekamus<br><span class="a-accent">association</span>
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>clamp(56–80px)</span>
+						<span class="spec-item"><span>leading</span>1.00</span>
+						<span class="spec-item"><span>tracking</span>−0.03em</span>
+					</div>
 				</div>
-			</div>
 
-			<div class="block">
-				<span class="meta">mono · Victor Mono Italic 400</span>
-				<p class="t-mono" style="color:var(--lightaccent)">
-					const rhythm = lineHeight * fontSize;<br>// spacing makes prose
-					readable
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>14px</span>
-					<span class="spec-item"><span>leading</span>1.60</span>
-					<span class="spec-item"><span>tracking</span>0.03em</span>
+				<div class="block">
+					<span class="meta">h2 · Syne 700</span>
+					<p class="t-h2">The weight of<br>written thought</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>clamp(38–51px)</span>
+						<span class="spec-item"><span>leading</span>1.08</span>
+						<span class="spec-item"><span>tracking</span>−0.02em</span>
+					</div>
 				</div>
-			</div>
 
-			<div class="block">
-				<span class="meta">mono sm · Victor Mono Italic 400</span>
-				<p class="t-mono-sm" style="color:var(--faint)">
-					font-size: 12px; line-height: 1.55; letter-spacing: 0.04em;
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>12.3px</span>
-					<span class="spec-item"><span>leading</span>1.55</span>
-					<span class="spec-item"><span>tracking</span>0.04em</span>
+				<div class="block">
+					<span class="meta">h3 · Source Serif 4 600</span>
+					<p class="t-h3">A sentence holds<br>its own gravity</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>clamp(27–35px)</span>
+						<span class="spec-item"><span>leading</span>1.20</span>
+						<span class="spec-item"><span>tracking</span>−0.01em</span>
+					</div>
 				</div>
-			</div>
+
+				<div class="block">
+					<span class="meta">h4 · Source Serif 4 600</span>
+					<p class="t-h4">Contrast builds clarity between structure and flow</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>clamp(19–24px)</span>
+						<span class="spec-item"><span>leading</span>1.30</span>
+						<span class="spec-item"><span>tracking</span>0em</span>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">body lead · Source Serif 4 400</span>
+					<p class="t-lead">
+						Reading is a performance of the eye across space. The rhythm of a
+						paragraph lives in its leading—too tight and the eye loses its path;
+						too loose and the reader floats untethered between lines.
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>clamp(17–19px)</span>
+						<span class="spec-item"><span>leading</span>1.75</span>
+						<span class="spec-item"><span>tracking</span>0.01em</span>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">body · Source Serif 4 400</span>
+					<p class="t-body">
+						The paragraph is the unit of thought. Each line break is a breath,
+						each sentence a step. Good spacing lets the meaning settle before
+						the next idea arrives, quietly, without interruption.
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>clamp(16–17px)</span>
+						<span class="spec-item"><span>leading</span>1.70</span>
+						<span class="spec-item"><span>tracking</span>0.005em</span>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">small · Source Serif 4 400</span>
+					<p class="t-small a-muted">
+						Footnotes carry the weight of evidence. At smaller sizes, leading
+						must increase proportionally—the eye needs more air between lines.
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>13.4px</span>
+						<span class="spec-item"><span>leading</span>1.65</span>
+						<span class="spec-item"><span>tracking</span>0.01em</span>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">caption · Source Serif 4 300 Italic</span>
+					<p class="t-caption a-muted">
+						Fig. 1 — Visual hierarchy emerges from contrast in weight, size, and
+						spatial rhythm rather than from decoration alone.
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>12.3px</span>
+						<span class="spec-item"><span>leading</span>1.60</span>
+						<span class="spec-item"><span>tracking</span>0.02em</span>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">mono · Victor Mono Italic 400</span>
+					<p class="t-mono a-accent">
+						const rhythm = lineHeight * fontSize;<br>// spacing makes prose
+						readable
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>14px</span>
+						<span class="spec-item"><span>leading</span>1.60</span>
+						<span class="spec-item"><span>tracking</span>0.03em</span>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">mono sm · Victor Mono Italic 400</span>
+					<p class="t-mono-sm a-faint">
+						font-size: 12px; line-height: 1.55; letter-spacing: 0.04em;
+					</p>
+					<div class="spec">
+						<span class="spec-item"><span>size</span>12.3px</span>
+						<span class="spec-item"><span>leading</span>1.55</span>
+						<span class="spec-item"><span>tracking</span>0.04em</span>
+					</div>
+				</div>
+			</section>
+
+			<section class="ds-section" aria-labelledby="light-components">
+				<h2 id="light-components" class="ds-section-title">Components</h2>
+
+				<div class="block">
+					<span class="meta">Surface cards</span>
+					<div class="ds-surfaces">
+						<div class="ds-surface ds-surface--alt">
+							<div class="ds-card">
+								<p class="t-h4">bgCard on bgAlt</p>
+								<p class="t-body a-muted">
+									Card surface uses bgCard over an alternate page background.
+								</p>
+							</div>
+						</div>
+						<div class="ds-surface ds-surface--warm">
+							<div class="ds-card">
+								<p class="t-h4">bgCard on bgWarm</p>
+								<p class="t-body a-muted">
+									Warm background for editorial or featured content blocks.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">Alt cards</span>
+					<div class="ds-alt-cards">
+						{altCards.map((card) => (
+								<div
+									class="ds-alt-card"
+									style={`background:var(--color-${card.token})`}
+								>
+									<p class="t-h4">{card.label}</p>
+									<p class="t-small a-muted">{card.token}</p>
+								</div>
+							))}
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">Buttons</span>
+					<div class="ds-btns">
+						<button type="button" class="ds-btn ds-btn--filled">
+							Primary action
+						</button>
+						<button type="button" class="ds-btn ds-btn--outline">
+							Secondary action
+						</button>
+						<button type="button" class="ds-btn ds-btn--filled" disabled>
+							Disabled
+						</button>
+					</div>
+				</div>
+
+				<div class="block">
+					<span class="meta">Semantic alerts</span>
+					<div class="ds-alerts">
+						{alerts.map((alert) => (
+								<div
+									class="ds-alert"
+									style={`background:var(--color-${alert.bg});color:var(--color-${alert.fg});border-color:var(--color-${alert.bd})`}
+								>
+									<strong>{alert.kind}</strong> — semantic token trio for
+									foreground, background, and border.
+								</div>
+							))}
+					</div>
+				</div>
+			</section>
 		</section>
 
 		<div class="rule"></div>
 
-		<section class="col col--dark">
-			<div class="col-header">
-				<span class="col-header-label">Dark surface · #111317</span>
-				<div class="swatches">
-					<div
-						class="swatch"
-						style="background:#f7f6f1;border-color:rgba(255,255,255,.08)"
-						title="#f7f6f1"
-					></div>
-					<div
-						class="swatch"
-						style="background:#111317;border-color:rgba(255,255,255,.12)"
-						title="#111317"
-					></div>
-					<div class="swatch" style="background:#5a5d65" title="#5a5d65"></div>
-					<div class="swatch" style="background:#9498a2" title="#9498a2"></div>
-					<div class="swatch" style="background:#8badb8" title="#8badb8"></div>
-					<div class="swatch" style="background:#1c2e33" title="#1c2e33"></div>
-					<div class="swatch" style="background:#5f1b36" title="#5f1b36"></div>
-					<div
-						class="swatch"
-						style="background:#f0e0e6;border-color:rgba(0,0,0,.15)"
-						title="#f0e0e6"
-					></div>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h1 · Syne 800</span>
-				<p class="t-h1">
-					Association<br><span style="color:#8badb8">Dekamus</span>
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(56–80px)</span>
-					<span class="spec-item"><span>leading</span>1.00</span>
-					<span class="spec-item"><span>tracking</span>−0.03em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h2 · Syne 700</span>
-				<p class="t-h2">The weight of<br>written thought</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(38–51px)</span>
-					<span class="spec-item"><span>leading</span>1.08</span>
-					<span class="spec-item"><span>tracking</span>−0.02em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h3 · Source Serif 4 600</span>
-				<p class="t-h3">A sentence holds<br>its own gravity</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(27–35px)</span>
-					<span class="spec-item"><span>leading</span>1.20</span>
-					<span class="spec-item"><span>tracking</span>−0.01em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">h4 · Source Serif 4 600</span>
-				<p class="t-h4">Contrast builds clarity between structure and flow</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(19–24px)</span>
-					<span class="spec-item"><span>leading</span>1.30</span>
-					<span class="spec-item"><span>tracking</span>0em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">body lead · Source Serif 4 400</span>
-				<p class="t-lead">
-					Reading is a performance of the eye across space. The rhythm of a
-					paragraph lives in its leading—too tight and the eye loses its path;
-					too loose and the reader floats untethered between lines.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(17–19px)</span>
-					<span class="spec-item"><span>leading</span>1.75</span>
-					<span class="spec-item"><span>tracking</span>0.01em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">body · Source Serif 4 400</span>
-				<p class="t-body">
-					The paragraph is the unit of thought. Each line break is a breath,
-					each sentence a step. Good spacing lets the meaning settle before the
-					next idea arrives, quietly, without interruption. Typography is
-					invisible architecture—most felt when it fails.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>clamp(16–17px)</span>
-					<span class="spec-item"><span>leading</span>1.70</span>
-					<span class="spec-item"><span>tracking</span>0.005em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">small · Source Serif 4 400</span>
-				<p class="t-small" style="color:#9498a2">
-					Footnotes carry the weight of evidence. At smaller sizes, leading must
-					increase proportionally—the eye needs more air between lines to follow
-					text without effort or fatigue.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>13.4px</span>
-					<span class="spec-item"><span>leading</span>1.65</span>
-					<span class="spec-item"><span>tracking</span>0.01em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">caption · Source Serif 4 300 Italic</span>
-				<p class="t-caption" style="color:#9498a2">
-					Fig. 1 — Visual hierarchy emerges from contrast in weight, size, and
-					spatial rhythm rather than from decoration alone. The page breathes
-					when type is trusted to do the work.
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>12.3px</span>
-					<span class="spec-item"><span>leading</span>1.60</span>
-					<span class="spec-item"><span>tracking</span>0.02em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">mono · Victor Mono Italic 400</span>
-				<p class="t-mono" style="color:#8badb8">
-					const rhythm = lineHeight * fontSize;<br>// spacing makes prose
-					readable
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>14px</span>
-					<span class="spec-item"><span>leading</span>1.60</span>
-					<span class="spec-item"><span>tracking</span>0.03em</span>
-				</div>
-			</div>
-
-			<div class="block">
-				<span class="meta">mono sm · Victor Mono Italic 400</span>
-				<p class="t-mono-sm" style="color:#5a5d65">
-					font-size: 12px; line-height: 1.55; letter-spacing: 0.04em;
-				</p>
-				<div class="spec">
-					<span class="spec-item"><span>size</span>12.3px</span>
-					<span class="spec-item"><span>leading</span>1.55</span>
-					<span class="spec-item"><span>tracking</span>0.04em</span>
-				</div>
-			</div>
-		</section>
 	</main>
 </Layout>
 
 <style>
-.type-specimen {
-	--primary: #111317;
-	--secondary: #f7f6f1;
-	--muted: #5a5d65;
-	--faint: #9498a2;
-	--darkaccent: #8badb8;
-	--darkhighlight: #1c2e33;
-	--lightaccent: #5f1b36;
-	--lighthighlight: #f0e0e6;
+.ds {
 	--font-heading: var(--font-syne);
 	--font-body: var(--font-source-serif-4);
 	--font-mono: var(--font-victor-mono);
+	--sp-1: 0.25rem;
+	--sp-2: 0.5rem;
 	--sp-3: 0.75rem;
 	--sp-4: 1rem;
+	--sp-6: 1.5rem;
 	--sp-8: 2rem;
 	--sp-10: 2.5rem;
 	--sp-12: 3rem;
+	--sp-16: 4rem;
 
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
-	background: var(--secondary);
-	color: var(--primary);
+	background: var(--color-secondary);
+	color: var(--color-primary);
 	font-family: var(--font-body);
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 }
 
-.type-specimen,
-.type-specimen * {
+.ds,
+.ds * {
 	box-sizing: border-box;
 }
 
@@ -371,52 +322,92 @@ import Layout from "../layouts/Layout.astro";
 	padding: var(--sp-12) var(--sp-10);
 }
 
-.col--dark {
-	background: var(--primary);
-	color: var(--secondary);
-}
-
 .rule {
 	width: 100%;
 	height: 1px;
 	flex-shrink: 0;
-	background: oklch(from #5a5d65 l c h / 22%);
+	background: color-mix(in oklch, var(--color-muted) 22%, transparent);
 }
 
-.col-header {
-	margin-bottom: 0;
+.ds-header {
 	padding-bottom: var(--sp-8);
-	border-bottom: 1px solid oklch(from #9498a2 l c h / 25%);
+	border-bottom: 1px solid
+		color-mix(in oklch, var(--color-faint) 25%, transparent);
 }
 
-.col-header-label {
-	display: block;
-	margin-bottom: var(--sp-3);
-	color: var(--faint);
+.ds-chip {
+	display: inline-block;
+	margin-top: var(--sp-4);
+	padding: var(--sp-1) var(--sp-3);
+	background: var(--color-highlight);
+	color: var(--color-primary);
+	border-radius: 4px;
 	font-family: var(--font-mono);
 	font-size: 10px;
 	font-style: italic;
-	letter-spacing: 0.14em;
+	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
 
-.swatches {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 5px;
-	margin-top: var(--sp-3);
+.ds-section {
+	padding-top: var(--sp-8);
 }
 
-.swatch {
-	width: 20px;
-	height: 20px;
-	border: 1px solid oklch(from #111 l c h / 10%);
+.ds-section-title {
+	margin-bottom: var(--sp-6);
+	font-family: var(--font-heading);
+	font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+}
+
+.ds-group {
+	margin-bottom: var(--sp-6);
+}
+
+.ds-group-label {
+	margin-bottom: var(--sp-3);
+	color: var(--color-faint);
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-style: italic;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.ds-swatches {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-3);
+}
+
+.ds-swatch {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-1);
+	min-width: 4.5rem;
+}
+
+.ds-swatch-color {
+	width: 2.5rem;
+	height: 2.5rem;
+	border: 1px solid color-mix(in oklch, var(--color-primary) 10%, transparent);
 	border-radius: 4px;
+}
+
+.ds-swatch-name {
+	color: var(--color-faint);
+	font-family: var(--font-mono);
+	font-size: 9px;
+	font-style: italic;
+	letter-spacing: 0.06em;
 }
 
 .block {
 	padding: var(--sp-8) 0;
-	border-bottom: 1px solid oklch(from #9498a2 l c h / 18%);
+	border-bottom: 1px solid
+		color-mix(in oklch, var(--color-faint) 18%, transparent);
 }
 
 .block:last-child {
@@ -426,7 +417,7 @@ import Layout from "../layouts/Layout.astro";
 .meta {
 	display: block;
 	margin-bottom: var(--sp-3);
-	color: var(--faint);
+	color: var(--color-faint);
 	font-family: var(--font-mono);
 	font-size: 10px;
 	font-style: italic;
@@ -442,7 +433,7 @@ import Layout from "../layouts/Layout.astro";
 }
 
 .spec-item {
-	color: var(--faint);
+	color: var(--color-faint);
 	font-family: var(--font-mono);
 	font-size: 10px;
 	font-style: italic;
@@ -495,6 +486,11 @@ import Layout from "../layouts/Layout.astro";
 	letter-spacing: 0.01em;
 }
 
+.ds-header .t-lead {
+	margin-top: var(--sp-4);
+	max-width: 42rem;
+}
+
 .t-body {
 	font-family: var(--font-body);
 	font-size: clamp(1rem, 1.1vw, 1.075rem);
@@ -538,23 +534,105 @@ import Layout from "../layouts/Layout.astro";
 	letter-spacing: 0.04em;
 }
 
-.a-dark {
-	color: var(--darkaccent);
+.a-accent {
+	color: var(--color-accent);
 }
 
-.a-light {
-	color: var(--lightaccent);
+.a-muted {
+	color: var(--color-muted);
 }
 
-.a-dhl {
-	color: var(--darkhighlight);
+.a-faint {
+	color: var(--color-faint);
 }
 
-.col--dark .a-light {
-	color: var(--lighthighlight);
+.ds-surfaces {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+	gap: var(--sp-4);
 }
 
-.col--dark .a-muted {
-	color: #9498a2;
+.ds-surface {
+	padding: var(--sp-4);
+	border-radius: 6px;
+}
+
+.ds-surface--alt {
+	background: var(--color-bgAlt);
+}
+
+.ds-surface--warm {
+	background: var(--color-bgWarm);
+}
+
+.ds-card {
+	padding: var(--sp-4);
+	background: var(--color-bgCard);
+	border: 1px solid color-mix(in oklch, var(--color-muted) 18%, transparent);
+	border-radius: 6px;
+}
+
+.ds-alt-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+	gap: var(--sp-3);
+}
+
+.ds-alt-card {
+	padding: var(--sp-4);
+	border-radius: 6px;
+}
+
+.ds-btns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-3);
+}
+
+.ds-btn {
+	padding: var(--sp-2) var(--sp-4);
+	border-radius: 4px;
+	font-family: var(--font-body);
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.4;
+	cursor: pointer;
+}
+
+.ds-btn--filled {
+	background: var(--color-accent);
+	color: var(--color-secondary);
+	border: 1px solid var(--color-accent);
+}
+
+.ds-btn--outline {
+	background: transparent;
+	color: var(--color-accent);
+	border: 1px solid var(--color-accent);
+}
+
+.ds-btn:disabled {
+	background: var(--color-disabled);
+	color: var(--color-secondary);
+	border-color: var(--color-disabled);
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+.ds-alerts {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-3);
+}
+
+.ds-alert {
+	padding: var(--sp-3) var(--sp-4);
+	border: 1px solid;
+	border-radius: 4px;
+	font-family: var(--font-body);
+	font-size: 0.9rem;
+	line-height: 1.5;
 }
 </style>
+
+<style is:global set:html={colDarkCSS}></style>

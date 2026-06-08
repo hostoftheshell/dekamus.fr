@@ -1,9 +1,27 @@
 ---
 import { Font } from "astro:assets";
+import { ColorData } from "@config/colors";
+import ColorStyles from "@components/utils/ColorsCSSVars.astro";
+import ThemeToggle from "@components/utils/ThemeToggle.astro";
+
+const defaultMode = ColorData.colors.mode;
 ---
 
 <html lang="en">
 	<head>
+		<script is:inline define:vars={{ defaultMode }}>
+			(() => {
+				const KEY = "theme:mode";
+				let mode = localStorage.getItem(KEY);
+				if (mode !== "auto" && mode !== "light" && mode !== "dark") {
+					mode = defaultMode;
+				}
+				if (mode === "light" || mode === "dark") {
+					document.documentElement.style.colorScheme = mode;
+				}
+			})();
+		</script>
+		<ColorStyles />
 		<meta charset="utf-8">
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 		<link rel="icon" href="/favicon.ico">
@@ -15,6 +33,7 @@ import { Font } from "astro:assets";
 		<title>DEKAMUS</title>
 	</head>
 	<body>
+		<ThemeToggle />
 		<slot />
 	</body>
 </html>
