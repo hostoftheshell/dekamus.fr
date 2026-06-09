@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dekamus.fr/sitemap-index.xml
+Schemamap: https://dekamus.fr/schemamap.xml
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+
+# IndexNow key verification (uncomment when INDEXNOW_KEY is set):
+# IndexNow: https://dekamus.fr/<key>.txt

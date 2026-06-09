@@ -1,0 +1,19 @@
+---
+import FuzzyRedirect from "@jdevalk/astro-seo-graph/FuzzyRedirect.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+	title="Page introuvable — erreur 404"
+	description="La page demandée est introuvable sur le site officiel de l'association Dekamus. Retournez à l'accueil."
+	noindex={true}
+>
+	<main>
+		<h1>Page introuvable</h1>
+		<p>Désolé, la page que vous recherchez n'existe pas.</p>
+		<p>
+			<FuzzyRedirect />
+		</p>
+		<p><a href="/">Retour à l'accueil</a></p>
+	</main>
+</Layout>

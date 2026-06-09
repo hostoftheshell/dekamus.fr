@@ -1,0 +1,23 @@
+{
+	"version": 1,
+	"skills": {
+		"astro-seo": {
+			"source": "jdevalk/skills",
+			"sourceType": "github",
+			"skillPath": "astro-seo/SKILL.md",
+			"computedHash": "a28fa740bc78aac4e47cdf968670400d7b1bfe3c8a0f8f22b869482c4d59db95"
+		},
+		"metadata-check": {
+			"source": "jdevalk/skills",
+			"sourceType": "github",
+			"skillPath": "metadata-check/SKILL.md",
+			"computedHash": "aac4be33df4262ce757cf6787d76735704336d04cfc1237e3dce42f262cd1e5c"
+		},
+		"static-seo": {
+			"source": "jdevalk/skills",
+			"sourceType": "github",
+			"skillPath": "static-seo/SKILL.md",
+			"computedHash": "02485fda9e4c6065b2b3ddf384555a73ee0d96b0225e59f8974eb283d22173a2"
+		}
+	}
+}

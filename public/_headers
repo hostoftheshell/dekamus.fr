@@ -1,0 +1,5 @@
+/*
+  Link: </sitemap-index.xml>; rel="sitemap", </llms.txt>; rel="alternate"; type="text/plain", </.well-known/api-catalog>; rel="service-desc"; type="application/linkset+json", </schemamap.xml>; rel="describedby"
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

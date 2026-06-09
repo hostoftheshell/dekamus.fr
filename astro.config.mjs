@@ -1,10 +1,28 @@
 // @ts-check
 
+import sitemap from "@astrojs/sitemap";
+import seoGraph from "@jdevalk/astro-seo-graph/integration";
 import { defineConfig, fontProviders } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
+	site: "https://dekamus.fr",
 	output: "static",
+	integrations: [
+		sitemap({ entryLimit: 1000 }),
+		seoGraph({
+			validateH1: true,
+			validateUniqueMetadata: true,
+			validateImageAlt: true,
+			validateMetadataLength: true,
+			validateInternalLinks: true,
+			llmsTxt: {
+				title: "Dekamus",
+				siteUrl: "https://dekamus.fr",
+				summary: "Association Dekamus — site officiel.",
+			},
+		}),
+	],
 	trailingSlash: "ignore",
 	build: {
 		format: "directory",

@@ -13,12 +13,12 @@ export const ColorData: ColorConfig = {
 			accent: "oklch(39.42% 0.1828 278.39deg)", // #382ca4
 			highlight: "oklch(93.38% 0.0328 297.2deg)", // #ebe5fd
 			bgAlt: "oklch(96.88% 0.0041 301.42deg)", // #f5f4f7
-			bgWarm: "oklch(95.50% 0.018 85deg)", // #f6efe3
+			bgWarm: "oklch(96.5% 0.032 92deg)", // #f9f4e0
 			bgCard: "oklch(99.7% 0 0deg)", // #fefefe
-			altCard_1: "oklch(86.18% 0.072 290.93deg)", // #d1cafe
-			altCard_2: "oklch(86.55% 0.076 352.59deg)", // #fbbfd7
-			altCard_3: "oklch(90.65% 0.088 112.5deg)", // #e0e7a3
-			altCard_4: "oklch(88.23% 0.082 170.38deg)", // #a0ead0
+			altCard_1: "oklch(87.68% 0.102 290.93deg)", // #d6cbfe
+			altCard_2: "oklch(88.05% 0.106 352.59deg)", // #febade
+			altCard_3: "oklch(92.15% 0.118 112.5deg)", // #e5ed8f
+			altCard_4: "oklch(89.73% 0.112 170.38deg)", // #8af5d2
 			fgInfo: "oklch(54.14% 0.1604 251.66deg)", // #0070c8
 			bgInfo: "oklch(93.31% 0.0249 246.21deg)", // #dcebf9
 			bdInfo: "oklch(74.21% 0.1054 251.02deg)", // #78b0ec
@@ -41,12 +41,12 @@ export const ColorData: ColorConfig = {
 			accent: "oklch(87.5% 0.1791 92.68deg)", // #ffd100
 			highlight: "oklch(25.26% 0.0393 95.39deg)", // #28220a
 			bgAlt: "oklch(19.73% 0.02 289.01deg)", // #15141e
-			bgWarm: "oklch(25.26% 0.0393 95.39deg)", // #28220a
+			bgWarm: "oklch(14.8% 0.028 91deg)", // #373015
 			bgCard: "oklch(20.96% 0.0238 295.75deg)", // #191622
-			altCard_1: "oklch(21.41% 0.0539 282.46deg)", // #161531
-			altCard_2: "oklch(22.98% 0.042 354.49deg)", // #29131c
-			altCard_3: "oklch(25.95% 0.0352 106.2deg)", // #262510
-			altCard_4: "oklch(25.62% 0.0313 167.43deg)", // #132820
+			altCard_1: "oklch(24.41% 0.0789 282.46deg)", // #1c1843
+			altCard_2: "oklch(25.98% 0.067 354.49deg)", // #3b1325
+			altCard_3: "oklch(28.95% 0.0602 106.2deg)", // #2f2c01
+			altCard_4: "oklch(28.62% 0.0563 167.43deg)", // #023324
 			fgInfo: "oklch(60.52% 0.1744 253.34deg)", // #1e82e6
 			bgInfo: "oklch(24.16% 0.0428 248.83deg)", // #0e2133
 			bdInfo: "oklch(55.24% 0.1632 253.67deg)", // #1672ce
@@ -62,7 +62,7 @@ export const ColorData: ColorConfig = {
 			disabled: "oklch(47.85% 0.0134 269.4deg)", // #5a5d65
 		},
 	},
-};
+} satisfies ColorConfig;
 
 /** Convert a palette to `--color-*` CSS custom properties. */
 export function paletteToCSSVars(palette: ColorPalette): string {
