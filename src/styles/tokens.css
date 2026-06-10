@@ -1,0 +1,7 @@
+/* src/styles/tokens.css — font aliases; spacing vars injected by HeadTokens.astro */
+
+:root {
+	--font-heading: var(--font-syne);
+	--font-body: var(--font-source-serif-4);
+	--font-mono: var(--font-victor-mono);
+}

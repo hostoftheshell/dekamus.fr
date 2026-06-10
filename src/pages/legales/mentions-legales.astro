@@ -1,6 +1,7 @@
 ---
-import { pages } from "@config/pages";
-import { siteConfig } from "@config/site";
+import Prose from "@components/layout/Prose.astro";
+import { pages } from "@config/content/pages";
+import { siteConfig } from "@config/content/site";
 import { layoutProps } from "@utils/page-meta";
 import Layout from "../../layouts/Layout.astro";
 
@@ -10,50 +11,57 @@ const { contact } = org;
 ---
 
 <Layout {...layoutProps(meta)}>
-	<h1>Mentions légales</h1>
+	<Prose>
+		<h1 class="t-h2">Mentions légales</h1>
 
-	<section>
-		<h2>Éditeur du site</h2>
-		<p><strong>{org.legalName}</strong> — {org.legalFormLabel}</p>
-		<p>SIREN : {org.identifierSiren} — SIRET : {org.identifierSiret}</p>
-		<p>
-			{org.address.street}<br>
-			{org.address.postalCode} {org.address.locality}<br>
-			{org.address.countryLabel}
-		</p>
-		<p>
-			E-mail : <a href={`mailto:${contact.email}`}>{contact.email}</a><br>
-			Téléphone : <a href={contact.phone.link}>{contact.phone.display}</a>
-		</p>
-	</section>
+		<section class="stack">
+			<h2 class="t-h4">Éditeur du site</h2>
+			<p class="t-body">
+				<strong>{org.legalName}</strong>
+				— {org.legalFormLabel}
+			</p>
+			<p class="t-body">
+				SIREN : {org.identifierSiren} — SIRET : {org.identifierSiret}
+			</p>
+			<p class="t-body">
+				{org.address.street}<br>
+				{org.address.postalCode} {org.address.locality}<br>
+				{org.address.countryLabel}
+			</p>
+			<p class="t-body">
+				E-mail : <a href={`mailto:${contact.email}`}>{contact.email}</a><br>
+				Téléphone : <a href={contact.phone.link}>{contact.phone.display}</a>
+			</p>
+		</section>
 
-	<section>
-		<h2>Directeur de publication</h2>
-		<p>{org.legalName} — représentée par sa présidente.</p>
-	</section>
+		<section class="stack">
+			<h2 class="t-h4">Directeur de publication</h2>
+			<p class="t-body">{org.legalName} — représentée par sa présidente.</p>
+		</section>
 
-	<section>
-		<h2>Hébergement</h2>
-		<p>
-			<strong>{contact.hosting.name}</strong><br>
-			{contact.hosting.address}<br>
-			<a href={contact.hosting.url} rel="noopener noreferrer"
-				>{contact.hosting.url}</a
-			>
-		</p>
-	</section>
+		<section class="stack">
+			<h2 class="t-h4">Hébergement</h2>
+			<p class="t-body">
+				<strong>{contact.hosting.name}</strong><br>
+				{contact.hosting.address}<br>
+				<a href={contact.hosting.url} rel="noopener noreferrer"
+					>{contact.hosting.url}</a
+				>
+			</p>
+		</section>
 
-	<section>
-		<h2>Conception et développement</h2>
-		<p>
-			<a href={contact.website.developer.url} rel="noopener noreferrer"
-				>{contact.website.developer.name}</a
-			>
-			— SIRET : {contact.website.developer.identifierSiret}<br>
-			E-mail :
-			<a href={`mailto:${contact.website.developer.email}`}
-				>{contact.website.developer.email}</a
-			>
-		</p>
-	</section>
+		<section class="stack">
+			<h2 class="t-h4">Conception et développement</h2>
+			<p class="t-body">
+				<a href={contact.website.developer.url} rel="noopener noreferrer"
+					>{contact.website.developer.name}</a
+				>
+				— SIRET : {contact.website.developer.identifierSiret}<br>
+				E-mail :
+				<a href={`mailto:${contact.website.developer.email}`}
+					>{contact.website.developer.email}</a
+				>
+			</p>
+		</section>
+	</Prose>
 </Layout>

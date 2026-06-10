@@ -15,7 +15,7 @@ Inside of your Astro project, you'll see the following folders and files:
 ├── public/
 ├── src/
 │   └── pages/
-│       └── index.astro
+│       └── _design-system.astro
 └── package.json
 ```
 

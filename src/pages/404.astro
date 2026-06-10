@@ -1,15 +1,18 @@
 ---
-import { pages } from "@config/pages";
+import Prose from "@components/layout/Prose.astro";
+import { pages } from "@config/content/pages";
 import FuzzyRedirect from "@jdevalk/astro-seo-graph/FuzzyRedirect.astro";
 import { layoutProps } from "@utils/page-meta";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout {...layoutProps(pages.notFound)}>
-	<h1>Page introuvable</h1>
-	<p>Désolé, la page que vous recherchez n'existe pas.</p>
-	<p>
-		<FuzzyRedirect />
-	</p>
-	<p><a href="/">Retour à l'accueil</a></p>
+	<Prose>
+		<h1 class="t-h2">Page introuvable</h1>
+		<p class="t-body">Désolé, la page que vous recherchez n'existe pas.</p>
+		<p class="t-body">
+			<FuzzyRedirect />
+		</p>
+		<p class="t-body"><a href="/">Retour à l'accueil</a></p>
+	</Prose>
 </Layout>

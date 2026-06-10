@@ -1,4 +1,4 @@
-/* config/colors.ts */
+/* config/design/colors.ts */
 
 import type { ColorConfig, ColorPalette, ColorToken } from "@config/types";
 

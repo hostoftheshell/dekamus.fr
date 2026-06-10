@@ -14,8 +14,9 @@ Documentation de l'intégration [`@jdevalk/astro-seo-graph`](https://github.com/
 | Graph JSON-LD | [`src/utils/schema/index.ts`](../src/utils/schema/index.ts) |
 | Entités site-wide | [`src/utils/schema/site-wide.ts`](../src/utils/schema/site-wide.ts) |
 | Shell page | [`src/layouts/Layout.astro`](../src/layouts/Layout.astro) → `<main>` + slot |
-| Head | [`src/layouts/Head.astro`](../src/layouts/Head.astro) → `head/HeadSeo`, `HeadTheme`, `HeadFonts`, `BaseMeta` |
-| Intégration build | [`astro.config.mjs`](../astro.config.mjs) → `seoGraph()` + `@astrojs/sitemap` |
+| Head | [`src/layouts/Head.astro`](../src/layouts/Head.astro) → `html-head/HeadSeo`, `HeadTheme`, `HeadFonts`, `BaseMeta` |
+| CSS / UnoCSS | [`uno.config.ts`](../uno.config.ts), [`docs/css-conventions.md`](css-conventions.md) |
+| Intégration build | [`astro.config.mjs`](../astro.config.mjs) → `seoGraph()` + `@astrojs/sitemap` + `UnoCSS()` |
 | Sitemap | `/sitemap-index.xml` (généré au build) |
 | robots.txt | [`public/robots.txt`](../public/robots.txt) |
 | Headers CF Pages | [`public/_headers`](../public/_headers) |

@@ -1,4 +1,4 @@
-/* config/members.ts */
+/* config/content/members.ts */
 
 import type { MemberProfile } from "@config/types";
 

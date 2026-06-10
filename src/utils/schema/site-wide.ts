@@ -1,5 +1,5 @@
-import { navPages } from "@config/pages";
-import { siteConfig } from "@config/site";
+import { navPages } from "@config/content/pages";
+import { siteConfig } from "@config/content/site";
 import {
 	buildPiece,
 	buildSiteNavigationElement,

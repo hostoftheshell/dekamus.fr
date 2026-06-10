@@ -1,0 +1,12 @@
+---
+interface Props {
+	wide?: boolean;
+}
+
+const { wide = false } = Astro.props;
+const containerClass = wide ? "container-wide" : "container-page";
+---
+
+<article class:list={[containerClass, "stack-lg", "text-primary"]}>
+	<slot />
+</article>

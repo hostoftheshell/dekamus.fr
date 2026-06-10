@@ -1,5 +1,5 @@
-import { members } from "@config/members";
-import { getPageByPath, sitemapPages } from "@config/pages";
+import { members } from "@config/content/members";
+import { getPageByPath, sitemapPages } from "@config/content/pages";
 import {
 	assembleGraph,
 	buildBreadcrumbList,

@@ -1,6 +1,6 @@
-/* config/pages.ts */
+/* config/content/pages.ts */
 
-import { siteConfig } from "@config/site";
+import { siteConfig } from "@config/content/site";
 import type { NavGroup, PageMeta } from "@config/types";
 
 export const pages = {

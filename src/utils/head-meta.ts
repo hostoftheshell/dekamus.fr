@@ -1,4 +1,4 @@
-import { siteConfig } from "@config/site";
+import { siteConfig } from "@config/content/site";
 import type { HeadProps } from "@config/types";
 import { buildSchemaGraph } from "@utils/schema";
 

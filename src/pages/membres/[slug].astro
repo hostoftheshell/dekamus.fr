@@ -1,5 +1,6 @@
 ---
-import { members } from "@config/members";
+import Prose from "@components/layout/Prose.astro";
+import { members } from "@config/content/members";
 import Layout from "../../layouts/Layout.astro";
 
 export function getStaticPaths() {
@@ -13,8 +14,12 @@ const { member } = Astro.props;
 ---
 
 <Layout title={member.title} description={member.description}>
-	<h1>{member.name}</h1>
-	<p><strong>{member.role}</strong></p>
-	<p>Profil à compléter.</p>
-	<p><a href="/membres/">Retour à la liste des membres</a></p>
+	<Prose>
+		<h1 class="t-h2">{member.name}</h1>
+		<p class="t-body"><strong>{member.role}</strong></p>
+		<p class="t-body">Profil à compléter.</p>
+		<p class="t-body">
+			<a href="/membres/">Retour à la liste des membres</a>
+		</p>
+	</Prose>
 </Layout>

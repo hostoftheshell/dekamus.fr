@@ -1,7 +1,8 @@
 /* config/types/index.d.ts */
 
-export * from "./colors";
-export * from "./head";
-export * from "./member";
-export * from "./page-meta";
-export * from "./site";
+export * from "./content/head";
+export * from "./content/member";
+export * from "./content/page-meta";
+export * from "./content/site";
+export * from "./design/colors";
+export * from "./design/layout";

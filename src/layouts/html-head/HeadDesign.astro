@@ -1,0 +1,36 @@
+---
+import { Font } from "astro:assets";
+import ColorStyles from "@components/utils/ColorsCSSVars.astro";
+import { ColorData } from "@config/design/colors";
+import { spacingToCSSVars } from "@config/design/spacing";
+import typographyCss from "../../styles/typography.css?raw";
+
+const defaultMode = ColorData.colors.mode;
+
+const tokensCss = `:root {
+	--font-heading: var(--font-syne);
+	--font-body: var(--font-source-serif-4);
+	--font-mono: var(--font-victor-mono);
+${spacingToCSSVars()}
+}`;
+
+const css = `${tokensCss}\n${typographyCss}`;
+---
+
+<script is:inline define:vars={{ defaultMode }}>
+(() => {
+	const KEY = "theme:mode";
+	let mode = localStorage.getItem(KEY);
+	if (mode !== "auto" && mode !== "light" && mode !== "dark") {
+		mode = defaultMode;
+	}
+	if (mode === "light" || mode === "dark") {
+		document.documentElement.style.colorScheme = mode;
+	}
+})();
+</script>
+<ColorStyles />
+<style is:global set:html={css}></style>
+<Font cssVariable="--font-syne" preload />
+<Font cssVariable="--font-source-serif-4" preload />
+<Font cssVariable="--font-victor-mono" />

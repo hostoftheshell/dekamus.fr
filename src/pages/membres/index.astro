@@ -1,6 +1,7 @@
 ---
-import { members } from "@config/members";
-import { pages } from "@config/pages";
+import Prose from "@components/layout/Prose.astro";
+import { members } from "@config/content/members";
+import { pages } from "@config/content/pages";
 import { layoutProps } from "@utils/page-meta";
 import Layout from "../../layouts/Layout.astro";
 
@@ -8,15 +9,19 @@ const meta = pages.membres;
 ---
 
 <Layout {...layoutProps(meta)}>
-	<h1>Membres</h1>
-	<p>Liste des membres du bureau et de l'équipe de l'association.</p>
-	<ul>
-		{members.map((member) => (
-				<li>
-					<a href={`/membres/${member.slug}/`}>
-						{member.name} — {member.role}
-					</a>
-				</li>
-			))}
-	</ul>
+	<Prose>
+		<h1 class="t-h2">Membres</h1>
+		<p class="t-body">
+			Liste des membres du bureau et de l'équipe de l'association.
+		</p>
+		<ul class="stack-sm">
+			{members.map((member) => (
+					<li class="t-body">
+						<a href={`/membres/${member.slug}/`}>
+							{member.name} — {member.role}
+						</a>
+					</li>
+				))}
+		</ul>
+	</Prose>
 </Layout>

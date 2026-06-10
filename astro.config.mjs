@@ -3,6 +3,7 @@
 import sitemap from "@astrojs/sitemap";
 import seoGraph from "@jdevalk/astro-seo-graph/integration";
 import { defineConfig, fontProviders } from "astro/config";
+import UnoCSS from "unocss/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,6 +23,7 @@ export default defineConfig({
 				summary: "Association Dekamus — site officiel.",
 			},
 		}),
+		UnoCSS(),
 	],
 	trailingSlash: "ignore",
 	build: {

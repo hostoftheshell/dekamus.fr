@@ -1,4 +1,4 @@
-import { siteConfig } from "@config/site";
+import { siteConfig } from "@config/content/site";
 import { createSchemaMap } from "@jdevalk/astro-seo-graph";
 
 export const GET = createSchemaMap({
