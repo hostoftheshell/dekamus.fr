@@ -1,54 +1,28 @@
-import { siteConfig } from "@config/site";
+import { members } from "@config/members";
+import { getPageByPath, sitemapPages } from "@config/pages";
 import {
 	assembleGraph,
 	buildBreadcrumbList,
-	buildPiece,
-	buildSiteNavigationElement,
 	buildWebPage,
-	buildWebSite,
 	type GraphEntity,
-	makeIds,
 } from "@jdevalk/seo-graph-core";
-
-const SITE_URL = siteConfig.url.replace(/\/$/, "");
-
-export const ids = makeIds({ siteUrl: SITE_URL });
-
-const organizationId = ids.organization("dekamus");
+import { ids, SITE_URL, siteWidePieces } from "./site-wide";
 
 function siteWideEntities() {
-	return [
-		buildPiece({
-			"@type": "Organization",
-			"@id": organizationId,
-			name: siteConfig.organization.legalName,
-			url: `${SITE_URL}/`,
-		}),
-		buildWebSite(
-			{
-				url: `${SITE_URL}/`,
-				name: siteConfig.name,
-				publisher: { "@id": organizationId },
-			},
-			ids,
-		),
-		buildSiteNavigationElement(
-			{
-				name: "Navigation principale",
-				isPartOf: { "@id": ids.website },
-				items: [{ name: "Accueil", url: `${SITE_URL}/` }],
-			},
-			ids,
-		),
-	];
+	return siteWidePieces();
 }
 
 function breadcrumbItems(url: string, title: string) {
 	const items = [{ name: "Accueil", url: `${SITE_URL}/` }];
 	const pathname = new URL(url).pathname;
+	const normalizedPath = pathname.replace(/\/$/, "") || "/";
 
-	if (pathname !== "/" && pathname !== "") {
-		items.push({ name: title, url });
+	if (normalizedPath !== "/") {
+		const pageMeta = getPageByPath(normalizedPath);
+		const member = members.find((m) => `/membres/${m.slug}` === normalizedPath);
+		const label =
+			pageMeta?.titleNav ?? member?.titleNav ?? member?.name ?? title;
+		items.push({ name: label, url });
 	}
 
 	return items;
@@ -106,10 +80,23 @@ export function buildPageSchemaPieces(opts: {
 	];
 }
 
-export const staticPages = [
-	{
-		path: "/",
-		title: siteConfig.title,
-		description: siteConfig.description,
-	},
-] as const;
+export function allSchemaPages(): Array<{
+	path: string;
+	title: string;
+	description: string;
+}> {
+	return [
+		...sitemapPages().map((page) => ({
+			path: page.path,
+			title: page.title,
+			description: page.description,
+		})),
+		...members.map((member) => ({
+			path: `/membres/${member.slug}`,
+			title: member.title,
+			description: member.description,
+		})),
+	];
+}
+
+export { ids, organizationId, SITE_URL, siteWidePieces } from "./site-wide";

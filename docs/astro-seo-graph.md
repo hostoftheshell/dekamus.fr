@@ -7,7 +7,11 @@ Documentation de l'intégration [`@jdevalk/astro-seo-graph`](https://github.com/
 | Élément | Fichier / route |
 |---------|-----------------|
 | Config site | [`config/site.ts`](../config/site.ts) |
+| Registry pages | [`config/pages.ts`](../config/pages.ts) |
+| Membres démo | [`config/members.ts`](../config/members.ts) |
+| Props layout | [`src/utils/page-meta.ts`](../src/utils/page-meta.ts) |
 | Graph JSON-LD | [`src/utils/schema/index.ts`](../src/utils/schema/index.ts) |
+| Entités site-wide | [`src/utils/schema/site-wide.ts`](../src/utils/schema/site-wide.ts) |
 | Head SEO | [`src/layouts/Layout.astro`](../src/layouts/Layout.astro) → `<Seo>` |
 | Intégration build | [`astro.config.mjs`](../astro.config.mjs) → `seoGraph()` + `@astrojs/sitemap` |
 | Sitemap | `/sitemap-index.xml` (généré au build) |
@@ -40,9 +44,10 @@ Type de site : **Organization** (association), pas blog.
 
 Entités site-wide (présentes sur chaque page) :
 
-- `Organization` — Dekamus
+- `Organization` — Dekamus (adresse, contact, SIREN/SIRET, date de création)
 - `WebSite` — publisher = Organization
-- `SiteNavigationElement` — navigation (Accueil pour l'instant)
+- `SiteNavigationElement` — navigation principale (`navPages("main")`)
+- `SiteNavigationElement` — navigation légale (`navPages("legal")`)
 
 Par page :
 
@@ -50,30 +55,46 @@ Par page :
 
 Le graph est assemblé via `assembleGraph({ warnOnDanglingReferences: true })`.
 
+## Registry des pages (`config/pages.ts`)
+
+Chaque page statique est déclarée une fois dans `pages` avec :
+
+- `path`, `title`, `description` — métadonnées SERP (30–65 / 70–200 caractères)
+- `titleNav` — libellé court pour fil d'Ariane et navigation JSON-LD
+- `navGroup` — `"main"` ou `"legal"` pour les `SiteNavigationElement` site-wide
+- `noindex` — exclure du sitemap (ex. 404)
+
+Helpers : `getPage`, `getPageByPath`, `navPages`, `sitemapPages`.
+
+Les profils membres démo vivent dans [`config/members.ts`](../config/members.ts) en attendant une collection de contenu.
+
+`allSchemaPages()` (dans `src/utils/schema/index.ts`) agrège `sitemapPages()` + routes `/membres/{slug}` pour l'endpoint `/schema/page.json`.
+
 ## Utilisation dans une page
 
 ```astro
 ---
+import { pages } from "@config/pages";
+import { layoutProps } from "@utils/page-meta";
 import Layout from "../layouts/Layout.astro";
+
+const meta = pages.mentionsLegales;
 ---
 
-<Layout
-  title="Titre de la page"
-  description="Description unique de 70 à 200 caractères pour le SERP."
->
-  <h1>Titre de la page</h1>
+<Layout {...layoutProps(meta)}>
+  <h1>Mentions légales</h1>
 </Layout>
 ```
 
 - Si `title` est omis → titre du site (`siteConfig.title`)
 - Si `title` est personnalisé → format `Titre | Dekamus`
-- `noindex={true}` pour les pages utilitaires (ex. 404)
+- `noindex={true}` pour les pages utilitaires (ex. 404 via `pages.notFound`)
 
 ## Routes agent-discovery
 
 | Route | Rôle |
 |-------|------|
-| `/schema/page.json` | JSON-LD corpus des pages statiques listées dans `staticPages` |
+| `/schema/page.json` | JSON-LD corpus de `allSchemaPages()` (registry + profils membres) |
 | `/schemamap.xml` | Index des endpoints schema |
 | `/.well-known/api-catalog` | Catalogue RFC 9727 |
 

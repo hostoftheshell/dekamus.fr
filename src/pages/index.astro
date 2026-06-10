@@ -1,6 +1,8 @@
 ---
 import { ColorData, paletteToCSSVars } from "@config/colors";
+import { pages } from "@config/pages";
 import type { ColorToken } from "@config/types";
+import { layoutProps } from "@utils/page-meta";
 import Layout from "../layouts/Layout.astro";
 
 const tokenGroups: { label: string; tokens: ColorToken[] }[] = [
@@ -45,7 +47,7 @@ const alerts = [
 ] as const;
 ---
 
-<Layout>
+<Layout {...layoutProps(pages.home)}>
 	<main class="ds" aria-label="Design system mockup">
 		<section class="col">
 			<header class="ds-header">

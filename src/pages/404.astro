@@ -1,13 +1,11 @@
 ---
+import { pages } from "@config/pages";
 import FuzzyRedirect from "@jdevalk/astro-seo-graph/FuzzyRedirect.astro";
+import { layoutProps } from "@utils/page-meta";
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout
-	title="Page introuvable — erreur 404"
-	description="La page demandée est introuvable sur le site officiel de l'association Dekamus. Retournez à l'accueil."
-	noindex={true}
->
+<Layout {...layoutProps(pages.notFound)}>
 	<main>
 		<h1>Page introuvable</h1>
 		<p>Désolé, la page que vous recherchez n'existe pas.</p>
