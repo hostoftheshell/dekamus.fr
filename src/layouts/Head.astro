@@ -1,0 +1,18 @@
+---
+import type { HeadProps } from "@config/types";
+import { resolveHeadMeta } from "@utils/head-meta";
+import BaseMeta from "./head/BaseMeta.astro";
+import HeadFonts from "./head/HeadFonts.astro";
+import HeadSeo from "./head/HeadSeo.astro";
+import HeadTheme from "./head/HeadTheme.astro";
+
+const meta = resolveHeadMeta(Astro.props as HeadProps, Astro.url.href);
+---
+
+<head>
+	<!-- Order matters: theme script first to prevent FOUC -->
+	<HeadTheme />
+	<BaseMeta />
+	<HeadSeo {...meta} />
+	<HeadFonts />
+</head>

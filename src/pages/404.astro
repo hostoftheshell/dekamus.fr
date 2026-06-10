@@ -6,12 +6,10 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout {...layoutProps(pages.notFound)}>
-	<main>
-		<h1>Page introuvable</h1>
-		<p>Désolé, la page que vous recherchez n'existe pas.</p>
-		<p>
-			<FuzzyRedirect />
-		</p>
-		<p><a href="/">Retour à l'accueil</a></p>
-	</main>
+	<h1>Page introuvable</h1>
+	<p>Désolé, la page que vous recherchez n'existe pas.</p>
+	<p>
+		<FuzzyRedirect />
+	</p>
+	<p><a href="/">Retour à l'accueil</a></p>
 </Layout>

@@ -49,7 +49,7 @@ export const pages = {
 	},
 } satisfies Record<string, PageMeta>;
 
-export const pageList = Object.values(pages);
+export const pageList: PageMeta[] = Object.values(pages);
 
 export function getPage(key: keyof typeof pages): PageMeta {
 	return pages[key];

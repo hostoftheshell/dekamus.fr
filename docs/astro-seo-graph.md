@@ -10,9 +10,11 @@ Documentation de l'intégration [`@jdevalk/astro-seo-graph`](https://github.com/
 | Registry pages | [`config/pages.ts`](../config/pages.ts) |
 | Membres démo | [`config/members.ts`](../config/members.ts) |
 | Props layout | [`src/utils/page-meta.ts`](../src/utils/page-meta.ts) |
+| Métadonnées head | [`src/utils/head-meta.ts`](../src/utils/head-meta.ts) |
 | Graph JSON-LD | [`src/utils/schema/index.ts`](../src/utils/schema/index.ts) |
 | Entités site-wide | [`src/utils/schema/site-wide.ts`](../src/utils/schema/site-wide.ts) |
-| Head SEO | [`src/layouts/Layout.astro`](../src/layouts/Layout.astro) → `<Seo>` |
+| Shell page | [`src/layouts/Layout.astro`](../src/layouts/Layout.astro) → `<main>` + slot |
+| Head | [`src/layouts/Head.astro`](../src/layouts/Head.astro) → `head/HeadSeo`, `HeadTheme`, `HeadFonts`, `BaseMeta` |
 | Intégration build | [`astro.config.mjs`](../astro.config.mjs) → `seoGraph()` + `@astrojs/sitemap` |
 | Sitemap | `/sitemap-index.xml` (généré au build) |
 | robots.txt | [`public/robots.txt`](../public/robots.txt) |
@@ -69,6 +71,14 @@ Helpers : `getPage`, `getPageByPath`, `navPages`, `sitemapPages`.
 Les profils membres démo vivent dans [`config/members.ts`](../config/members.ts) en attendant une collection de contenu.
 
 `allSchemaPages()` (dans `src/utils/schema/index.ts`) agrège `sitemapPages()` + routes `/membres/{slug}` pour l'endpoint `/schema/page.json`.
+
+## Layout et head
+
+- `Layout.astro` — shell HTML (`<main>` unique, `ThemeToggle`, slot)
+- `Head.astro` — orchestre le `<head>` (ordre : thème → meta de base → SEO → polices)
+- `resolveHeadMeta()` — titre formaté + JSON-LD via `buildSchemaGraph`
+
+Les pages ne déclarent plus de `<main>` : le contenu est injecté dans celui du layout.
 
 ## Utilisation dans une page
 

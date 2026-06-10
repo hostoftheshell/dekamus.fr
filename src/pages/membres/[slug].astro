@@ -13,10 +13,8 @@ const { member } = Astro.props;
 ---
 
 <Layout title={member.title} description={member.description}>
-	<main>
-		<h1>{member.name}</h1>
-		<p><strong>{member.role}</strong></p>
-		<p>Profil à compléter.</p>
-		<p><a href="/membres/">Retour à la liste des membres</a></p>
-	</main>
+	<h1>{member.name}</h1>
+	<p><strong>{member.role}</strong></p>
+	<p>Profil à compléter.</p>
+	<p><a href="/membres/">Retour à la liste des membres</a></p>
 </Layout>

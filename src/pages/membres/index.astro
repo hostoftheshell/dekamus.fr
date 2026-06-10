@@ -8,17 +8,15 @@ const meta = pages.membres;
 ---
 
 <Layout {...layoutProps(meta)}>
-	<main>
-		<h1>Membres</h1>
-		<p>Liste des membres du bureau et de l'équipe de l'association.</p>
-		<ul>
-			{members.map((member) => (
-					<li>
-						<a href={`/membres/${member.slug}/`}>
-							{member.name} — {member.role}
-						</a>
-					</li>
-				))}
-		</ul>
-	</main>
+	<h1>Membres</h1>
+	<p>Liste des membres du bureau et de l'équipe de l'association.</p>
+	<ul>
+		{members.map((member) => (
+				<li>
+					<a href={`/membres/${member.slug}/`}>
+						{member.name} — {member.role}
+					</a>
+				</li>
+			))}
+	</ul>
 </Layout>

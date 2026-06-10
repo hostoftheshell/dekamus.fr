@@ -10,66 +10,64 @@ const { contact } = org;
 ---
 
 <Layout {...layoutProps(meta)}>
-	<main>
-		<h1>Politique de confidentialité</h1>
+	<h1>Politique de confidentialité</h1>
 
-		<section>
-			<h2>Responsable du traitement</h2>
-			<p>
-				{org.legalName}, {org.address.street}, {org.address.postalCode}
-				{org.address.locality}. Contact :
-				<a href={`mailto:${contact.email}`}>{contact.email}</a>.
-			</p>
-		</section>
+	<section>
+		<h2>Responsable du traitement</h2>
+		<p>
+			{org.legalName}, {org.address.street}, {org.address.postalCode}
+			{org.address.locality}. Contact :
+			<a href={`mailto:${contact.email}`}>{contact.email}</a>.
+		</p>
+	</section>
 
-		<section>
-			<h2>Données collectées</h2>
-			<p>
-				Ce site peut collecter des données techniques (adresse IP, navigateur,
-				pages consultées) via les journaux du serveur et des cookies strictement
-				nécessaires au fonctionnement. Aucune donnée n'est vendue à des tiers.
-			</p>
-		</section>
+	<section>
+		<h2>Données collectées</h2>
+		<p>
+			Ce site peut collecter des données techniques (adresse IP, navigateur,
+			pages consultées) via les journaux du serveur et des cookies strictement
+			nécessaires au fonctionnement. Aucune donnée n'est vendue à des tiers.
+		</p>
+	</section>
 
-		<section>
-			<h2>Cookies</h2>
-			<p>
-				Des cookies peuvent être déposés pour mémoriser vos préférences
-				d'affichage (thème clair/sombre). Vous pouvez les supprimer via les
-				paramètres de votre navigateur.
-			</p>
-		</section>
+	<section>
+		<h2>Cookies</h2>
+		<p>
+			Des cookies peuvent être déposés pour mémoriser vos préférences
+			d'affichage (thème clair/sombre). Vous pouvez les supprimer via les
+			paramètres de votre navigateur.
+		</p>
+	</section>
 
-		<section>
-			<h2>Durée de conservation</h2>
-			<p>
-				Les journaux techniques sont conservés le temps nécessaire à la sécurité
-				et à la maintenance du site, puis supprimés ou anonymisés.
-			</p>
-		</section>
+	<section>
+		<h2>Durée de conservation</h2>
+		<p>
+			Les journaux techniques sont conservés le temps nécessaire à la sécurité
+			et à la maintenance du site, puis supprimés ou anonymisés.
+		</p>
+	</section>
 
-		<section>
-			<h2>Vos droits (RGPD)</h2>
-			<p>
-				Vous disposez d'un droit d'accès, de rectification, d'effacement, de
-				limitation et d'opposition au traitement de vos données. Pour exercer
-				ces droits, contactez-nous à
-				<a href={`mailto:${contact.email}`}>{contact.email}</a>.
-			</p>
-		</section>
+	<section>
+		<h2>Vos droits (RGPD)</h2>
+		<p>
+			Vous disposez d'un droit d'accès, de rectification, d'effacement, de
+			limitation et d'opposition au traitement de vos données. Pour exercer ces
+			droits, contactez-nous à
+			<a href={`mailto:${contact.email}`}>{contact.email}</a>.
+		</p>
+	</section>
 
-		<section>
-			<h2>Hébergement et sous-traitants</h2>
-			<p>
-				Le site est hébergé par
-				<a href={contact.hosting.url} rel="noopener noreferrer"
-					>{contact.hosting.name}</a
-				>. Consultez leur
-				<a href={contact.hosting.privacyPolicyUrl} rel="noopener noreferrer"
-					>politique de confidentialité</a
-				>
-				pour en savoir plus sur le traitement des données côté hébergeur.
-			</p>
-		</section>
-	</main>
+	<section>
+		<h2>Hébergement et sous-traitants</h2>
+		<p>
+			Le site est hébergé par
+			<a href={contact.hosting.url} rel="noopener noreferrer"
+				>{contact.hosting.name}</a
+			>. Consultez leur
+			<a href={contact.hosting.privacyPolicyUrl} rel="noopener noreferrer"
+				>politique de confidentialité</a
+			>
+			pour en savoir plus sur le traitement des données côté hébergeur.
+		</p>
+	</section>
 </Layout>

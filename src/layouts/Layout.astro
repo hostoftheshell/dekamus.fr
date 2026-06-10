@@ -1,83 +1,18 @@
 ---
-import { Font } from "astro:assets";
-import ColorStyles from "@components/utils/ColorsCSSVars.astro";
 import ThemeToggle from "@components/utils/ThemeToggle.astro";
-import { ColorData } from "@config/colors";
 import { siteConfig } from "@config/site";
-import Seo from "@jdevalk/astro-seo-graph/Seo.astro";
-import { buildSchemaGraph } from "@utils/schema";
+import type { HeadProps } from "@config/types";
+import Head from "./Head.astro";
 
-interface Props {
-	title?: string;
-	description?: string;
-	ogImage?: string;
-	noindex?: boolean;
-}
-
-const {
-	title: pageTitle = siteConfig.title,
-	description = siteConfig.description,
-	ogImage = `${siteConfig.url}${siteConfig.og.defaultImage}`,
-	noindex = false,
-} = Astro.props;
-
-const title =
-	pageTitle === siteConfig.title
-		? siteConfig.title
-		: `${pageTitle} | ${siteConfig.name}`;
-
-const defaultMode = ColorData.colors.mode;
-
-const graph = buildSchemaGraph({
-	pageType: "webPage",
-	url: Astro.url.href,
-	title,
-	description,
-});
+type Props = HeadProps;
 ---
 
 <html lang={siteConfig.lang}>
-	<head>
-		<script is:inline define:vars={{ defaultMode }}>
-		(() => {
-			const KEY = "theme:mode";
-			let mode = localStorage.getItem(KEY);
-			if (mode !== "auto" && mode !== "light" && mode !== "dark") {
-				mode = defaultMode;
-			}
-			if (mode === "light" || mode === "dark") {
-				document.documentElement.style.colorScheme = mode;
-			}
-		})();
-		</script>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<Seo
-			title={title}
-			description={description}
-			siteName={siteConfig.name}
-			locale={siteConfig.locale}
-			ogType="website"
-			ogImage={ogImage}
-			ogImageAlt={title}
-			ogImageWidth={siteConfig.og.width}
-			ogImageHeight={siteConfig.og.height}
-			noindex={noindex}
-			graph={graph}
-			extraLinks={[
-				{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-				{ rel: "icon", href: "/favicon.ico" },
-				{ rel: "sitemap", href: "/sitemap-index.xml" },
-			]}
-		/>
-		<ColorStyles />
-		<meta name="generator" content={Astro.generator}>
-		<Font cssVariable="--font-syne" preload />
-		<Font cssVariable="--font-source-serif-4" preload />
-		<Font cssVariable="--font-victor-mono" />
-	</head>
+	<Head {...Astro.props} />
 	<body>
 		<ThemeToggle />
-		<slot />
+		<main>
+			<slot />
+		</main>
 	</body>
 </html>

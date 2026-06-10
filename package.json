@@ -15,10 +15,12 @@
 		"check:fix": "biome check --write ."
 	},
 	"dependencies": {
+		"@astrojs/check": "^0.9.9",
 		"@astrojs/sitemap": "^3.7.3",
 		"@jdevalk/astro-seo-graph": "^2.0.0",
 		"@jdevalk/seo-graph-core": "^0.6.2",
-		"astro": "^6.4.4"
+		"astro": "^6.4.4",
+		"typescript": "^6.0.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.16"
