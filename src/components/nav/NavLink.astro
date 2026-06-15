@@ -1,0 +1,63 @@
+---
+import type { NavItem } from "@config/types";
+import { isExternalHref, normalizeNavPath } from "@utils/nav-path";
+
+type NavVariant = "header" | "footer" | "member";
+
+interface Props {
+	item: NavItem;
+	variant: NavVariant;
+	currentPath?: string;
+	activeClass?: string;
+	icon?: boolean;
+}
+
+const { item, variant, currentPath, activeClass, icon = false } = Astro.props;
+
+const link = item.href;
+const isExternal = isExternalHref(link);
+const opensNewTab = item.newTab ?? isExternal;
+
+const isActive =
+	!isExternal &&
+	currentPath !== undefined &&
+	normalizeNavPath(currentPath) === normalizeNavPath(link);
+
+const variantClasses: Record<NavVariant, string> = {
+	header:
+		"t-nav text-primary hover:text-accent transition-colors decoration-none",
+	footer:
+		"t-body text-sm text-muted hover:text-primary transition-colors decoration-none",
+	member:
+		"t-body text-muted hover:text-primary transition-colors decoration-none",
+};
+
+const classList = [
+	variant === "header"
+		? "flex w-full items-center gap-1"
+		: "inline-flex items-center gap-1",
+	variantClasses[variant],
+	isActive && activeClass,
+]
+	.filter(Boolean)
+	.join(" ");
+---
+
+<a
+	href={link}
+	class={classList}
+	target={opensNewTab ? "_blank" : undefined}
+	rel={opensNewTab ? "noopener noreferrer" : undefined}
+	{...(isActive ? { "aria-current": "page" as const } : {})}
+>
+	{item.label}
+	{icon && isExternal && (
+			<span
+				class="i-lucide-external-link size-3.5 shrink-0"
+				aria-hidden="true"
+			/>
+		)}
+	{opensNewTab && (
+			<span class="sr-only"> (ouvre dans un nouvel onglet)</span>
+		)}
+</a>

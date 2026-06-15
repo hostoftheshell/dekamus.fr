@@ -1,5 +1,6 @@
 ---
 import Prose from "@components/layout/Prose.astro";
+import MemberNav from "@components/nav/MemberNav.astro";
 import { members } from "@config/content/members";
 import Layout from "../../layouts/Layout.astro";
 
@@ -11,11 +12,13 @@ export function getStaticPaths() {
 }
 
 const { member } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <Layout title={member.title} description={member.description}>
 	<Prose>
 		<h1 class="t-h2">{member.name}</h1>
+		<MemberNav {currentPath} />
 		<p class="t-body"><strong>{member.role}</strong></p>
 		<p class="t-body">Profil à compléter.</p>
 		<p class="t-body">

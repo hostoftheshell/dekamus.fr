@@ -1,0 +1,47 @@
+---
+import horizontalRound from "@assets/logo/dekamus_logo_horizontal-round.svg";
+import horizontalSquare from "@assets/logo/dekamus_logo_horizontal-square.svg";
+import stacked from "@assets/logo/dekamus_logo_stacked.svg";
+import stackedBorder from "@assets/logo/dekamus_logo_stacked_border.svg";
+import type { SvgComponent } from "astro/types";
+
+interface Props {
+	variant?:
+		| "stacked"
+		| "stacked-border"
+		| "horizontal-round"
+		| "horizontal-square";
+	class?: string;
+	pillTarget?: boolean;
+}
+
+const variants = {
+	stacked,
+	"stacked-border": stackedBorder,
+	"horizontal-round": horizontalRound,
+	"horizontal-square": horizontalSquare,
+} satisfies Record<NonNullable<Props["variant"]>, SvgComponent>;
+
+const {
+	variant = "stacked",
+	class: className = "h-8 w-auto",
+	pillTarget = false,
+} = Astro.props;
+const Mark = variants[variant];
+
+const pillClasses = pillTarget
+	? "nav-pill-target relative z-1 rounded-[var(--radius-sm)] p-[var(--sp-2)]"
+	: "";
+---
+
+<a
+	href="/"
+	class:list={[
+		"inline-flex text-primary hover:text-accent transition-colors no-underline",
+		pillClasses,
+	]}
+	data-pill-directional={pillTarget || undefined}
+	aria-label="Dekamus — accueil"
+>
+	<Mark class={className} aria-hidden="true" />
+</a>

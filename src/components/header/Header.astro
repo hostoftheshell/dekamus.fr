@@ -1,0 +1,355 @@
+---
+import Logo from "@components/logo/Logo.astro";
+import ThemeToggle from "@components/utils/ThemeToggle.astro";
+---
+
+<header
+	class="site-header is-at-top sticky top-0 z-50 w-full p-4 transition-transform duration-600 ease-out"
+>
+	<div
+		class="header-pill-host container-header relative flex flex-wrap items-center justify-between gap-[.5vw] px-[.5vw] py-[.5vw]"
+	>
+		<Logo variant="stacked" class="h-12 w-auto" pillTarget />
+		<slot />
+		<ThemeToggle />
+		<span class="nav-highlight hidden md:block" aria-hidden="true"></span>
+	</div>
+</header>
+
+<script>
+(() => {
+	const DESKTOP_MQ = window.matchMedia("(min-width: 768px)");
+	const REDUCED_MOTION_MQ = window.matchMedia(
+		"(prefers-reduced-motion: reduce)",
+	);
+	const BG_THRESHOLD = 50;
+	const HIDE_THRESHOLD = 350;
+
+	type CleanupFn = () => void;
+	const cleanups: CleanupFn[] = [];
+
+	function addCleanup(fn: CleanupFn) {
+		cleanups.push(fn);
+	}
+
+	function runCleanups() {
+		while (cleanups.length > 0) {
+			cleanups.pop()?.();
+		}
+	}
+
+	// --- Pill ---
+
+	function isHighlightHidden(highlight: HTMLElement): boolean {
+		return highlight.style.opacity === "" || highlight.style.opacity === "0";
+	}
+
+	function moveHighlight(
+		target: HTMLElement,
+		opts?: { direction?: "ltr" | "rtl" },
+	) {
+		const host = target.closest(".header-pill-host");
+		const highlight = host?.querySelector<HTMLElement>(".nav-highlight");
+		if (!host || !highlight) return;
+
+		const hostRect = host.getBoundingClientRect();
+		const rect = target.getBoundingClientRect();
+		const x = rect.left - hostRect.left;
+		const y = rect.top - hostRect.top;
+		const w = rect.width;
+		const h = rect.height;
+
+		const useDirection =
+			opts?.direction &&
+			isHighlightHidden(highlight) &&
+			!REDUCED_MOTION_MQ.matches;
+
+		if (useDirection) {
+			highlight.style.transition = "none";
+			highlight.style.height = `${h}px`;
+			highlight.style.opacity = "1";
+			highlight.style.width = "0px";
+			highlight.style.transform =
+				opts.direction === "ltr"
+					? `translate(${x}px, ${y}px)`
+					: `translate(${x + w}px, ${y}px)`;
+			highlight.offsetHeight;
+			highlight.style.transition = "";
+			highlight.style.width = `${w}px`;
+			highlight.style.transform = `translate(${x}px, ${y}px)`;
+			return;
+		}
+
+		highlight.style.width = `${w}px`;
+		highlight.style.height = `${h}px`;
+		highlight.style.transform = `translate(${x}px, ${y}px)`;
+		highlight.style.opacity = "1";
+	}
+
+	function hideHighlight(host: Element) {
+		const highlight = host.querySelector<HTMLElement>(".nav-highlight");
+		if (highlight) highlight.style.opacity = "0";
+	}
+
+	function getPillTargets(host: Element): HTMLElement[] {
+		return [
+			...host.querySelectorAll<HTMLElement>(".nav-pill-target"),
+			...host.querySelectorAll<HTMLElement>(".nav-desktop .nav-item a"),
+		];
+	}
+
+	function getActiveTarget(host: Element): HTMLElement | null {
+		const highlight = host.querySelector<HTMLElement>(".nav-highlight");
+		if (!highlight || isHighlightHidden(highlight)) return null;
+
+		for (const target of getPillTargets(host)) {
+			if (target.matches(":hover, :focus")) return target;
+		}
+		return null;
+	}
+
+	function initPill() {
+		if (!DESKTOP_MQ.matches) return;
+
+		const host = document.querySelector<HTMLElement>(".header-pill-host");
+		if (!host) return;
+
+		const onMouseLeave = () => hideHighlight(host);
+		host.addEventListener("mouseleave", onMouseLeave);
+
+		const targetCleanups: CleanupFn[] = [];
+		for (const target of getPillTargets(host)) {
+			const onMouseEnter = target.hasAttribute("data-pill-directional")
+				? (e: MouseEvent) => {
+						const rect = target.getBoundingClientRect();
+						const fromLeft = e.clientX < rect.left + rect.width / 2;
+						moveHighlight(target, {
+							direction: fromLeft ? "ltr" : "rtl",
+						});
+					}
+				: () => moveHighlight(target);
+			const onFocus = () => moveHighlight(target);
+
+			target.addEventListener("mouseenter", onMouseEnter);
+			target.addEventListener("focus", onFocus);
+			targetCleanups.push(() => {
+				target.removeEventListener("mouseenter", onMouseEnter);
+				target.removeEventListener("focus", onFocus);
+			});
+		}
+
+		const observer = new ResizeObserver(() => {
+			const active = getActiveTarget(host);
+			if (active) moveHighlight(active);
+		});
+		observer.observe(host);
+
+		addCleanup(() => {
+			host.removeEventListener("mouseleave", onMouseLeave);
+			for (const fn of targetCleanups) fn();
+			observer.disconnect();
+		});
+	}
+
+	// --- Scroll ---
+
+	function isBgTransition(e: TransitionEvent): boolean {
+		return (
+			e.propertyName === "background-color" ||
+			e.propertyName === "backdrop-filter"
+		);
+	}
+
+	function initScroll(header: HTMLElement, pillHost: HTMLElement) {
+		let lastScrollY = window.scrollY;
+		let ticking = false;
+		let isHiding = false;
+		let onBgEnd: ((e: TransitionEvent) => void) | null = null;
+		let onTransformEnd: ((e: TransitionEvent) => void) | null = null;
+
+		function cancelPendingTransitions() {
+			if (onBgEnd) {
+				pillHost.removeEventListener("transitionend", onBgEnd);
+				onBgEnd = null;
+			}
+			if (onTransformEnd) {
+				header.removeEventListener("transitionend", onTransformEnd);
+				onTransformEnd = null;
+			}
+			isHiding = false;
+		}
+
+		function startHideSequence() {
+			if (header.classList.contains("is-header-hidden") || isHiding) return;
+
+			cancelPendingTransitions();
+
+			const finishHide = () => {
+				header.classList.add("is-header-hidden");
+				isHiding = false;
+				if (onBgEnd) {
+					pillHost.removeEventListener("transitionend", onBgEnd);
+					onBgEnd = null;
+				}
+			};
+
+			if (
+				REDUCED_MOTION_MQ.matches ||
+				!header.classList.contains("is-scrolled")
+			) {
+				header.classList.remove("is-scrolled");
+				finishHide();
+				return;
+			}
+
+			isHiding = true;
+			header.classList.remove("is-scrolled");
+
+			onBgEnd = (e: TransitionEvent) => {
+				if (e.target !== pillHost || !isBgTransition(e)) return;
+				finishHide();
+			};
+			pillHost.addEventListener("transitionend", onBgEnd);
+		}
+
+		function startShowSequence() {
+			cancelPendingTransitions();
+			header.classList.remove("is-header-hidden");
+
+			const finishShow = () => {
+				if (window.scrollY > BG_THRESHOLD) {
+					header.classList.add("is-scrolled");
+				}
+				if (onTransformEnd) {
+					header.removeEventListener("transitionend", onTransformEnd);
+					onTransformEnd = null;
+				}
+			};
+
+			if (REDUCED_MOTION_MQ.matches) {
+				finishShow();
+				return;
+			}
+
+			onTransformEnd = (e: TransitionEvent) => {
+				if (e.target !== header || e.propertyName !== "transform") return;
+				finishShow();
+			};
+			header.addEventListener("transitionend", onTransformEnd);
+		}
+
+		function applyScrollState() {
+			const scrollY = window.scrollY;
+			const scrollingDown = scrollY > lastScrollY;
+			const scrollingUp = scrollY < lastScrollY;
+			const atTop = scrollY <= BG_THRESHOLD;
+
+			header.classList.toggle("is-at-top", atTop);
+
+			if (atTop) {
+				cancelPendingTransitions();
+				header.classList.remove("is-header-hidden", "is-scrolled");
+				lastScrollY = scrollY;
+				ticking = false;
+				return;
+			}
+
+			if (scrollingUp) {
+				if (header.classList.contains("is-header-hidden")) {
+					startShowSequence();
+				} else {
+					cancelPendingTransitions();
+					header.classList.toggle("is-scrolled", scrollY > BG_THRESHOLD);
+				}
+			} else if (
+				scrollingDown &&
+				scrollY > HIDE_THRESHOLD &&
+				!header.classList.contains("is-header-hidden")
+			) {
+				startHideSequence();
+			} else if (!isHiding && !header.classList.contains("is-header-hidden")) {
+				header.classList.add("is-scrolled");
+			}
+
+			lastScrollY = scrollY;
+			ticking = false;
+		}
+
+		function onScroll() {
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(applyScrollState);
+			}
+		}
+
+		applyScrollState();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		addCleanup(() => {
+			cancelPendingTransitions();
+			window.removeEventListener("scroll", onScroll);
+		});
+	}
+
+	function init() {
+		runCleanups();
+
+		const header = document.querySelector<HTMLElement>(".site-header");
+		const pillHost = document.querySelector<HTMLElement>(".header-pill-host");
+		if (!header || !pillHost) return;
+
+		initScroll(header, pillHost);
+		initPill();
+	}
+
+	init();
+	DESKTOP_MQ.addEventListener("change", init);
+})();
+</script>
+
+<style>
+.header-pill-host {
+	border-radius: var(--radius-md);
+	background-color: transparent;
+	backdrop-filter: none;
+	transition:
+		background-color 200ms ease,
+		backdrop-filter 200ms ease;
+}
+
+.site-header.is-scrolled .header-pill-host {
+	background-color: oklch(from var(--color-bgAlt) l c h / 0.8);
+	backdrop-filter: blur(10px);
+}
+
+.site-header.is-header-hidden {
+	transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-header {
+		transition: none;
+	}
+}
+
+:global(.nav-highlight) {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 0;
+	width: 0;
+	border-radius: var(--radius-sm);
+	background: oklch(from var(--color-highlight) l c h / 0.8);
+	pointer-events: none;
+	opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	:global(.nav-highlight) {
+		transition:
+			transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+			width 220ms cubic-bezier(0.4, 0, 0.2, 1),
+			height 220ms cubic-bezier(0.4, 0, 0.2, 1),
+			opacity 150ms ease;
+	}
+}
+</style>

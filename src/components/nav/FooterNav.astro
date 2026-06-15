@@ -1,0 +1,26 @@
+---
+import { footerNav } from "@config/content/navigation";
+import NavLink from "./NavLink.astro";
+
+interface Props {
+	currentPath?: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<nav aria-label="Navigation principale du pied de page">
+	<ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
+		{footerNav.map((item) => (
+				<li>
+					<NavLink
+						{item}
+						variant="footer"
+						{currentPath}
+						activeClass="text-primary underline"
+						icon={true}
+					/>
+				</li>
+			))}
+	</ul>
+</nav>

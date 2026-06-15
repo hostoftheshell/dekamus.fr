@@ -1,0 +1,15 @@
+---
+import MainNavDesktop from "./MainNavDesktop.astro";
+import MainNavMobile from "./MainNavMobile.astro";
+
+interface Props {
+	currentPath?: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<nav aria-label="Navigation principale" class="w-full md:w-auto">
+	<MainNavMobile {currentPath} />
+	<MainNavDesktop {currentPath} />
+</nav>

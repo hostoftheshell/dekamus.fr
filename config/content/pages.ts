@@ -21,6 +21,15 @@ export const pages = {
 		titleNav: "Membres",
 		navGroup: "main",
 	},
+	contact: {
+		key: "contact",
+		path: "/contact",
+		title: "Contact de l'association Dekamus",
+		description:
+			"Contactez l'association Dekamus : formulaire de contact, coordonnées de contact et informations de contact publiques.",
+		titleNav: "Contact",
+		navGroup: "main",
+	},
 	mentionsLegales: {
 		key: "mentionsLegales",
 		path: "/legales/mentions-legales",

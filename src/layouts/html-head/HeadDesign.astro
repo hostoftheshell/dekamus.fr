@@ -1,8 +1,10 @@
 ---
 import { Font } from "astro:assets";
 import ColorStyles from "@components/utils/ColorsCSSVars.astro";
+import { borderRadiusToCSSVars } from "@config/design/borderRadius";
 import { ColorData } from "@config/design/colors";
 import { spacingToCSSVars } from "@config/design/spacing";
+import resetCss from "../../styles/reset.css?raw";
 import typographyCss from "../../styles/typography.css?raw";
 
 const defaultMode = ColorData.colors.mode;
@@ -12,9 +14,10 @@ const tokensCss = `:root {
 	--font-body: var(--font-source-serif-4);
 	--font-mono: var(--font-victor-mono);
 ${spacingToCSSVars()}
+${borderRadiusToCSSVars()}
 }`;
 
-const css = `${tokensCss}\n${typographyCss}`;
+const css = `${resetCss}\n${tokensCss}\n${typographyCss}`;
 ---
 
 <script is:inline define:vars={{ defaultMode }}>

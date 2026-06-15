@@ -47,6 +47,10 @@ function containerBase(maxWidth?: string): string {
 	return `w-full ${padding}`;
 }
 
+function containerHeader(): string {
+	return `mx-auto w-full md:w-fit max-w-full`;
+}
+
 /** Layout shortcuts for UnoCSS (`container-*`, `img-*`, `ratio-*`). */
 export function layoutShortcuts(): Record<string, string> {
 	const ratioShortcuts = (
@@ -58,6 +62,7 @@ export function layoutShortcuts(): Record<string, string> {
 	}, {});
 
 	return {
+		"container-header": containerHeader(),
 		"container-prose": containerBase(containers.prose),
 		"container-page": containerBase(containers.page),
 		"container-wide": containerBase(containers.wide),

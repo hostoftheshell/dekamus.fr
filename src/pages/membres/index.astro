@@ -1,16 +1,19 @@
 ---
 import Prose from "@components/layout/Prose.astro";
+import MemberNav from "@components/nav/MemberNav.astro";
 import { members } from "@config/content/members";
 import { pages } from "@config/content/pages";
 import { layoutProps } from "@utils/page-meta";
 import Layout from "../../layouts/Layout.astro";
 
 const meta = pages.membres;
+const currentPath = Astro.url.pathname;
 ---
 
 <Layout {...layoutProps(meta)}>
 	<Prose>
 		<h1 class="t-h2">Membres</h1>
+		<MemberNav {currentPath} />
 		<p class="t-body">
 			Liste des membres du bureau et de l'équipe de l'association.
 		</p>

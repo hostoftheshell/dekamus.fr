@@ -1,10 +1,16 @@
-import { defineConfig, presetMini, transformerVariantGroup } from "unocss";
+import {
+	defineConfig,
+	presetIcons,
+	presetMini,
+	transformerVariantGroup,
+} from "unocss";
+import { borderRadius } from "./config/design/borderRadius";
 import { ColorData, semanticColorsForUno } from "./config/design/colors";
 import { breakpointsForUno, layoutShortcuts } from "./config/design/layout";
 import { spacing } from "./config/design/spacing";
 
 export default defineConfig({
-	presets: [presetMini()],
+	presets: [presetMini(), presetIcons({})],
 	transformers: [transformerVariantGroup()],
 	theme: {
 		breakpoints: breakpointsForUno(),
@@ -27,6 +33,7 @@ export default defineConfig({
 			12: spacing.sp12,
 			16: spacing.sp16,
 		},
+		borderRadius: { ...borderRadius },
 	},
 	shortcuts: {
 		stack: "flex flex-col gap-4",

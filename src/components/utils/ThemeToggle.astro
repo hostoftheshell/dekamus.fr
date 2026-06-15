@@ -6,52 +6,15 @@ const defaultMode = ColorData.colors.mode;
 
 <button
 	type="button"
-	class="theme-toggle"
+	class="theme-toggle nav-pill-target hover:text-accent transition-colors"
 	aria-label="Toggle theme"
 	data-default-mode={defaultMode}
+	data-pill-directional
 >
 	<span class="theme-toggle__icons" aria-hidden="true">
-		<svg
-			class="icon-sun"
-			width="20"
-			height="20"
-			viewBox="0 0 512 512"
-			aria-hidden="true"
-		>
-			<path
-				fill="currentColor"
-				d="M256 118a22 22 0 0 1-22-22V48a22 22 0 0 1 44 0v48a22 22 0 0 1-22 22Zm-96 38a22 22 0 0 1-31-31l-34-34a22 22 0 0 1 31-31l34 34a22 22 0 0 1 0 31Zm192 0a22 22 0 0 1 0-31l34-34a22 22 0 1 1 31 31l-34 34a22 22 0 0 1-31 0ZM48 256a22 22 0 0 1 22-22h48a22 22 0 0 1 0 44H70a22 22 0 0 1-22-22Zm368 0a22 22 0 0 1 22-22h48a22 22 0 0 1 0 44h-48a22 22 0 0 1-22-22ZM118 352a22 22 0 0 1 31 0l34 34a22 22 0 1 1-31 31l-34-34a22 22 0 0 1 0-31Zm276 0a22 22 0 0 1 0 31l-34 34a22 22 0 1 1-31-31l34-34a22 22 0 0 1 31 0ZM256 394a22 22 0 0 1 22 22v48a22 22 0 0 1-44 0v-48a22 22 0 0 1 22-22Z"
-			></path>
-			<circle cx="256" cy="256" r="96" fill="currentColor"></circle>
-		</svg>
-		<svg
-			class="icon-moon"
-			width="20"
-			height="20"
-			viewBox="0 0 512 512"
-			aria-hidden="true"
-		>
-			<path
-				fill="currentColor"
-				d="M283.5 64c-8.8 0-17.4 1-25.7 2.9A192 192 0 0 0 96 256a192 192 0 0 0 192 192c41.5 0 79.9-13.2 111.3-35.5A160 160 0 0 1 283.5 64Z"
-			></path>
-		</svg>
-		<svg
-			class="icon-auto"
-			width="20"
-			height="20"
-			viewBox="0 0 512 512"
-			aria-hidden="true"
-		>
-			<path
-				fill="currentColor"
-				d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48Zm0 368c-88.4 0-160-71.6-160-160S167.6 96 256 96s160 71.6 160 160-71.6 160-160 160Z"
-			></path>
-			<path
-				fill="currentColor"
-				d="M256 144v128l96 56-32 55-128-74V144h64Z"
-			></path>
-		</svg>
+		<span class="icon-sun i-lucide-sun-medium size-5" aria-hidden="true" />
+		<span class="icon-moon i-lucide-moon size-5" aria-hidden="true" />
+		<span class="icon-auto i-lucide-eclipse size-5" aria-hidden="true" />
 	</span>
 </button>
 
@@ -152,28 +115,19 @@ const defaultMode = ColorData.colors.mode;
 
 <style>
 .theme-toggle {
-	position: fixed;
-	top: 1rem;
-	right: 1rem;
-	z-index: 100;
+	position: relative;
+	z-index: 1;
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.25rem;
+	padding: var(--sp-2);
 	background: transparent;
-	border: 0;
+	border: 1px solid transparent;
+	border-radius: var(--radius-sm);
 	color: var(--color-primary);
 	font: inherit;
 	line-height: 1;
-	transition:
-		color 0.2s ease,
-		opacity 0.2s ease;
-	opacity: 0.82;
-}
-
-.theme-toggle:hover {
-	opacity: 1;
 }
 
 .theme-toggle:focus-visible {
@@ -190,7 +144,7 @@ const defaultMode = ColorData.colors.mode;
 	position: relative;
 }
 
-.theme-toggle__icons svg {
+.theme-toggle__icons > span {
 	display: none;
 	position: absolute;
 }

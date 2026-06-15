@@ -1,4 +1,4 @@
-import { navPages } from "@config/content/pages";
+import { headerNavMobile, legalNav } from "@config/content/navigation";
 import { siteConfig } from "@config/content/site";
 import {
 	buildPiece,
@@ -6,6 +6,7 @@ import {
 	buildWebSite,
 	makeIds,
 } from "@jdevalk/seo-graph-core";
+import { isExternalHref } from "@utils/nav-path";
 
 export const SITE_URL = siteConfig.url.replace(/\/$/, "");
 
@@ -14,6 +15,13 @@ export const ids = makeIds({ siteUrl: SITE_URL });
 export const organizationId = ids.organization("dekamus");
 
 const legalNavId = `${SITE_URL}/#/schema.org/SiteNavigationElement/legal`;
+
+function navItemUrl(href: string): string {
+	if (isExternalHref(href)) {
+		return href.startsWith("//") ? `https:${href}` : href;
+	}
+	return href === "/" ? `${SITE_URL}/` : `${SITE_URL}${href}`;
+}
 
 function buildOrganizationPiece() {
 	const org = siteConfig.organization;
@@ -54,15 +62,15 @@ function buildOrganizationPiece() {
 }
 
 export function siteWidePieces() {
-	const mainNavItems = navPages("main").map((page) => ({
-		name: page.titleNav ?? page.title,
-		url: page.path === "/" ? `${SITE_URL}/` : `${SITE_URL}${page.path}`,
+	const mainNavItems = headerNavMobile.map((item) => ({
+		name: item.label,
+		url: navItemUrl(item.href),
 	}));
 
-	const legalNavParts = navPages("legal").map((page) => ({
+	const legalNavParts = legalNav.map((item) => ({
 		"@type": "SiteNavigationElement" as const,
-		name: page.titleNav ?? page.title,
-		url: `${SITE_URL}${page.path}`,
+		name: item.label,
+		url: navItemUrl(item.href),
 	}));
 
 	return [

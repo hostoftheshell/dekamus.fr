@@ -1,18 +1,34 @@
 ---
-import ThemeToggle from "@components/utils/ThemeToggle.astro";
+import Header from "@components/header/Header.astro";
+import FooterNav from "@components/nav/FooterNav.astro";
+import LegalNav from "@components/nav/LegalNav.astro";
+import MainNav from "@components/nav/MainNav.astro";
 import { siteConfig } from "@config/content/site";
 import type { HeadProps } from "@config/types";
 import Head from "./Head.astro";
 
 type Props = HeadProps;
+
+const currentPath = Astro.url.pathname;
 ---
 
 <html lang={siteConfig.lang}>
 	<Head {...Astro.props} />
 	<body>
-		<ThemeToggle />
-		<main>
+		<Header>
+			<MainNav {currentPath} />
+		</Header>
+		<main class="h-100dvh flex flex-col">
 			<slot />
 		</main>
+		<main class="h-100dvh flex flex-col">
+			<slot />
+		</main>
+		<footer class="w-full border-t border-faint mt-auto">
+			<div class="container-wide py-6">
+				<FooterNav {currentPath} />
+				<LegalNav {currentPath} />
+			</div>
+		</footer>
 	</body>
 </html>

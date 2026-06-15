@@ -1,0 +1,44 @@
+---
+import { headerNavDesktop } from "@config/content/navigation";
+import NavLink from "./NavLink.astro";
+
+interface Props {
+	currentPath?: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<div class="nav-desktop hidden md:block">
+	<ul class="nav-list w-auto grid grid-cols-2 gap-4">
+		{headerNavDesktop.map((item) => (
+			<li class="nav-item">
+				<NavLink
+					{item}
+					variant="header"
+					{currentPath}
+					activeClass="font-semibold"
+				/>
+			</li>
+		))}
+	</ul>
+</div>
+
+<style>
+:global(.nav-item) {
+	min-width: 0;
+	border-radius: var(--radius-sm);
+}
+
+:global(.nav-item a) {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	padding: var(--sp-2);
+	border: 1px solid transparent;
+	border-radius: inherit;
+}
+</style>
