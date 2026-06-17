@@ -8,14 +8,21 @@ import seoGraph from "@jdevalk/astro-seo-graph/integration";
 import { defineConfig, fontProviders } from "astro/config";
 import UnoCSS from "unocss/astro";
 
+// Phase 1 (storage local) : admin Keystatic en dev uniquement.
+// Production (Cloudflare Pages, output static) : SKIP_KEYSTATIC=true exclut
+// l'intégration et les routes SSR /keystatic/* — voir docs/superpowers/audits/
+const enableKeystatic = process.env.SKIP_KEYSTATIC !== "true";
+
 // https://astro.build/config
 export default defineConfig({
 	site: "https://dekamus.fr",
 	output: "static",
-	adapter: node({ mode: "standalone" }),
+	...(enableKeystatic
+		? { adapter: node({ mode: "standalone" }) }
+		: {}),
 	integrations: [
 		mdx(),
-		keystatic(),
+		...(enableKeystatic ? [keystatic()] : []),
 		sitemap({ entryLimit: 1000 }),
 		seoGraph({
 			validateH1: true,

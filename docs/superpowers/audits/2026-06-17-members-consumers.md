@@ -29,6 +29,29 @@ Ré-exécuter `rg "from.*members|memberNav" src config` : zéro import de l’ex
 | **Contraintes MDX (`bio.mdx`)** | Pas d’imports internes ; pas de HTML brut (limitation Keystatic) |
 | **MemberCoordonnees** | Inclut `websites[]` **et** `socialLinks[]` |
 
+## Stratégie déploiement — Task 1 (2026-06-17)
+
+**Contexte :** site déployé sur **Cloudflare Pages** (`output: "static"`). Stockage Keystatic **local** en phase 1 → l’admin CMS est un outil **dev local** uniquement.
+
+| Commande | `SKIP_KEYSTATIC` | Keystatic | Adapter Node | Artefact déploiement |
+|----------|------------------|-----------|--------------|----------------------|
+| `pnpm dev` | non | ✅ `/keystatic` | ✅ (routes admin) | — |
+| `pnpm build` | `true` (défaut) | ❌ | ❌ | `dist/` statique pur → Cloudflare Pages |
+| `pnpm build:with-keystatic` | non | ✅ | ✅ | `dist/client` + `dist/server` (preview admin local) |
+
+**Recette :** [Keystatic — Disable Admin UI in Production](https://keystatic.com/docs/recipes/astro-disable-admin-ui-in-production) via `SKIP_KEYSTATIC=true`.
+
+**Phase 2 (GitHub storage) :** réévaluer — admin en prod nécessitera hébergement Node ou exclusion partielle selon hébergeur.
+
+### Concerns Task 0 — statut Task 1
+
+| Concern | Résolution |
+|---------|------------|
+| `@astrojs/node` requis | Conservé pour `dev` et `build:with-keystatic` ; **exclu** du build prod (`pnpm build`) |
+| `index.yaml` par entrée | Documenté — Task 5 seed + Task 2 validera si `format.contentField` simplifie |
+| Frontmatter via reader | Task 2 : `format: { contentField: 'coordonnees' }` + `slugField: 'slug'` — à valider en Task 2 gate |
+| Warnings bundle Keystatic UI | Non bloquant ; uniquement en `dev` / `build:with-keystatic` |
+
 ## Findings POC bi-fichier (Task 0)
 
 ### Build + `@keystatic/astro`
