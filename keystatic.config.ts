@@ -9,7 +9,7 @@
 // manuel (index.yaml + coordonnees.md + bio.mdx) est découvert par le reader ; le
 // loader Task 6 parse le frontmatter de coordonnees.md (voir audit Task 2).
 
-import { component, config, collection, fields } from "@keystatic/core";
+import { collection, component, config, fields } from "@keystatic/core";
 
 const imageDirectory = "public/images/membres";
 const imagePublicPath = "/images/membres/";

@@ -1,13 +1,9 @@
 /* config/content/members.ts */
 
-import matter from "gray-matter";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import type {
-	Member,
-	MemberCoordonnees,
-	MemberProfile,
-} from "@config/types";
+import type { Member, MemberCoordonnees, MemberProfile } from "@config/types";
+import matter from "gray-matter";
 import { reader } from "../../src/keystatic/reader";
 
 let membersCache: Member[] | null = null;

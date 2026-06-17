@@ -15,12 +15,7 @@ interface Props {
 	title?: string;
 }
 
-const {
-	platform,
-	embedUrl = "",
-	src = "",
-	title = "Audio",
-} = Astro.props;
+const { platform, embedUrl = "", src = "", title = "Audio" } = Astro.props;
 
 const isEmbed = platform !== "hosted";
 const embed =

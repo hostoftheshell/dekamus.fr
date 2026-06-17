@@ -1,6 +1,6 @@
 import { getMemberProfiles } from "@config/content/members";
-import { createSchemaEndpoint } from "@jdevalk/astro-seo-graph";
 import type { MemberProfile } from "@config/types";
+import { createSchemaEndpoint } from "@jdevalk/astro-seo-graph";
 import type { GraphEntity } from "@jdevalk/seo-graph-core";
 import { allSchemaPages, buildPageSchemaPieces } from "@utils/schema";
 import { SITE_URL, siteWidePieces } from "@utils/schema/site-wide";

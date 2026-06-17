@@ -3,7 +3,7 @@
 {
 	"extends": "astro/tsconfigs/strict",
 	"include": [".astro/types.d.ts", "**/*", "src/pages/.well-known/**/*.ts"],
-	"exclude": ["dist"],
+	"exclude": ["dist", "keystatic.config.ts"],
 	"compilerOptions": {
 		"paths": {
 			"@config/*": ["./config/*"],

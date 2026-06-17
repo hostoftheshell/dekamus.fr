@@ -35,22 +35,22 @@ const { images, id = `carousel-${Math.random().toString(36).slice(2)}` } =
 )}
 
 <script>
-	document.querySelectorAll("[data-carousel]").forEach((root) => {
-		const slides = [...root.querySelectorAll("[data-slide]")];
-		let index = 0;
-		const show = (i: number) => {
-			slides.forEach((slide, n) => {
-				(slide as HTMLElement).hidden = n !== i;
-			});
-			index = i;
-			const status = root.querySelector("[data-carousel-status]");
-			if (status) status.textContent = `Slide ${i + 1} sur ${slides.length}`;
-		};
-		root.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
-			show((index - 1 + slides.length) % slides.length);
+document.querySelectorAll("[data-carousel]").forEach((root) => {
+	const slides = [...root.querySelectorAll("[data-slide]")];
+	let index = 0;
+	const show = (i: number) => {
+		slides.forEach((slide, n) => {
+			(slide as HTMLElement).hidden = n !== i;
 		});
-		root.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
-			show((index + 1) % slides.length);
-		});
+		index = i;
+		const status = root.querySelector("[data-carousel-status]");
+		if (status) status.textContent = `Slide ${i + 1} sur ${slides.length}`;
+	};
+	root.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
+		show((index - 1 + slides.length) % slides.length);
 	});
+	root.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
+		show((index + 1) % slides.length);
+	});
+});
 </script>

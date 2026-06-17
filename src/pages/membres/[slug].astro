@@ -1,9 +1,9 @@
 ---
-import MemberCoordonnees from "@components/members/MemberCoordonnees.astro";
 import MemberShell from "@components/layout/MemberShell.astro";
 import { mdxComponents } from "@components/mdx";
-import { buildMemberNav } from "@config/content/navigation";
+import MemberCoordonnees from "@components/members/MemberCoordonnees.astro";
 import { getMembers } from "@config/content/members";
+import { buildMemberNav } from "@config/content/navigation";
 import type { MDXContent } from "astro";
 import Layout from "../../layouts/Layout.astro";
 
@@ -23,8 +23,7 @@ const currentPath = Astro.url.pathname;
 const bioModules = import.meta.glob<{ default: MDXContent }>(
 	"../../../content/membres/*/bio.mdx",
 );
-const bioLoader =
-	bioModules[`../../../content/membres/${member.slug}/bio.mdx`];
+const bioLoader = bioModules[`../../../content/membres/${member.slug}/bio.mdx`];
 const BioModule = bioLoader ? await bioLoader() : null;
 const BioContent = BioModule?.default ?? null;
 ---

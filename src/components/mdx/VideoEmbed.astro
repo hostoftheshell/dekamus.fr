@@ -11,8 +11,7 @@ interface Props {
 
 const { platform, url = "", src = "", title = "Vidéo" } = Astro.props;
 
-const embed =
-	platform !== "hosted" ? videoEmbedSrc(platform, url) : null;
+const embed = platform !== "hosted" ? videoEmbedSrc(platform, url) : null;
 const embedSrc = embed?.valid ? embed.value : "";
 ---
 

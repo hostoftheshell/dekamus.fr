@@ -50,11 +50,13 @@ const galleryId = `gallery-${Math.random().toString(36).slice(2)}`;
 )}
 
 <script define:vars={{ images, galleryId }}>
-	const dialog = document.getElementById(galleryId);
-	const img = dialog?.querySelector("[data-gallery-image]");
-	const caption = dialog?.querySelector("[data-gallery-caption]");
+const dialog = document.getElementById(galleryId);
+const img = dialog?.querySelector("[data-gallery-image]");
+const caption = dialog?.querySelector("[data-gallery-caption]");
 
-	document.querySelectorAll(`[data-gallery-open="${galleryId}"]`).forEach((btn) => {
+document
+	.querySelectorAll(`[data-gallery-open="${galleryId}"]`)
+	.forEach((btn) => {
 		btn.addEventListener("click", () => {
 			const index = Number(btn.getAttribute("data-trigger-index"));
 			const item = images[index];
@@ -75,12 +77,12 @@ const galleryId = `gallery-${Math.random().toString(36).slice(2)}`;
 		});
 	});
 
-	dialog?.addEventListener("close", () => {
-		const index = dialog.dataset.triggerIndex;
-		if (index == null) return;
-		const trigger = document.querySelector(
-			`[data-gallery-open="${galleryId}"][data-trigger-index="${index}"]`,
-		);
-		trigger?.focus();
-	});
+dialog?.addEventListener("close", () => {
+	const index = dialog.dataset.triggerIndex;
+	if (index == null) return;
+	const trigger = document.querySelector(
+		`[data-gallery-open="${galleryId}"][data-trigger-index="${index}"]`,
+	);
+	trigger?.focus();
+});
 </script>

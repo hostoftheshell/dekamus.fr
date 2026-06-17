@@ -81,6 +81,7 @@ const { currentPath } = Astro.props;
 
 	if (!navMobile || !trigger || !panel || !header || !backdrop) return;
 
+	const navMobileRoot = navMobile;
 	const menuTrigger = trigger;
 	const menuPanel = panel;
 	const menuBackdrop = backdrop;
@@ -102,7 +103,7 @@ const { currentPath } = Astro.props;
 			open ? "Fermer le menu" : "Ouvrir le menu",
 		);
 		menuPanel.setAttribute("aria-hidden", String(!open));
-		navMobile.classList.toggle("is-open", open);
+		navMobileRoot.classList.toggle("is-open", open);
 		menuPanel.classList.toggle("is-open", open);
 		menuBackdrop.classList.toggle("is-open", open);
 		siteHeader.classList.toggle("is-nav-open", open);
@@ -110,20 +111,20 @@ const { currentPath } = Astro.props;
 	}
 
 	function openMenu() {
-		if (navMobile.classList.contains("is-open")) return;
+		if (navMobileRoot.classList.contains("is-open")) return;
 		syncHeaderHeight();
 		setExpanded(true);
 		menuPanel.querySelector<HTMLElement>("a, button")?.focus();
 	}
 
 	function closeMenu() {
-		if (!navMobile.classList.contains("is-open")) return;
+		if (!navMobileRoot.classList.contains("is-open")) return;
 		setExpanded(false);
 		menuTrigger.focus();
 	}
 
 	menuTrigger.addEventListener("click", () => {
-		if (navMobile.classList.contains("is-open")) {
+		if (navMobileRoot.classList.contains("is-open")) {
 			closeMenu();
 		} else {
 			openMenu();
@@ -133,7 +134,7 @@ const { currentPath } = Astro.props;
 	backdrop.addEventListener("click", closeMenu);
 
 	document.addEventListener("keydown", (e) => {
-		if (e.key === "Escape" && navMobile.classList.contains("is-open")) {
+		if (e.key === "Escape" && navMobileRoot.classList.contains("is-open")) {
 			closeMenu();
 		}
 	});
@@ -201,7 +202,7 @@ const { currentPath } = Astro.props;
 	top: var(--site-header-height, 0);
 	bottom: 0;
 	z-index: 40;
-	
+
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.3s ease-out;
@@ -293,7 +294,6 @@ const { currentPath } = Astro.props;
 	border-radius: var(--radius-sm);
 	background-color: oklch(from var(--color-highlight) l c h / 1);
 }
-
 
 .nav-mobile-panel__footer {
 	margin-top: auto;

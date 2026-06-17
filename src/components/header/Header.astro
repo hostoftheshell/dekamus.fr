@@ -3,12 +3,8 @@ import Logo from "@components/logo/Logo.astro";
 import ThemeToggle from "@components/utils/ThemeToggle.astro";
 ---
 
-<header
-	class="site-header is-at-top sticky top-0 z-50 w-full"
->
-	<div
-		class="site-header-inner p-4 transition-transform duration-600 ease-out"
-	>
+<header class="site-header is-at-top sticky top-0 z-50 w-full">
+	<div class="site-header-inner p-4 transition-transform duration-600 ease-out">
 		<span class="header-mobile-bg md:hidden" aria-hidden="true"></span>
 		<div
 			class="header-pill-host container-header relative flex w-full flex-wrap items-center justify-between gap-[.5vw] px-[.5vw] py-[.5vw] md:w-fit"
@@ -376,7 +372,6 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 @media (max-width: 767px) {
 	.site-header {
 		position: relative;
-	
 	}
 
 	.site-header.is-scrolled .header-pill-host {
@@ -392,8 +387,6 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 
 	.site-header:has(.nav-mobile.is-open) {
 		background-color: oklch(from var(--color-bgAlt) l c h / 0.8);
-
-
 	}
 
 	.site-header:has(.nav-mobile.is-open) .header-mobile-bg {

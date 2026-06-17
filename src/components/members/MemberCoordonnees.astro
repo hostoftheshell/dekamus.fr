@@ -9,8 +9,7 @@ interface Props {
 const { coordonnees } = Astro.props;
 const { email, phone, address, socialLinks, websites } = coordonnees;
 const telHref = phone ? normalizeTel(phone) : null;
-const hasAddress =
-	address.street || address.postalCode || address.city;
+const hasAddress = address.street || address.postalCode || address.city;
 ---
 
 <section class="stack-sm" aria-labelledby="coordonnees-heading">

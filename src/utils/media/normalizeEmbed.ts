@@ -64,12 +64,7 @@ export function videoEmbedSrc(
 }
 
 export function extractAudioEmbedUrl(
-	_platform:
-		| "spotify"
-		| "deezer"
-		| "soundcloud"
-		| "radio-france"
-		| "arte",
+	_platform: "spotify" | "deezer" | "soundcloud" | "radio-france" | "arte",
 	url: string,
 ): NormalizeResult<string> {
 	const trimmed = url.trim();

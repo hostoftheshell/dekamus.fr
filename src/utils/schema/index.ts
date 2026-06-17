@@ -12,11 +12,7 @@ function siteWideEntities() {
 	return siteWidePieces();
 }
 
-function breadcrumbItems(
-	url: string,
-	title: string,
-	members: MemberProfile[],
-) {
+function breadcrumbItems(url: string, title: string, members: MemberProfile[]) {
 	const items = [{ name: "Accueil", url: `${SITE_URL}/` }];
 	const pathname = new URL(url).pathname;
 	const normalizedPath = pathname.replace(/\/$/, "") || "/";
