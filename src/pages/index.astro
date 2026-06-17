@@ -1,0 +1,14 @@
+---
+import Prose from "@components/layout/Prose.astro";
+import { pages } from "@config/content/pages";
+
+import { layoutProps } from "@utils/page-meta";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout {...layoutProps(pages.home)}>
+	<Prose>
+		<h1 class="t-h1">HOME</h1>
+		<p class="t-body">text content here.</p>
+	</Prose>
+</Layout>

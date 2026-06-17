@@ -4,20 +4,13 @@ import ColorStyles from "@components/utils/ColorsCSSVars.astro";
 import { borderRadiusToCSSVars } from "@config/design/borderRadius";
 import { ColorData } from "@config/design/colors";
 import { spacingToCSSVars } from "@config/design/spacing";
-import resetCss from "../../styles/reset.css?raw";
-import typographyCss from "../../styles/typography.css?raw";
 
 const defaultMode = ColorData.colors.mode;
 
-const tokensCss = `:root {
-	--font-heading: var(--font-syne);
-	--font-body: var(--font-source-serif-4);
-	--font-mono: var(--font-victor-mono);
+const designTokensCss = `:root {
 ${spacingToCSSVars()}
 ${borderRadiusToCSSVars()}
 }`;
-
-const css = `${resetCss}\n${tokensCss}\n${typographyCss}`;
 ---
 
 <script is:inline define:vars={{ defaultMode }}>
@@ -33,7 +26,10 @@ const css = `${resetCss}\n${tokensCss}\n${typographyCss}`;
 })();
 </script>
 <ColorStyles />
-<style is:global set:html={css}></style>
+<style is:global>
+	@import "@styles/index.css";
+</style>
+<style is:global set:html={designTokensCss}></style>
 <Font cssVariable="--font-syne" preload />
 <Font cssVariable="--font-source-serif-4" preload />
 <Font cssVariable="--font-victor-mono" />

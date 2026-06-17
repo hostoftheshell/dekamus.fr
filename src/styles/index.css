@@ -1,0 +1,5 @@
+/* src/styles/index.css — global bundle injected by HeadDesign.astro */
+
+@import "./reset.css";
+@import "./tokens.css";
+@import "./typography.css";

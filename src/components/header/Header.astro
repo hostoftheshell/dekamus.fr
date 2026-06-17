@@ -4,15 +4,29 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 ---
 
 <header
-	class="site-header is-at-top sticky top-0 z-50 w-full p-4 transition-transform duration-600 ease-out"
+	class="site-header is-at-top sticky top-0 z-50 w-full"
 >
 	<div
-		class="header-pill-host container-header relative flex flex-wrap items-center justify-between gap-[.5vw] px-[.5vw] py-[.5vw]"
+		class="site-header-inner p-4 transition-transform duration-600 ease-out"
 	>
-		<Logo variant="stacked" class="h-12 w-auto" pillTarget />
-		<slot />
-		<ThemeToggle />
-		<span class="nav-highlight hidden md:block" aria-hidden="true"></span>
+		<span class="header-mobile-bg md:hidden" aria-hidden="true"></span>
+		<div
+			class="header-pill-host container-header relative flex w-full flex-wrap items-center justify-between gap-[.5vw] px-[.5vw] py-[.5vw] md:w-fit"
+		>
+			<div class="nav-mobile-logo-chrome inline-flex md:contents">
+				<Logo variant="stacked" class="inline-flex h-12 w-auto md:hidden" />
+			</div>
+			<Logo
+				variant="stacked"
+				class="hidden h-12 w-auto md:inline-flex"
+				pillTarget
+			/>
+			<slot />
+			<div class="hidden md:contents">
+				<ThemeToggle />
+			</div>
+			<span class="nav-highlight hidden md:block" aria-hidden="true"></span>
+		</div>
 	</div>
 </header>
 
@@ -160,20 +174,29 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 		);
 	}
 
+	function getScrollBgTarget(pillHost: HTMLElement): HTMLElement {
+		if (DESKTOP_MQ.matches) return pillHost;
+		return document.querySelector<HTMLElement>(".header-mobile-bg") ?? pillHost;
+	}
+
 	function initScroll(header: HTMLElement, pillHost: HTMLElement) {
+		const headerInner =
+			header.querySelector<HTMLElement>(".site-header-inner") ?? header;
 		let lastScrollY = window.scrollY;
 		let ticking = false;
 		let isHiding = false;
 		let onBgEnd: ((e: TransitionEvent) => void) | null = null;
 		let onTransformEnd: ((e: TransitionEvent) => void) | null = null;
 
+		let bgTarget = getScrollBgTarget(pillHost);
+
 		function cancelPendingTransitions() {
 			if (onBgEnd) {
-				pillHost.removeEventListener("transitionend", onBgEnd);
+				bgTarget.removeEventListener("transitionend", onBgEnd);
 				onBgEnd = null;
 			}
 			if (onTransformEnd) {
-				header.removeEventListener("transitionend", onTransformEnd);
+				headerInner.removeEventListener("transitionend", onTransformEnd);
 				onTransformEnd = null;
 			}
 			isHiding = false;
@@ -188,7 +211,7 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 				header.classList.add("is-header-hidden");
 				isHiding = false;
 				if (onBgEnd) {
-					pillHost.removeEventListener("transitionend", onBgEnd);
+					bgTarget.removeEventListener("transitionend", onBgEnd);
 					onBgEnd = null;
 				}
 			};
@@ -205,11 +228,12 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 			isHiding = true;
 			header.classList.remove("is-scrolled");
 
+			bgTarget = getScrollBgTarget(pillHost);
 			onBgEnd = (e: TransitionEvent) => {
-				if (e.target !== pillHost || !isBgTransition(e)) return;
+				if (e.target !== bgTarget || !isBgTransition(e)) return;
 				finishHide();
 			};
-			pillHost.addEventListener("transitionend", onBgEnd);
+			bgTarget.addEventListener("transitionend", onBgEnd);
 		}
 
 		function startShowSequence() {
@@ -221,7 +245,7 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 					header.classList.add("is-scrolled");
 				}
 				if (onTransformEnd) {
-					header.removeEventListener("transitionend", onTransformEnd);
+					headerInner.removeEventListener("transitionend", onTransformEnd);
 					onTransformEnd = null;
 				}
 			};
@@ -232,10 +256,10 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 			}
 
 			onTransformEnd = (e: TransitionEvent) => {
-				if (e.target !== header || e.propertyName !== "transform") return;
+				if (e.target !== headerInner || e.propertyName !== "transform") return;
 				finishShow();
 			};
-			header.addEventListener("transitionend", onTransformEnd);
+			headerInner.addEventListener("transitionend", onTransformEnd);
 		}
 
 		function applyScrollState() {
@@ -307,6 +331,32 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 </script>
 
 <style>
+.site-header {
+	transition:
+		background-color 200ms ease,
+		backdrop-filter 200ms ease;
+}
+
+.header-mobile-bg {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	height: 100%;
+	pointer-events: none;
+	transition:
+		background-color 200ms ease,
+		backdrop-filter 200ms ease;
+}
+
+.nav-mobile-logo-chrome {
+	align-items: center;
+	justify-content: center;
+	padding: var(--sp-2);
+	border-radius: var(--radius-md);
+	background-color: oklch(from var(--color-bgAlt) l c h / 1);
+	transition: background-color 200ms ease;
+}
+
 .header-pill-host {
 	border-radius: var(--radius-md);
 	background-color: transparent;
@@ -316,17 +366,53 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 		backdrop-filter 200ms ease;
 }
 
-.site-header.is-scrolled .header-pill-host {
-	background-color: oklch(from var(--color-bgAlt) l c h / 0.8);
-	backdrop-filter: blur(10px);
+@media (min-width: 768px) {
+	.site-header.is-scrolled .header-pill-host {
+		background-color: oklch(from var(--color-bgAlt) l c h / 0.8);
+		backdrop-filter: blur(10px);
+	}
 }
 
-.site-header.is-header-hidden {
+@media (max-width: 767px) {
+	.site-header {
+		position: relative;
+	
+	}
+
+	.site-header.is-scrolled .header-pill-host {
+		background-color: transparent;
+		backdrop-filter: none;
+	}
+
+	.site-header.is-scrolled .header-mobile-bg,
+	.site-header:has(.nav-mobile.is-open) .header-mobile-bg {
+		background-color: oklch(from var(--color-bgAlt) l c h / 0.8);
+		backdrop-filter: blur(10px);
+	}
+
+	.site-header:has(.nav-mobile.is-open) {
+		background-color: oklch(from var(--color-bgAlt) l c h / 0.8);
+
+
+	}
+
+	.site-header:has(.nav-mobile.is-open) .header-mobile-bg {
+		background-color: transparent;
+		backdrop-filter: none;
+	}
+
+	.site-header:has(.nav-mobile.is-open) .nav-mobile-logo-chrome,
+	.site-header:has(.nav-mobile.is-open) :global(.nav-mobile-chrome) {
+		background-color: transparent;
+	}
+}
+
+.site-header.is-header-hidden .site-header-inner {
 	transform: translateY(-100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.site-header {
+	.site-header-inner {
 		transition: none;
 	}
 }

@@ -66,3 +66,17 @@ nav ul {
 	list-style: none;
 	padding: 0;
 }
+
+/* Screen-reader-only text (modern-web-guidance: accessibility) */
+.visually-hidden:where(:not(:focus-within, :active)),
+.sr-only:where(:not(:focus-within, :active)) {
+	position: absolute;
+	clip-path: inset(50%);
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	white-space: nowrap;
+}

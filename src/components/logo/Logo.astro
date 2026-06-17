@@ -24,7 +24,7 @@ const variants = {
 
 const {
 	variant = "stacked",
-	class: className = "h-8 w-auto",
+	class: className = "inline-flex h-8 w-auto",
 	pillTarget = false,
 } = Astro.props;
 const Mark = variants[variant];
@@ -37,11 +37,12 @@ const pillClasses = pillTarget
 <a
 	href="/"
 	class:list={[
-		"inline-flex text-primary hover:text-accent transition-colors no-underline",
+		"items-center text-primary hover:text-accent transition-colors no-underline",
 		pillClasses,
+		className,
 	]}
 	data-pill-directional={pillTarget || undefined}
 	aria-label="Dekamus — accueil"
 >
-	<Mark class={className} aria-hidden="true" />
+	<Mark class="h-full w-auto" aria-hidden="true" />
 </a>

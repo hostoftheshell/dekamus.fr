@@ -14,15 +14,24 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.7.3
         version: 3.7.3
+      '@fontsource/source-serif-4':
+        specifier: ^5.2.9
+        version: 5.2.9
+      '@fontsource/syne':
+        specifier: ^5.2.7
+        version: 5.2.7
+      '@fontsource/victor-mono':
+        specifier: ^5.2.8
+        version: 5.2.8
       '@jdevalk/astro-seo-graph':
         specifier: ^2.0.0
-        version: 2.0.0(astro@6.4.6(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0))(typescript@6.0.3)
+        version: 2.0.0(astro@6.4.7(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0))(typescript@6.0.3)
       '@jdevalk/seo-graph-core':
         specifier: ^0.6.2
         version: 0.6.2(typescript@6.0.3)
       astro:
-        specifier: ^6.4.6
-        version: 6.4.6(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0)
+        specifier: ^6.4.7
+        version: 6.4.7(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -31,8 +40,8 @@ importers:
         specifier: ^2.5.0
         version: 2.5.0
       '@iconify-json/lucide':
-        specifier: ^1.2.112
-        version: 1.2.112
+        specifier: ^1.2.113
+        version: 1.2.113
       '@unocss/astro':
         specifier: ^66.7.2
         version: 66.7.2(vite@7.3.5(@types/node@24.13.2)(jiti@2.7.0)(yaml@2.9.0))
@@ -367,8 +376,17 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@iconify-json/lucide@1.2.112':
-    resolution: {integrity: sha512-B4sYH2Sm/UPNJYrhh4i+GFHeHfrYPQF9evX2QduJv08iSWw9Mfn1VvF28iIh6pBtZpYlMnuB8/P51mDYlYBYWg==}
+  '@fontsource/source-serif-4@5.2.9':
+    resolution: {integrity: sha512-er/Pym9emsEVJNf947umJ4kXarXfsiN6CN7kTYinefKRaHLwiquiiHOZvKvxWgkV8JMCf3pV3g0NcsPFpVCH9w==}
+
+  '@fontsource/syne@5.2.7':
+    resolution: {integrity: sha512-OgWgLPSbieiSfdFXgMs0l/rspIFzVoDZxw8wKj15n39epRqO5+Uv36c0MXNDcw2GuK/TIBgpC9G8VAgs+bVm7A==}
+
+  '@fontsource/victor-mono@5.2.8':
+    resolution: {integrity: sha512-8WYdXLzYNHvsvXWaGW4zs1hNu6RHUrQCVJplS9XKhZZNE1VqxPsm5zSbKQox4YuLZG1fV4fOxIt0SAc+YLGkjg==}
+
+  '@iconify-json/lucide@1.2.113':
+    resolution: {integrity: sha512-hfHPXZmLAsZkEfSd4kKRPMRM2HOQz1k11XWtSReEWeecOM+nLtZlfHAzv8nSsrJw2scLz3DKqosNMNXd3mP60Q==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -1053,8 +1071,8 @@ packages:
   array-iterate@2.0.1:
     resolution: {integrity: sha512-I1jXZMjAgCMmxT4qxXfPXa6SthSoE8h6gkSI9BGGNv8mP8G/v0blc+qFnZu6K42vTOiuME596QaLO0TP3Lk0xg==}
 
-  astro@6.4.6:
-    resolution: {integrity: sha512-48OBTBKR9ctbf+DQxpOuxGl8ebfn59zTuNQMBzptmG/Mi/H8IdfMSbJgGuX1I/4U6g9yazG1p4BHlf4+2hWU4Q==}
+  astro@6.4.7:
+    resolution: {integrity: sha512-5vsXx0H52u23Jpshs9tM81D03Tb3Oh2Vt2Zo0bpqjXN+njkAWjFyGjTfmWJLAcrCQd9Q+iWB1eqfhR1sZJEaUA==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -2522,7 +2540,13 @@ snapshots:
   '@esbuild/win32-x64@0.27.7':
     optional: true
 
-  '@iconify-json/lucide@1.2.112':
+  '@fontsource/source-serif-4@5.2.9': {}
+
+  '@fontsource/syne@5.2.7': {}
+
+  '@fontsource/victor-mono@5.2.8': {}
+
+  '@iconify-json/lucide@1.2.113':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -2631,10 +2655,10 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@jdevalk/astro-seo-graph@2.0.0(astro@6.4.6(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0))(typescript@6.0.3)':
+  '@jdevalk/astro-seo-graph@2.0.0(astro@6.4.7(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0))(typescript@6.0.3)':
     dependencies:
       '@jdevalk/seo-graph-core': 0.6.2(typescript@6.0.3)
-      astro: 6.4.6(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0)
+      astro: 6.4.7(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0)
       schema-dts: 2.0.0(typescript@6.0.3)
       zod: 4.4.3
     transitivePeerDependencies:
@@ -3127,7 +3151,7 @@ snapshots:
 
   array-iterate@2.0.1: {}
 
-  astro@6.4.6(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0):
+  astro@6.4.7(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.62.0)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.10.0

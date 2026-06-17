@@ -1,4 +1,4 @@
-/* src/styles/tokens.css — font aliases; spacing vars injected by HeadTokens.astro */
+/* src/styles/tokens.css — static font aliases (spacing/radius vars injected in HeadDesign.astro) */
 
 :root {
 	--font-heading: var(--font-syne);
