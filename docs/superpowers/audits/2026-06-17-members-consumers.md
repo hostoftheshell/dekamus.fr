@@ -49,8 +49,35 @@ Ré-exécuter `rg "from.*members|memberNav" src config` : zéro import de l’ex
 |---------|------------|
 | `@astrojs/node` requis | Conservé pour `dev` et `build:with-keystatic` ; **exclu** du build prod (`pnpm build`) |
 | `index.yaml` par entrée | Documenté — Task 5 seed + Task 2 validera si `format.contentField` simplifie |
-| Frontmatter via reader | Task 2 : `format: { contentField: 'coordonnees' }` + `slugField: 'slug'` — à valider en Task 2 gate |
+| Frontmatter via reader | **Task 2 :** `format.contentField` retiré — seed manuel non découvert avec contentField ; format défaut (`index.yaml` + `coordonnees.md` + `bio.mdx`) validé ; loader Task 6 parse le frontmatter de `coordonnees.md` |
 | Warnings bundle Keystatic UI | Non bloquant ; uniquement en `dev` / `build:with-keystatic` |
+
+## Findings Task 2 — schéma production (2026-06-17)
+
+### `format.contentField` retiré
+
+Avec `format: { contentField: 'coordonnees' }`, `reader.collections.membres.list()` retourne `[]` pour des entrées créées manuellement (`coordonnees.md` + `bio.mdx`), même avec frontmatter valide.
+
+**Format retenu (validé) :**
+
+```
+content/membres/{slug}/
+  index.yaml          ← vide (requis pour discovery)
+  coordonnees.md      ← frontmatter YAML : slug, name, role, email, websites[], …
+  bio.mdx
+```
+
+- `reader.list()` → OK
+- `reader.read(slug).bio()` → string MDX OK
+- `reader.read(slug).coordonnees()` → corps document (AST), **pas** le frontmatter
+- **Loader Task 6** : parser le frontmatter de `coordonnees.md` (ex. `gray-matter`)
+
+### Gate Task 2
+
+- [x] Admin `/keystatic/collection/membres` → HTTP 200
+- [x] Pas de `formatting: { data: "yaml" }`
+- [x] `websites[]` dans le schéma coordonnees
+- [x] `pnpm build` (SKIP_KEYSTATIC) → statique pur
 
 ## Findings POC bi-fichier (Task 0)
 
