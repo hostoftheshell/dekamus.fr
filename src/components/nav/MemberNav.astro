@@ -1,25 +1,21 @@
 ---
-import { memberNav } from "@config/content/navigation";
+import type { NavItem } from "@config/types";
 import NavLink from "./NavLink.astro";
 
 interface Props {
+	items: NavItem[];
 	currentPath?: string;
 }
 
-const { currentPath } = Astro.props;
+const { items, currentPath } = Astro.props;
 ---
 
 <nav aria-label="Navigation des membres">
 	<ul class="flex flex-wrap items-center gap-x-4 gap-y-2">
-		{memberNav.map((item) => (
-				<li>
-					<NavLink
-						{item}
-						variant="member"
-						{currentPath}
-						activeClass="text-primary font-semibold"
-					/>
-				</li>
-			))}
+		{items.map((item) => (
+			<li>
+				<NavLink {item} variant="member" {currentPath} activeClass="text-primary font-semibold" />
+			</li>
+		))}
 	</ul>
 </nav>

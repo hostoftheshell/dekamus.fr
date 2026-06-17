@@ -1,0 +1,38 @@
+---
+// SYNC WITH keystatic.config.ts → mdxComponentBlocks.VideoEmbed
+import { videoEmbedSrc } from "@utils/media/normalizeEmbed";
+
+interface Props {
+	platform: "youtube" | "vimeo" | "dailymotion" | "hosted";
+	url?: string;
+	src?: string;
+	title?: string;
+}
+
+const { platform, url = "", src = "", title = "Vidéo" } = Astro.props;
+
+const embed =
+	platform !== "hosted" ? videoEmbedSrc(platform, url) : null;
+const embedSrc = embed?.valid ? embed.value : "";
+---
+
+<figure class="stack-sm">
+	{platform === "hosted" && src ? (
+		<video class="w-full rounded" controls preload="metadata" src={src}>
+			<track kind="captions" />
+		</video>
+	) : embedSrc ? (
+		<div class="aspect-video w-full overflow-hidden rounded">
+			<iframe
+				class="h-full w-full border-0"
+				src={embedSrc}
+				title={title}
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+				allowfullscreen
+				loading="lazy"
+			/>
+		</div>
+	) : (
+		<p class="t-body text-muted">URL vidéo invalide.</p>
+	)}
+</figure>

@@ -1,0 +1,24 @@
+---
+import Prose from "@components/layout/Prose.astro";
+import MemberNav from "@components/nav/MemberNav.astro";
+import type { MemberProfile, NavItem } from "@config/types";
+
+interface Props {
+	member: MemberProfile;
+	memberNavItems: NavItem[];
+	currentPath: string;
+}
+
+const { member, memberNavItems, currentPath } = Astro.props;
+---
+
+<Prose>
+	<h1 class="t-h2">{member.name}</h1>
+	<MemberNav items={memberNavItems} {currentPath} />
+	<p class="t-body"><strong>{member.role}</strong></p>
+	<slot name="coordonnees" />
+	<slot name="bio" />
+	<p class="t-body">
+		<a href="/membres/">Retour à la liste des membres</a>
+	</p>
+</Prose>

@@ -1,6 +1,5 @@
 /* config/content/navigation.ts */
 
-import { members } from "@config/content/members";
 import { navPages } from "@config/content/pages";
 import type { MemberProfile, NavItem, PageMeta } from "@config/types";
 import { toNavHref } from "@utils/nav-path";
@@ -37,4 +36,6 @@ export const headerNavDesktop: NavItem[] = mainPages
 	.filter((page) => page.key !== "home")
 	.map((page) => pageToNavItem(page));
 
-export const memberNav: NavItem[] = members.map(memberToNavItem);
+export function buildMemberNav(members: MemberProfile[]): NavItem[] {
+	return members.map(memberToNavItem);
+}

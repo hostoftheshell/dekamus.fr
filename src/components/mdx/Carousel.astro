@@ -1,0 +1,56 @@
+---
+interface ImageItem {
+	src: string;
+	alt: string;
+	caption?: string;
+}
+
+interface Props {
+	images: ImageItem[];
+	id?: string;
+}
+
+const { images, id = `carousel-${Math.random().toString(36).slice(2)}` } =
+	Astro.props;
+---
+
+{images.length > 0 && (
+	<section class="stack-sm" aria-roledescription="carousel" aria-label="Carrousel" aria-live="polite" data-carousel={id}>
+		<span class="sr-only" data-carousel-status>Slide 1 sur {images.length}</span>
+		<div class="relative">
+			{images.map((image, index) => (
+				<figure data-slide={index} hidden={index !== 0}>
+					<img src={image.src} alt={image.alt} class="w-full rounded" loading={index === 0 ? "eager" : "lazy"} />
+					{image.caption && <figcaption class="t-body text-muted">{image.caption}</figcaption>}
+				</figure>
+			))}
+		</div>
+		{images.length > 1 && (
+			<div class="flex gap-2">
+				<button type="button" data-carousel-prev aria-label="Image précédente">←</button>
+				<button type="button" data-carousel-next aria-label="Image suivante">→</button>
+			</div>
+		)}
+	</section>
+)}
+
+<script>
+	document.querySelectorAll("[data-carousel]").forEach((root) => {
+		const slides = [...root.querySelectorAll("[data-slide]")];
+		let index = 0;
+		const show = (i: number) => {
+			slides.forEach((slide, n) => {
+				(slide as HTMLElement).hidden = n !== i;
+			});
+			index = i;
+			const status = root.querySelector("[data-carousel-status]");
+			if (status) status.textContent = `Slide ${i + 1} sur ${slides.length}`;
+		};
+		root.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
+			show((index - 1 + slides.length) % slides.length);
+		});
+		root.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
+			show((index + 1) % slides.length);
+		});
+	});
+</script>

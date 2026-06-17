@@ -1,30 +1,33 @@
 ---
 import Prose from "@components/layout/Prose.astro";
 import MemberNav from "@components/nav/MemberNav.astro";
-import { members } from "@config/content/members";
+import { buildMemberNav } from "@config/content/navigation";
+import { getMembers } from "@config/content/members";
 import { pages } from "@config/content/pages";
 import { layoutProps } from "@utils/page-meta";
 import Layout from "../../layouts/Layout.astro";
 
 const meta = pages.membres;
+const members = await getMembers();
+const memberNavItems = buildMemberNav(members);
 const currentPath = Astro.url.pathname;
 ---
 
 <Layout {...layoutProps(meta)}>
 	<Prose>
 		<h1 class="t-h2">Membres</h1>
-		<MemberNav {currentPath} />
+		<MemberNav items={memberNavItems} {currentPath} />
 		<p class="t-body">
 			Liste des membres du bureau et de l'équipe de l'association.
 		</p>
 		<ul class="stack-sm">
 			{members.map((member) => (
-					<li class="t-body">
-						<a href={`/membres/${member.slug}/`}>
-							{member.name} — {member.role}
-						</a>
-					</li>
-				))}
+				<li class="t-body">
+					<a href={`/membres/${member.slug}/`}>
+						{member.name} — {member.role}
+					</a>
+				</li>
+			))}
 		</ul>
 	</Prose>
 </Layout>

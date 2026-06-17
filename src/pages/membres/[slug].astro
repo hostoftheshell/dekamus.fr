@@ -1,10 +1,14 @@
 ---
-import Prose from "@components/layout/Prose.astro";
-import MemberNav from "@components/nav/MemberNav.astro";
-import { members } from "@config/content/members";
+import MemberCoordonnees from "@components/members/MemberCoordonnees.astro";
+import MemberShell from "@components/layout/MemberShell.astro";
+import { mdxComponents } from "@components/mdx";
+import { buildMemberNav } from "@config/content/navigation";
+import { getMembers } from "@config/content/members";
+import { reader } from "../../keystatic/reader";
 import Layout from "../../layouts/Layout.astro";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+	const members = await getMembers();
 	return members.map((member) => ({
 		params: { slug: member.slug },
 		props: { member },
@@ -12,17 +16,23 @@ export function getStaticPaths() {
 }
 
 const { member } = Astro.props;
+const members = await getMembers();
+const memberNavItems = buildMemberNav(members);
 const currentPath = Astro.url.pathname;
+
+const entry = await reader.collections.membres.read(member.slug);
+const bioEntry = entry ? await entry.bio() : null;
+const BioContent = bioEntry?.content;
 ---
 
 <Layout title={member.title} description={member.description}>
-	<Prose>
-		<h1 class="t-h2">{member.name}</h1>
-		<MemberNav {currentPath} />
-		<p class="t-body"><strong>{member.role}</strong></p>
-		<p class="t-body">Profil à compléter.</p>
-		<p class="t-body">
-			<a href="/membres/">Retour à la liste des membres</a>
-		</p>
-	</Prose>
+	<MemberShell {member} {memberNavItems} {currentPath}>
+		<MemberCoordonnees slot="coordonnees" coordonnees={member.coordonnees} />
+		{bioEntry && (
+			<section slot="bio" class="stack-md" aria-labelledby="bio-heading">
+				<h2 id="bio-heading" class="t-h3">Bio</h2>
+				{BioContent && <BioContent components={mdxComponents} />}
+			</section>
+		)}
+	</MemberShell>
 </Layout>

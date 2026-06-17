@@ -1,0 +1,18 @@
+---
+slug: brice
+name: Brice Dupont
+role: Trésorier
+title: Brice Dupont — Trésorier de Dekamus
+description: >-
+  Profil de Brice Dupont, trésorier de l'association Dekamus : missions,
+  responsabilités et coordonnées accessibles aux membres.
+titleNav: Brice Dupont
+email: brice.dupont@dekamus.fr
+phone: ""
+address:
+  street: ""
+  postalCode: ""
+  city: ""
+socialLinks: []
+websites: []
+---

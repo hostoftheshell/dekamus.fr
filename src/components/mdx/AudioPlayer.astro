@@ -1,0 +1,57 @@
+---
+// SYNC WITH keystatic.config.ts → mdxComponentBlocks.AudioPlayer
+import { extractAudioEmbedUrl } from "@utils/media/normalizeEmbed";
+
+interface Props {
+	platform:
+		| "spotify"
+		| "deezer"
+		| "soundcloud"
+		| "radio-france"
+		| "arte"
+		| "hosted";
+	embedUrl?: string;
+	src?: string;
+	title?: string;
+}
+
+const {
+	platform,
+	embedUrl = "",
+	src = "",
+	title = "Audio",
+} = Astro.props;
+
+const isEmbed = platform !== "hosted";
+const embed =
+	isEmbed && embedUrl
+		? extractAudioEmbedUrl(
+				platform as
+					| "spotify"
+					| "deezer"
+					| "soundcloud"
+					| "radio-france"
+					| "arte",
+				embedUrl,
+			)
+		: null;
+const iframeSrc = embed?.valid ? embed.value : "";
+---
+
+<figure class="stack-sm">
+	{isEmbed && iframeSrc ? (
+		<iframe
+			class="w-full min-h-40 rounded border-0"
+			src={iframeSrc}
+			title={title}
+			loading="lazy"
+			allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+		/>
+	) : !isEmbed && src ? (
+		<audio class="w-full" controls preload="metadata" src={src}>
+			<track kind="captions" />
+		</audio>
+	) : (
+		<p class="t-body text-muted">Source audio invalide.</p>
+	)}
+</figure>

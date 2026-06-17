@@ -1,5 +1,5 @@
-import { members } from "@config/content/members";
 import { getPageByPath, sitemapPages } from "@config/content/pages";
+import type { MemberProfile } from "@config/types";
 import {
 	assembleGraph,
 	buildBreadcrumbList,
@@ -12,7 +12,11 @@ function siteWideEntities() {
 	return siteWidePieces();
 }
 
-function breadcrumbItems(url: string, title: string) {
+function breadcrumbItems(
+	url: string,
+	title: string,
+	members: MemberProfile[],
+) {
 	const items = [{ name: "Accueil", url: `${SITE_URL}/` }];
 	const pathname = new URL(url).pathname;
 	const normalizedPath = pathname.replace(/\/$/, "") || "/";
@@ -35,12 +39,16 @@ export function buildSchemaGraph(opts: {
 	url: string;
 	title: string;
 	description: string;
+	members: MemberProfile[];
 }) {
-	const { url, title, description } = opts;
+	const { url, title, description, members } = opts;
 	const pieces = [...siteWideEntities()];
 
 	pieces.push(
-		buildBreadcrumbList({ url, items: breadcrumbItems(url, title) }, ids),
+		buildBreadcrumbList(
+			{ url, items: breadcrumbItems(url, title, members) },
+			ids,
+		),
 		buildWebPage(
 			{
 				url,
@@ -62,11 +70,15 @@ export function buildPageSchemaPieces(opts: {
 	url: string;
 	title: string;
 	description: string;
+	members: MemberProfile[];
 }) {
-	const { url, title, description } = opts;
+	const { url, title, description, members } = opts;
 
 	return [
-		buildBreadcrumbList({ url, items: breadcrumbItems(url, title) }, ids),
+		buildBreadcrumbList(
+			{ url, items: breadcrumbItems(url, title, members) },
+			ids,
+		),
 		buildWebPage(
 			{
 				url,
@@ -80,7 +92,7 @@ export function buildPageSchemaPieces(opts: {
 	];
 }
 
-export function allSchemaPages(): Array<{
+export function allSchemaPages(members: MemberProfile[]): Array<{
 	path: string;
 	title: string;
 	description: string;

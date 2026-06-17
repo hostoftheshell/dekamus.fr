@@ -1,5 +1,5 @@
 import { siteConfig } from "@config/content/site";
-import type { HeadProps } from "@config/types";
+import type { HeadProps, MemberProfile } from "@config/types";
 import { buildSchemaGraph } from "@utils/schema";
 
 export function formatPageTitle(pageTitle: string): string {
@@ -8,7 +8,11 @@ export function formatPageTitle(pageTitle: string): string {
 		: `${pageTitle} | ${siteConfig.name}`;
 }
 
-export function resolveHeadMeta(props: HeadProps, url: string) {
+export function resolveHeadMeta(
+	props: HeadProps,
+	url: string,
+	members: MemberProfile[],
+) {
 	const pageTitle = props.title ?? siteConfig.title;
 	const description = props.description ?? siteConfig.description;
 	const ogImage =
@@ -21,6 +25,7 @@ export function resolveHeadMeta(props: HeadProps, url: string) {
 		url,
 		title,
 		description,
+		members,
 	});
 
 	return { title, description, ogImage, noindex, graph };

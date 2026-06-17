@@ -1,28 +1,101 @@
 /* config/content/members.ts */
 
-import type { MemberProfile } from "@config/types";
+import matter from "gray-matter";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import type {
+	Member,
+	MemberCoordonnees,
+	MemberProfile,
+} from "@config/types";
+import { reader } from "../../src/keystatic/reader";
 
-export const members = [
-	{
-		slug: "alice",
-		name: "Alice Martin",
-		role: "Présidente",
-		title: "Alice Martin — Présidente de Dekamus",
-		description:
-			"Profil d'Alice Martin, présidente de l'association Dekamus : rôle au sein du bureau et informations de contact publiques.",
-		titleNav: "Alice Martin",
-	},
-	{
-		slug: "brice",
-		name: "Brice Dupont",
-		role: "Trésorier",
-		title: "Brice Dupont — Trésorier de Dekamus",
-		description:
-			"Profil de Brice Dupont, trésorier de l'association Dekamus : missions, responsabilités et coordonnées accessibles aux membres.",
-		titleNav: "Brice Dupont",
-	},
-] satisfies MemberProfile[];
+let membersCache: Member[] | null = null;
 
-export function getMemberBySlug(slug: string): MemberProfile | undefined {
+async function readCoordonneesFrontmatter(
+	slug: string,
+): Promise<Record<string, unknown> | null> {
+	try {
+		const path = join(process.cwd(), "content/membres", slug, "coordonnees.md");
+		const raw = await readFile(path, "utf8");
+		return matter(raw).data as Record<string, unknown>;
+	} catch {
+		return null;
+	}
+}
+
+function toMemberProfile(
+	slug: string,
+	data: Record<string, unknown>,
+): MemberProfile {
+	return {
+		slug,
+		name: String(data.name ?? ""),
+		role: String(data.role ?? ""),
+		title: String(data.title ?? ""),
+		description: String(data.description ?? ""),
+		titleNav: data.titleNav ? String(data.titleNav) : undefined,
+	};
+}
+
+function toCoordonnees(data: Record<string, unknown>): MemberCoordonnees {
+	const address = (data.address ?? {}) as Record<string, string>;
+	const socialLinks = Array.isArray(data.socialLinks)
+		? data.socialLinks.map((link: Record<string, string>) => ({
+				label: String(link.label ?? ""),
+				url: String(link.url ?? ""),
+			}))
+		: [];
+	const websites = Array.isArray(data.websites)
+		? data.websites.map((site: Record<string, string>) => ({
+				label: String(site.label ?? ""),
+				url: String(site.url ?? ""),
+			}))
+		: [];
+
+	return {
+		email: String(data.email ?? ""),
+		phone: String(data.phone ?? ""),
+		address: {
+			street: String(address.street ?? ""),
+			postalCode: String(address.postalCode ?? ""),
+			city: String(address.city ?? ""),
+		},
+		socialLinks,
+		websites,
+	};
+}
+
+export async function getMembers(): Promise<Member[]> {
+	if (membersCache) return membersCache;
+
+	const slugs = await reader.collections.membres.list();
+	const members = await Promise.all(
+		slugs.map(async (slug) => {
+			const data = await readCoordonneesFrontmatter(slug);
+			if (!data) return null;
+
+			const profile = toMemberProfile(slug, data);
+
+			return {
+				...profile,
+				coordonnees: toCoordonnees(data),
+			} satisfies Member;
+		}),
+	);
+
+	membersCache = members.filter((m): m is Member => m !== null);
+	return membersCache;
+}
+
+export async function getMemberBySlug(
+	slug: string,
+): Promise<Member | undefined> {
+	const members = await getMembers();
 	return members.find((member) => member.slug === slug);
+}
+
+export async function getMemberProfiles(): Promise<MemberProfile[]> {
+	const members = await getMembers();
+	return members.map(({ coordonnees: _c, ...profile }) => profile);
 }

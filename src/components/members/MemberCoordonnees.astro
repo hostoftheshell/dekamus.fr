@@ -1,0 +1,56 @@
+---
+import type { MemberCoordonnees } from "@config/types";
+import { normalizeTel } from "@utils/media/normalizeEmbed";
+
+interface Props {
+	coordonnees: MemberCoordonnees;
+}
+
+const { coordonnees } = Astro.props;
+const { email, phone, address, socialLinks, websites } = coordonnees;
+const telHref = phone ? normalizeTel(phone) : null;
+const hasAddress =
+	address.street || address.postalCode || address.city;
+---
+
+<section class="stack-sm" aria-labelledby="coordonnees-heading">
+	<h2 id="coordonnees-heading" class="t-h3">Coordonnées</h2>
+	<ul class="stack-sm t-body list-none p-0">
+		{email && (
+			<li>
+				<a href={`mailto:${email}`}>{email}</a>
+			</li>
+		)}
+		{phone && telHref?.valid && (
+			<li>
+				<a href={`tel:${telHref.value}`}>{phone}</a>
+			</li>
+		)}
+		{hasAddress && (
+			<li>
+				<address class="not-italic">
+					{address.street && <span>{address.street}<br /></span>}
+					{(address.postalCode || address.city) && (
+						<span>
+							{address.postalCode} {address.city}
+						</span>
+					)}
+				</address>
+			</li>
+		)}
+		{socialLinks.map((link) => (
+			<li>
+				<a href={link.url} rel="noopener noreferrer" target="_blank">
+					{link.label}
+				</a>
+			</li>
+		))}
+		{websites.map((site) => (
+			<li>
+				<a href={site.url} rel="noopener noreferrer" target="_blank">
+					{site.label}
+				</a>
+			</li>
+		))}
+	</ul>
+</section>

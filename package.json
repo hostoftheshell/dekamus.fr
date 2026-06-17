@@ -28,6 +28,7 @@
 		"@keystatic/astro": "^5.1.0",
 		"@keystatic/core": "^0.5.50",
 		"astro": "^6.4.7",
+		"gray-matter": "^4.0.3",
 		"typescript": "^6.0.3"
 	},
 	"devDependencies": {

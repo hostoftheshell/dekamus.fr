@@ -1,0 +1,86 @@
+---
+interface ImageItem {
+	src: string;
+	alt: string;
+	caption?: string;
+}
+
+interface Props {
+	images: ImageItem[];
+	columns?: number;
+}
+
+const { images, columns = 3 } = Astro.props;
+const galleryId = `gallery-${Math.random().toString(36).slice(2)}`;
+---
+
+{images.length > 0 && (
+	<section class="stack-sm" aria-label="Galerie">
+		<ul
+			class="grid gap-3 list-none p-0"
+			style={`grid-template-columns: repeat(${columns}, minmax(0, 1fr))`}
+		>
+			{images.map((image, index) => (
+				<li>
+					<button
+						type="button"
+						class="block w-full cursor-pointer border-0 bg-transparent p-0"
+						data-gallery-open={galleryId}
+						data-trigger-index={index}
+						aria-label={`Agrandir : ${image.alt}`}
+					>
+						<img
+							src={image.src}
+							alt={image.alt}
+							class="aspect-square w-full rounded object-cover"
+							loading="lazy"
+						/>
+					</button>
+				</li>
+			))}
+		</ul>
+		<dialog id={galleryId} class="max-w-4xl w-[min(100%,48rem)] rounded p-0 backdrop:bg-black/60">
+			<form method="dialog" class="stack-sm p-4">
+				<button type="submit" class="self-end" aria-label="Fermer">✕</button>
+				<img data-gallery-image src="" alt="" class="w-full rounded" />
+				<p data-gallery-caption class="t-body text-muted hidden"></p>
+			</form>
+		</dialog>
+	</section>
+)}
+
+<script define:vars={{ images, galleryId }}>
+	const dialog = document.getElementById(galleryId);
+	const img = dialog?.querySelector("[data-gallery-image]");
+	const caption = dialog?.querySelector("[data-gallery-caption]");
+
+	document.querySelectorAll(`[data-gallery-open="${galleryId}"]`).forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const index = Number(btn.getAttribute("data-trigger-index"));
+			const item = images[index];
+			if (!dialog || !img || !item) return;
+			dialog.dataset.triggerIndex = String(index);
+			img.src = item.src;
+			img.alt = item.alt;
+			if (caption) {
+				if (item.caption) {
+					caption.textContent = item.caption;
+					caption.classList.remove("hidden");
+				} else {
+					caption.textContent = "";
+					caption.classList.add("hidden");
+				}
+			}
+			dialog.showModal();
+		});
+	});
+
+	dialog?.addEventListener("close", () => {
+		const index = dialog.dataset.triggerIndex;
+		if (index == null) return;
+		const trigger = document.querySelector(
+			`[data-gallery-open="${galleryId}"][data-trigger-index="${index}"]`,
+		);
+		trigger?.focus();
+	});
+</script>
