@@ -16,12 +16,16 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.9",
+		"@astrojs/mdx": "^6.0.3",
+		"@astrojs/node": "^10.1.4",
 		"@astrojs/sitemap": "^3.7.3",
 		"@fontsource/source-serif-4": "^5.2.9",
 		"@fontsource/syne": "^5.2.7",
 		"@fontsource/victor-mono": "^5.2.8",
 		"@jdevalk/astro-seo-graph": "^2.0.0",
 		"@jdevalk/seo-graph-core": "^0.6.2",
+		"@keystatic/astro": "^5.1.0",
+		"@keystatic/core": "^0.5.50",
 		"astro": "^6.4.7",
 		"typescript": "^6.0.3"
 	},

@@ -1,5 +1,8 @@
 // @ts-check
 
+import mdx from "@astrojs/mdx";
+import node from "@astrojs/node";
+import keystatic from "@keystatic/astro";
 import sitemap from "@astrojs/sitemap";
 import seoGraph from "@jdevalk/astro-seo-graph/integration";
 import { defineConfig, fontProviders } from "astro/config";
@@ -9,7 +12,10 @@ import UnoCSS from "unocss/astro";
 export default defineConfig({
 	site: "https://dekamus.fr",
 	output: "static",
+	adapter: node({ mode: "standalone" }),
 	integrations: [
+		mdx(),
+		keystatic(),
 		sitemap({ entryLimit: 1000 }),
 		seoGraph({
 			validateH1: true,
