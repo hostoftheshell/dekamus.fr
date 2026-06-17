@@ -4,7 +4,7 @@ import MemberShell from "@components/layout/MemberShell.astro";
 import { mdxComponents } from "@components/mdx";
 import { buildMemberNav } from "@config/content/navigation";
 import { getMembers } from "@config/content/members";
-import { reader } from "../../keystatic/reader";
+import type { MDXContent } from "astro";
 import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
@@ -20,18 +20,22 @@ const members = await getMembers();
 const memberNavItems = buildMemberNav(members);
 const currentPath = Astro.url.pathname;
 
-const entry = await reader.collections.membres.read(member.slug);
-const bioEntry = entry ? await entry.bio() : null;
-const BioContent = bioEntry?.content;
+const bioModules = import.meta.glob<{ default: MDXContent }>(
+	"../../../content/membres/*/bio.mdx",
+);
+const bioLoader =
+	bioModules[`../../../content/membres/${member.slug}/bio.mdx`];
+const BioModule = bioLoader ? await bioLoader() : null;
+const BioContent = BioModule?.default ?? null;
 ---
 
 <Layout title={member.title} description={member.description}>
 	<MemberShell {member} {memberNavItems} {currentPath}>
 		<MemberCoordonnees slot="coordonnees" coordonnees={member.coordonnees} />
-		{bioEntry && (
+		{BioContent && (
 			<section slot="bio" class="stack-md" aria-labelledby="bio-heading">
 				<h2 id="bio-heading" class="t-h3">Bio</h2>
-				{BioContent && <BioContent components={mdxComponents} />}
+				<BioContent components={mdxComponents} />
 			</section>
 		)}
 	</MemberShell>
