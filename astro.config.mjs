@@ -2,6 +2,7 @@
 
 import mdx from "@astrojs/mdx";
 import node from "@astrojs/node";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import seoGraph from "@jdevalk/astro-seo-graph/integration";
 import keystatic from "@keystatic/astro";
@@ -20,7 +21,7 @@ export default defineConfig({
 	...(enableKeystatic ? { adapter: node({ mode: "standalone" }) } : {}),
 	integrations: [
 		mdx(),
-		...(enableKeystatic ? [keystatic()] : []),
+		...(enableKeystatic ? [react(), keystatic()] : []),
 		sitemap({ entryLimit: 1000 }),
 		seoGraph({
 			validateH1: true,

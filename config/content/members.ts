@@ -1,24 +1,9 @@
 /* config/content/members.ts */
 
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import type { Member, MemberCoordonnees, MemberProfile } from "@config/types";
-import matter from "gray-matter";
 import { reader } from "../../src/keystatic/reader";
 
 let membersCache: Member[] | null = null;
-
-async function readCoordonneesFrontmatter(
-	slug: string,
-): Promise<Record<string, unknown> | null> {
-	try {
-		const path = join(process.cwd(), "content/membres", slug, "coordonnees.md");
-		const raw = await readFile(path, "utf8");
-		return matter(raw).data as Record<string, unknown>;
-	} catch {
-		return null;
-	}
-}
 
 function toMemberProfile(
 	slug: string,
@@ -68,9 +53,10 @@ export async function getMembers(): Promise<Member[]> {
 	const slugs = await reader.collections.membres.list();
 	const members = await Promise.all(
 		slugs.map(async (slug) => {
-			const data = await readCoordonneesFrontmatter(slug);
-			if (!data) return null;
+			const entry = await reader.collections.membres.read(slug);
+			if (!entry) return null;
 
+			const data = entry as Record<string, unknown>;
 			const profile = toMemberProfile(slug, data);
 
 			return {

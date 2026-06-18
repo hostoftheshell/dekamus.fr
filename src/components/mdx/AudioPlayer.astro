@@ -1,6 +1,9 @@
 ---
 // SYNC WITH keystatic.config.ts → mdxComponentBlocks.AudioPlayer
-import { extractAudioEmbedUrl } from "@utils/media/normalizeEmbed";
+import {
+	audioEmbedHeight,
+	extractAudioEmbedUrl,
+} from "@utils/media/normalizeEmbed";
 
 interface Props {
 	platform:
@@ -31,21 +34,29 @@ const embed =
 			)
 		: null;
 const iframeSrc = embed?.valid ? embed.value : "";
+const iframeHeight = isEmbed ? audioEmbedHeight(platform) : 0;
 ---
 
 <figure class="stack-sm">
 	{isEmbed && iframeSrc ? (
-		<iframe
-			class="w-full min-h-40 rounded border-0"
-			src={iframeSrc}
-			title={title}
-			loading="lazy"
-			allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-		/>
+		<div
+			class="w-full overflow-hidden rounded"
+			style={`height: ${iframeHeight}px`}
+		>
+			<iframe
+				class="h-full w-full border-0"
+				src={iframeSrc}
+				title={title}
+				width="100%"
+				height={iframeHeight}
+				loading="eager"
+				referrerpolicy="strict-origin-when-cross-origin"
+				allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+				allowfullscreen
+			/>
+		</div>
 	) : !isEmbed && src ? (
-		<audio class="w-full" controls preload="metadata" src={src}>
-			<track kind="captions" />
-		</audio>
+		<audio class="w-full" controls preload="metadata" src={src} />
 	) : (
 		<p class="t-body text-muted">Source audio invalide.</p>
 	)}

@@ -76,3 +76,17 @@ export function extractAudioEmbedUrl(
 		return { valid: false, reason: "invalid URL" };
 	}
 }
+
+/** Fixed iframe heights — required for cross-browser embed rendering (esp. Firefox). */
+export function audioEmbedHeight(
+	platform: "spotify" | "deezer" | "soundcloud" | "radio-france" | "arte",
+): number {
+	const heights = {
+		spotify: 152,
+		deezer: 92,
+		soundcloud: 166,
+		"radio-france": 144,
+		arte: 375,
+	} as const;
+	return heights[platform];
+}

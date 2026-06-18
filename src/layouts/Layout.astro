@@ -21,14 +21,11 @@ const currentPath = Astro.url.pathname;
 		<main class="h-100dvh flex flex-col">
 			<slot />
 		</main>
-		<main class="h-100dvh flex flex-col">
-			<slot />
-		</main>
-		<footer class="w-full border-t border-faint mt-auto">
+		<!-- <footer class="w-full border-t border-faint mt-auto">
 			<div class="container-wide py-6">
 				<FooterNav {currentPath} />
 				<LegalNav {currentPath} />
 			</div>
-		</footer>
+		</footer> -->
 	</body>
 </html>

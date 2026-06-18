@@ -5,11 +5,11 @@
 // TODO: activer Git LFS sur public/videos/ et public/audio/ avant bascule GitHub.
 // Bascule github : nécessite GitHub App + repo + branch (pas seulement des env vars).
 //
-// Pas de format.contentField : avec path */ et champs document+mdx séparés, le seed
-// manuel (index.yaml + coordonnees.md + bio.mdx) est découvert par le reader ; le
-// loader Task 6 parse le frontmatter de coordonnees.md (voir audit Task 2).
+// Pas de format.contentField : champs structurés dans index.yaml, bio dans bio.mdx.
+// Le loader lit index.yaml via le reader Keystatic (voir config/content/members.ts).
 
-import { collection, component, config, fields } from "@keystatic/core";
+import { collection, config, fields } from "@keystatic/core";
+import { block } from "@keystatic/core/content-components";
 
 const imageDirectory = "public/images/membres";
 const imagePublicPath = "/images/membres/";
@@ -56,7 +56,7 @@ const coordonneesSchema = {
 };
 
 const mdxComponentBlocks = {
-	VideoEmbed: component({
+	VideoEmbed: block({
 		label: "Vidéo",
 		schema: {
 			platform: fields.select({
@@ -76,7 +76,7 @@ const mdxComponentBlocks = {
 			title: fields.text({ label: "Titre accessible" }),
 		},
 	}),
-	AudioPlayer: component({
+	AudioPlayer: block({
 		label: "Audio",
 		schema: {
 			platform: fields.select({
@@ -98,7 +98,7 @@ const mdxComponentBlocks = {
 			title: fields.text({ label: "Titre accessible" }),
 		},
 	}),
-	Carousel: component({
+	Carousel: block({
 		label: "Carrousel",
 		schema: {
 			images: fields.array(
@@ -116,7 +116,7 @@ const mdxComponentBlocks = {
 			),
 		},
 	}),
-	MiniGallery: component({
+	MiniGallery: block({
 		label: "Mini galerie",
 		schema: {
 			columns: fields.integer({
@@ -149,10 +149,7 @@ export default config({
 			slugField: "slug",
 			path: "content/membres/*/",
 			schema: {
-				coordonnees: fields.document({
-					label: "Coordonnées",
-					schema: coordonneesSchema,
-				}),
+				...coordonneesSchema,
 				bio: fields.mdx({
 					label: "Bio",
 					options: {
@@ -160,8 +157,8 @@ export default config({
 							directory: imageDirectory,
 							publicPath: imagePublicPath,
 						},
-						components: mdxComponentBlocks,
 					},
+					components: mdxComponentBlocks,
 				}),
 			},
 		}),
