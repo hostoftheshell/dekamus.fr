@@ -14,8 +14,31 @@ import UnoCSS from "unocss/astro";
 // l'intégration et les routes SSR /keystatic/* — voir docs/superpowers/audits/
 const enableKeystatic = process.env.SKIP_KEYSTATIC !== "true";
 
+/** Pre-bundle Keystatic UI at dev startup to avoid 504 Outdated Optimize Dep on /keystatic. */
+const keystaticViteConfig = enableKeystatic
+	? {
+			vite: {
+				optimizeDeps: {
+					include: [
+						"@keystatic/core/ui",
+						"@keystatic/astro/ui",
+						"@keystatic/astro/api",
+					],
+				},
+			},
+		}
+	: {};
+
 // https://astro.build/config
 export default defineConfig({
+	markdown: {
+		shikiConfig: {
+			themes: {
+				light: "catppuccin-mocha",
+				dark: "catppuccin-frappe",
+			},
+		},
+	},
 	site: "https://dekamus.fr",
 	output: "static",
 	...(enableKeystatic ? { adapter: node({ mode: "standalone" }) } : {}),
@@ -38,6 +61,7 @@ export default defineConfig({
 		UnoCSS(),
 	],
 	trailingSlash: "ignore",
+	...keystaticViteConfig,
 	build: {
 		format: "directory",
 	},

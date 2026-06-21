@@ -3,7 +3,7 @@ import Logo from "@components/logo/Logo.astro";
 import ThemeToggle from "@components/utils/ThemeToggle.astro";
 ---
 
-<header class="site-header is-at-top sticky top-0 z-50 w-full">
+<header class="site-header is-at-top fixed inset-x-0 top-0 z-50 w-full">
 	<div class="site-header-inner p-4 transition-transform duration-600 ease-out">
 		<span class="header-mobile-bg md:hidden" aria-hidden="true"></span>
 		<div
@@ -163,132 +163,39 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 
 	// --- Scroll ---
 
-	function isBgTransition(e: TransitionEvent): boolean {
+	function isMobileNavOpen(header: HTMLElement): boolean {
 		return (
-			e.propertyName === "background-color" ||
-			e.propertyName === "backdrop-filter"
+			header.classList.contains("is-nav-open") ||
+			document.querySelector(".nav-mobile.is-open") !== null
 		);
 	}
 
-	function getScrollBgTarget(pillHost: HTMLElement): HTMLElement {
-		if (DESKTOP_MQ.matches) return pillHost;
-		return document.querySelector<HTMLElement>(".header-mobile-bg") ?? pillHost;
+	function syncHeaderHeight(header: HTMLElement) {
+		document.documentElement.style.setProperty(
+			"--site-header-height",
+			`${header.offsetHeight}px`,
+		);
 	}
 
-	function initScroll(header: HTMLElement, pillHost: HTMLElement) {
-		const headerInner =
-			header.querySelector<HTMLElement>(".site-header-inner") ?? header;
+	function initScroll(header: HTMLElement) {
 		let lastScrollY = window.scrollY;
 		let ticking = false;
-		let isHiding = false;
-		let onBgEnd: ((e: TransitionEvent) => void) | null = null;
-		let onTransformEnd: ((e: TransitionEvent) => void) | null = null;
-
-		let bgTarget = getScrollBgTarget(pillHost);
-
-		function cancelPendingTransitions() {
-			if (onBgEnd) {
-				bgTarget.removeEventListener("transitionend", onBgEnd);
-				onBgEnd = null;
-			}
-			if (onTransformEnd) {
-				headerInner.removeEventListener("transitionend", onTransformEnd);
-				onTransformEnd = null;
-			}
-			isHiding = false;
-		}
-
-		function startHideSequence() {
-			if (header.classList.contains("is-header-hidden") || isHiding) return;
-
-			cancelPendingTransitions();
-
-			const finishHide = () => {
-				header.classList.add("is-header-hidden");
-				isHiding = false;
-				if (onBgEnd) {
-					bgTarget.removeEventListener("transitionend", onBgEnd);
-					onBgEnd = null;
-				}
-			};
-
-			if (
-				REDUCED_MOTION_MQ.matches ||
-				!header.classList.contains("is-scrolled")
-			) {
-				header.classList.remove("is-scrolled");
-				finishHide();
-				return;
-			}
-
-			isHiding = true;
-			header.classList.remove("is-scrolled");
-
-			bgTarget = getScrollBgTarget(pillHost);
-			onBgEnd = (e: TransitionEvent) => {
-				if (e.target !== bgTarget || !isBgTransition(e)) return;
-				finishHide();
-			};
-			bgTarget.addEventListener("transitionend", onBgEnd);
-		}
-
-		function startShowSequence() {
-			cancelPendingTransitions();
-			header.classList.remove("is-header-hidden");
-
-			const finishShow = () => {
-				if (window.scrollY > BG_THRESHOLD) {
-					header.classList.add("is-scrolled");
-				}
-				if (onTransformEnd) {
-					headerInner.removeEventListener("transitionend", onTransformEnd);
-					onTransformEnd = null;
-				}
-			};
-
-			if (REDUCED_MOTION_MQ.matches) {
-				finishShow();
-				return;
-			}
-
-			onTransformEnd = (e: TransitionEvent) => {
-				if (e.target !== headerInner || e.propertyName !== "transform") return;
-				finishShow();
-			};
-			headerInner.addEventListener("transitionend", onTransformEnd);
-		}
 
 		function applyScrollState() {
 			const scrollY = window.scrollY;
-			const scrollingDown = scrollY > lastScrollY;
-			const scrollingUp = scrollY < lastScrollY;
+			const scrollDelta = scrollY - lastScrollY;
+			const scrollingDown = scrollDelta > 0;
+			const scrollingUp = scrollDelta < 0;
 			const atTop = scrollY <= BG_THRESHOLD;
+			const navOpen = isMobileNavOpen(header);
 
 			header.classList.toggle("is-at-top", atTop);
+			header.classList.toggle("is-scrolled", scrollY > BG_THRESHOLD);
 
-			if (atTop) {
-				cancelPendingTransitions();
-				header.classList.remove("is-header-hidden", "is-scrolled");
-				lastScrollY = scrollY;
-				ticking = false;
-				return;
-			}
-
-			if (scrollingUp) {
-				if (header.classList.contains("is-header-hidden")) {
-					startShowSequence();
-				} else {
-					cancelPendingTransitions();
-					header.classList.toggle("is-scrolled", scrollY > BG_THRESHOLD);
-				}
-			} else if (
-				scrollingDown &&
-				scrollY > HIDE_THRESHOLD &&
-				!header.classList.contains("is-header-hidden")
-			) {
-				startHideSequence();
-			} else if (!isHiding && !header.classList.contains("is-header-hidden")) {
-				header.classList.add("is-scrolled");
+			if (atTop || scrollingUp) {
+				header.classList.remove("is-header-hidden");
+			} else if (scrollingDown && scrollY > HIDE_THRESHOLD && !navOpen) {
+				header.classList.add("is-header-hidden");
 			}
 
 			lastScrollY = scrollY;
@@ -302,11 +209,17 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 			}
 		}
 
+		function onResize() {
+			syncHeaderHeight(header);
+		}
+
+		syncHeaderHeight(header);
 		applyScrollState();
 		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onResize);
 		addCleanup(() => {
-			cancelPendingTransitions();
 			window.removeEventListener("scroll", onScroll);
+			window.removeEventListener("resize", onResize);
 		});
 	}
 
@@ -317,7 +230,7 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 		const pillHost = document.querySelector<HTMLElement>(".header-pill-host");
 		if (!header || !pillHost) return;
 
-		initScroll(header, pillHost);
+		initScroll(header);
 		initPill();
 	}
 
@@ -331,6 +244,10 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 	transition:
 		background-color 200ms ease,
 		backdrop-filter 200ms ease;
+}
+
+:global(body) {
+	padding-top: var(--site-header-height, 0px);
 }
 
 .header-mobile-bg {
@@ -370,10 +287,6 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 }
 
 @media (max-width: 767px) {
-	.site-header {
-		position: relative;
-	}
-
 	.site-header.is-scrolled .header-pill-host {
 		background-color: transparent;
 		backdrop-filter: none;
@@ -400,14 +313,18 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 	}
 }
 
-.site-header.is-header-hidden .site-header-inner {
-	transform: translateY(-100%);
-}
-
 @media (prefers-reduced-motion: reduce) {
 	.site-header-inner {
 		transition: none;
 	}
+}
+
+.site-header.is-header-hidden {
+	pointer-events: none;
+}
+
+.site-header.is-header-hidden .site-header-inner {
+	transform: translateY(-100%);
 }
 
 :global(.nav-highlight) {

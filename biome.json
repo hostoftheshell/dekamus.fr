@@ -7,7 +7,15 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!dist", "!.astro", "!.vscode", "!.env", "!node_modules"]
+		"includes": [
+			"**",
+			"!dist",
+			"!.astro",
+			"!.vscode",
+			"!.env",
+			"!node_modules",
+			"!.worktrees"
+		]
 	},
 	"formatter": {
 		"enabled": true,

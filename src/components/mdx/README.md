@@ -5,7 +5,7 @@ Contraintes `bio.mdx` : pas d'imports internes, pas de HTML brut (limitation Key
 | Keystatic block | Composant Astro | Props |
 |----------------|-----------------|-------|
 | `VideoEmbed` | `VideoEmbed.astro` | `platform`, `url`, `src`, `title` |
-| `AudioPlayer` | `AudioPlayer.astro` | `platform`, `embedUrl`, `src`, `title` |
+| `AudioPlayer` | `AudioPlayer.astro` | `platform`, `embedUrl`, `src`, `title`, `vttSrc?`, `transcriptUrl?` |
 | `Carousel` | `Carousel.astro` | `images[]`, `id?` |
 | `MiniGallery` | `MiniGallery.astro` | `images[]`, `columns?` |
 

@@ -1,44 +1,22 @@
 Voici quelques exemples de syntaxe Markdown de base et leurs effets stylistiques.
 
-
-
 ## Titres
 
-Pour créer des titres, ajoutez le symbole dièse `#` devant un mot ou une expression. Le nombre de dièses utilisés doit correspondre au niveau du titre.
-
-### Syntaxe
-
-```
 # Titre 1
-## Titre 2
-### Titre 3
-#### Titre 4
-##### Titre 5
-###### Titre 6
-```
 
-### Rendu
-
-# Titre 1
 ## Titre 2
+
 ### Titre 3
+
 #### Titre 4
+
 ##### Titre 5
+
 ###### Titre 6
 
 ## Paragraphes
 
 Pour créer des paragraphes, utilisez une ligne vide pour séparer une ou plusieurs lignes de texte.
-
-### Syntaxe
-
-```
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
-
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
-```
-
-### Rendu
 
 Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
 
@@ -58,7 +36,8 @@ Pour ajouter des images, ajoutez un point d'exclamation `!`, suivi d'un texte al
 
 ### Rendu
 
-![Description de l'image](https://image.radishzz.cc/picsmaller/03.webp)
+!\[Description de l'image]\([https://image.radishzz.cc/picsmaller/03.webp](https://image.radishzz.cc/picsmaller/03.webp))\
+!\[Description de l'image]\([https://image.radishzz.cc/picsmaller/03.webp](https://image.radishzz.cc/picsmaller/03.webp))
 
 ## Citations
 
@@ -78,7 +57,7 @@ Pour créer des citations en bloc, ajoutez le symbole `>` et un espace avant le 
 
 > Tiam, ad mint andaepu dandae nostion secatur sequo quae.
 >
-> **Notez** que vous pouvez utiliser la syntaxe _Markdown_ à l'intérieur d'une citation.
+> **Notez** que vous pouvez utiliser la syntaxe *Markdown* à l'intérieur d'une citation.
 
 ### Citation avec sources
 
@@ -96,52 +75,18 @@ Pour créer des citations en bloc, ajoutez le symbole `>` et un espace avant le 
 
 > Ne communiquez pas en partageant la mémoire, partagez la mémoire en communiquant.
 >
-> — <cite>Rob Pike[^1]</cite>
+> — \<cite>Rob Pike\[^1]\</cite>
 
-[^1]: La citation ci-dessus est extraite de la [conférence](https://www.youtube.com/watch?v=PAAkCSZUG1c) de Rob Pike lors du Gopherfest, le 18 novembre 2015.
+\[^1]: La citation ci-dessus est extraite de la [conférence](https://www.youtube.com/watch?v=PAAkCSZUG1c) de Rob Pike lors du Gopherfest, le 18 novembre 2015.
 
 ## Tableaux
 
-Pour ajouter des tableaux, utilisez trois tirets ou plus `---` pour créer l'en-tête de chaque colonne, et des barres verticales `|` pour séparer les colonnes.
-
-### Syntaxe
-
-```markdown
-| Italique  | Gras     | Code   |
-| --------- | -------- | ------ |
-| _italique_ | **gras** | `code` |
-| _italique_ | **gras** | `code` |
-```
-
-### Rendu
-
-| Italique  | Gras     | Code   |
-| --------- | -------- | ------ |
-| _italique_ | **gras** | `code` |
-| _italique_ | **gras** | `code` |
+| Italique   | Gras     | Code   |
+| ---------- | -------- | ------ |
+| *italique* | **gras** | `code` |
+| *italique* | **gras** | `code` |
 
 ## Blocs de code
-
-Pour créer des blocs de code, entourez votre code de trois accents graves ` ``` `. Vous pouvez indiquer le langage de programmation utilisé après les accents graves d'ouverture pour définir la coloration et le style du code, par exemple html, javascript, css, markdown, etc.
-
-### Syntaxe
-
-````
-```html
-<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title>Exemple de document HTML5</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
-```
-````
-
-### Rendu
 
 ```html
 <!doctype html>
@@ -160,59 +105,27 @@ Pour créer des blocs de code, entourez votre code de trois accents graves ` ```
 
 ### Liste ordonnée
 
-#### Syntaxe
-
-```markdown
-1. Premier élément
-2. Deuxième élément
-3. Troisième élément
-```
-
-#### Rendu
-
 1. Premier élément
 2. Deuxième élément
 3. Troisième élément
 
 ### Liste non ordonnée
 
-#### Syntaxe
-
-```markdown
-- Élément de liste
-- Autre élément
-- Et un autre élément
-```
-
-#### Rendu
-
-- Élément de liste
-- Autre élément
-- Et un autre élément
+* Élément de liste
+* Autre élément
+* Et un autre élément
 
 ### Liste imbriquée
 
-#### Syntaxe
-
-```markdown
-- Fruits
-  - Pomme
-  - Orange
-  - Banane
-- Produits laitiers
-  - Lait
-  - Fromage
-```
-
-#### Rendu
-
-- Fruits
-  - Pomme
-  - Orange
-  - Banane
-- Produits laitiers
-  - Lait
-  - Fromage
+* Fruits
+  * Pomme
+  * Orange
+  * Banane
+* Produits laitiers
+  * Lait
+  * Fromage
+    * Kiri
+    * Tome de Savoie
 
 ## Autres éléments
 
@@ -242,8 +155,12 @@ Utilisez trois tirets `---` ou la balise `<hr>` pour créer une règle horizonta
 
 ### Rendu
 
-
-
 Utilisez trois tirets `---` ou la balise `<hr>` pour créer une règle horizontale comme ci-dessous.
 
 ---
+
+<AudioPlayer platform="spotify" embedUrl="https://open.spotify.com/embed/track/2mbVgHb5IgUnckIf5TTJjK?utm_source=generator&theme=0&si=edae14739ce446af" title="this is agriculture" />
+
+<AudioPlayer platform="deezer" embedUrl="https://widget.deezer.com/widget/dark/playlist/1479458365" title="test" />
+
+\<iframe title="deezer-widget" src="https\://widget.deezer.com/widget/dark/playlist/1479458365" width="100%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write">\</iframe>

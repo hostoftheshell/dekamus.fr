@@ -1,0 +1,30 @@
+slug: testRenduMdx
+name: Test Mdx
+role: develop
+title: tmp
+description: tmp
+titleNav: Test Mdx
+email: mdx.test@fake.com
+phone: 06 07 08 09 10
+address:
+  street: 740 boulevard Barbe Noire
+  postalCode: '58230'
+  city: Naboo
+socialLinks:
+  - label: bluesky
+    url: https://bsky.app/profile/mahtowin1.bsky.social
+  - label: facebook
+    url: https://www.facebook.com/
+  - label: flickr
+    url: https://www.flickr.com/
+  - label: github
+    url: https://github.com/themimitoof
+  - label: instagram
+    url: https://www.instagram.com/toofman_
+  - label: mastodon
+    url: https://mastodon.social/@BjornW
+  - label: vimeo
+    url: https://vimeo.com/fr
+websites:
+  - label: site personnel
+    url: https://remijennequin.onfabrik.com

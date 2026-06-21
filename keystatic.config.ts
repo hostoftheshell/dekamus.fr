@@ -96,6 +96,12 @@ const mdxComponentBlocks = {
 				label: "Chemin public MP3 (ex. /audio/membres/foo.mp3)",
 			}),
 			title: fields.text({ label: "Titre accessible" }),
+			vttSrc: fields.text({
+				label: "Chemin public WebVTT (ex. /audio/membres/foo.vtt, audio hébergé uniquement)",
+			}),
+			transcriptUrl: fields.url({
+				label: "URL transcription textuelle (optionnel, tous types d'audio)",
+			}),
 		},
 	}),
 	Carousel: block({

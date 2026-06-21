@@ -16,9 +16,18 @@ interface Props {
 	embedUrl?: string;
 	src?: string;
 	title?: string;
+	vttSrc?: string;
+	transcriptUrl?: string;
 }
 
-const { platform, embedUrl = "", src = "", title = "Audio" } = Astro.props;
+const {
+	platform,
+	embedUrl = "",
+	src = "",
+	title = "Audio",
+	vttSrc,
+	transcriptUrl,
+} = Astro.props;
 
 const isEmbed = platform !== "hosted";
 const embed =
@@ -37,7 +46,7 @@ const iframeSrc = embed?.valid ? embed.value : "";
 const iframeHeight = isEmbed ? audioEmbedHeight(platform) : 0;
 ---
 
-<figure class="stack-sm">
+<figure class="audio-player stack-sm">
 	{isEmbed && iframeSrc ? (
 		<div
 			class="w-full overflow-hidden rounded"
@@ -55,9 +64,56 @@ const iframeHeight = isEmbed ? audioEmbedHeight(platform) : 0;
 				allowfullscreen
 			/>
 		</div>
+	) : !isEmbed && src && vttSrc ? (
+		<>
+			<audio class="w-full" controls preload="metadata" src={src}>
+				<track
+					kind="captions"
+					src={vttSrc}
+					srclang="fr"
+					label="Français"
+					default
+				/>
+			</audio>
+			<div
+				class="audio-captions t-body min-h-[1.5em] text-muted"
+				aria-live="polite"
+			/>
+		</>
 	) : !isEmbed && src ? (
+		// biome-ignore lint/a11y/useMediaCaption: vttSrc and transcriptUrl are optional editorial fields
 		<audio class="w-full" controls preload="metadata" src={src} />
 	) : (
 		<p class="t-body text-muted">Source audio invalide.</p>
 	)}
+
+	{transcriptUrl && (
+		<figcaption class="t-body text-muted">
+			<a href={transcriptUrl} target="_blank" rel="noopener noreferrer">
+				Transcription textuelle
+			</a>
+		</figcaption>
+	)}
 </figure>
+
+<script>
+document.querySelectorAll("figure.audio-player audio").forEach((element) => {
+	if (!(element instanceof HTMLAudioElement)) return;
+	const audio = element;
+	if (!audio.querySelector("track")) return;
+	const captions = audio.closest("figure")?.querySelector(".audio-captions");
+	if (!captions) return;
+	const track = audio.textTracks[0];
+	if (!track) return;
+	track.mode = "showing";
+	track.addEventListener("cuechange", () => {
+		const cue = track.activeCues?.[0];
+		captions.textContent = cue instanceof VTTCue ? cue.text : "";
+	});
+});
+</script>
+
+
+<style>
+
+</style>

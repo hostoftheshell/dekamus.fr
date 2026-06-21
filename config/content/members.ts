@@ -2,6 +2,14 @@
 
 import type { Member, MemberCoordonnees, MemberProfile } from "@config/types";
 import { reader } from "../../src/keystatic/reader";
+import {
+	optionalString,
+	parseAddress,
+	parseEmail,
+	parseLinks,
+	parsePhone,
+	requiredString,
+} from "./parse";
 
 let membersCache: Member[] | null = null;
 
@@ -11,39 +19,24 @@ function toMemberProfile(
 ): MemberProfile {
 	return {
 		slug,
-		name: String(data.name ?? ""),
-		role: String(data.role ?? ""),
-		title: String(data.title ?? ""),
-		description: String(data.description ?? ""),
-		titleNav: data.titleNav ? String(data.titleNav) : undefined,
+		name: requiredString(data.name, "member.name", slug),
+		role: requiredString(data.role, "member.role", slug),
+		title: requiredString(data.title, "member.title", slug),
+		description: requiredString(data.description, "member.description", slug),
+		titleNav: optionalString(data.titleNav, "member.titleNav", slug),
 	};
 }
 
-function toCoordonnees(data: Record<string, unknown>): MemberCoordonnees {
-	const address = (data.address ?? {}) as Record<string, string>;
-	const socialLinks = Array.isArray(data.socialLinks)
-		? data.socialLinks.map((link: Record<string, string>) => ({
-				label: String(link.label ?? ""),
-				url: String(link.url ?? ""),
-			}))
-		: [];
-	const websites = Array.isArray(data.websites)
-		? data.websites.map((site: Record<string, string>) => ({
-				label: String(site.label ?? ""),
-				url: String(site.url ?? ""),
-			}))
-		: [];
-
+function toCoordonnees(
+	slug: string,
+	data: Record<string, unknown>,
+): MemberCoordonnees {
 	return {
-		email: String(data.email ?? ""),
-		phone: String(data.phone ?? ""),
-		address: {
-			street: String(address.street ?? ""),
-			postalCode: String(address.postalCode ?? ""),
-			city: String(address.city ?? ""),
-		},
-		socialLinks,
-		websites,
+		email: parseEmail(data.email, "member.email", slug),
+		phone: parsePhone(data.phone, "member.phone", slug),
+		address: parseAddress(data.address, "member.address", slug),
+		socialLinks: parseLinks(data.socialLinks, "member.socialLinks", slug),
+		websites: parseLinks(data.websites, "member.websites", slug),
 	};
 }
 
@@ -61,7 +54,7 @@ export async function getMembers(): Promise<Member[]> {
 
 			return {
 				...profile,
-				coordonnees: toCoordonnees(data),
+				coordonnees: toCoordonnees(slug, data),
 			} satisfies Member;
 		}),
 	);

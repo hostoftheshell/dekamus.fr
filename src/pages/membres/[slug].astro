@@ -34,7 +34,9 @@ const BioContent = BioModule?.default ?? null;
 		{BioContent && (
 			<section slot="bio" class="stack-md" aria-labelledby="bio-heading">
 				<h2 id="bio-heading" class="t-h3">Bio</h2>
-				<BioContent components={mdxComponents} />
+				<div class="markdown">
+					<BioContent components={mdxComponents} />
+				</div>
 			</section>
 		)}
 	</MemberShell>
