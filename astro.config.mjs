@@ -20,6 +20,9 @@ const keystaticViteConfig = enableKeystatic
 			vite: {
 				optimizeDeps: {
 					include: [
+						"react",
+						"react-dom/client",
+						"react/jsx-runtime",
 						"@keystatic/core/ui",
 						"@keystatic/astro/ui",
 						"@keystatic/astro/api",

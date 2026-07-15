@@ -1,0 +1,184 @@
+/* src/styles/hostedMediaPlayer.css — shared audio/video hosted player chrome */
+
+.hosted-player__chrome {
+	background: var(--color-bgCard);
+	border: 1px solid color-mix(in oklch, var(--color-muted) 18%, transparent);
+	border-radius: var(--radius-sm);
+	display: flex;
+	align-items: center;
+	gap: var(--sp-3);
+	padding: var(--sp-3) var(--sp-4);
+}
+
+.media-embed-frame {
+	overflow: hidden;
+	width: 100%;
+	border-radius: var(--radius-sm);
+	background: var(--color-bgCard);
+	border: 1px solid
+		light-dark(
+			color-mix(in oklch, var(--color-muted) 18%, transparent),
+			color-mix(in oklch, var(--color-faint) 28%, transparent)
+		);
+}
+
+.media-embed-frame iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	border-radius: inherit;
+}
+
+.media-embed-frame--video {
+	background: light-dark(transparent, oklch(18% 0.008 264deg));
+	color-scheme: light dark;
+}
+
+.media-embed-frame--video iframe {
+	background: transparent;
+}
+
+.media-embed-frame--vimeo {
+	border: 0;
+}
+
+:root[data-theme="dark"] .media-embed-frame--vimeo {
+	border: 1px solid color-mix(in oklch, var(--color-faint) 28%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root[data-theme="auto"] .media-embed-frame--vimeo {
+		border: 1px solid
+			color-mix(in oklch, var(--color-faint) 28%, transparent);
+	}
+}
+
+.media-embed-frame--audio {
+	background: transparent;
+	border: 0;
+	color-scheme: light;
+}
+
+.hosted-player__timeline {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--sp-2);
+	flex: 1;
+	min-width: 0;
+}
+
+.hosted-player__play,
+.hosted-player__mute {
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	padding: 0;
+	border: none;
+	cursor: pointer;
+	color: var(--color-accent);
+	background: transparent;
+}
+
+.hosted-player__play {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 9999px;
+	background: var(--color-highlight);
+}
+
+.hosted-player__mute {
+	width: 2rem;
+	height: 2rem;
+	border-radius: var(--radius-sm);
+}
+
+.hosted-player__play:focus-visible,
+.hosted-player__mute:focus-visible,
+.hosted-player__seek:focus-visible {
+	outline: 1px solid var(--color-accent);
+	outline-offset: 2px;
+}
+
+.hosted-player__time {
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	color: var(--color-faint);
+}
+
+.hosted-player__seek {
+	width: 100%;
+	height: 1.25rem;
+	margin: 0;
+	padding: 0;
+	accent-color: var(--color-accent);
+	--buffered-width: 0%;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.hosted-player__seek::-webkit-slider-runnable-track {
+	height: 3px;
+	border-radius: 9999px;
+	background: linear-gradient(
+		to right,
+		color-mix(in oklch, var(--color-accent) 35%, transparent)
+			var(--buffered-width),
+		color-mix(in oklch, var(--color-faint) 40%, transparent)
+			var(--buffered-width)
+	);
+}
+
+.hosted-player__seek::-webkit-slider-thumb {
+	appearance: none;
+	box-sizing: border-box;
+	width: 14px;
+	height: 14px;
+	margin-top: -5.5px;
+	border: 1px solid var(--color-accent);
+	border-radius: 9999px;
+	background: var(--color-bgCard);
+}
+
+.hosted-player__seek::-moz-range-track {
+	height: 3px;
+	border-radius: 9999px;
+	background: color-mix(in oklch, var(--color-faint) 40%, transparent);
+}
+
+.hosted-player__seek::-moz-range-progress {
+	height: 3px;
+	border-radius: 9999px;
+	background: var(--color-accent);
+}
+
+.hosted-player__seek::-moz-range-thumb {
+	box-sizing: border-box;
+	width: 14px;
+	height: 14px;
+	border: 1px solid var(--color-accent);
+	border-radius: 9999px;
+	background: var(--color-bgCard);
+	cursor: pointer;
+}
+
+@media (max-width: 479px) {
+	.hosted-player__chrome {
+		flex-wrap: wrap;
+		row-gap: var(--sp-2);
+	}
+
+	.hosted-player__timeline {
+		flex: 1 1 calc(100% - 3.5rem);
+		min-width: 12rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hosted-player__seek::-webkit-slider-thumb,
+	.hosted-player__seek::-moz-range-thumb {
+		transition: none;
+	}
+}

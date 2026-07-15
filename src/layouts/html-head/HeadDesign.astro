@@ -4,6 +4,7 @@ import ColorStyles from "@components/utils/ColorsCSSVars.astro";
 import { borderRadiusToCSSVars } from "@config/design/borderRadius";
 import { ColorData } from "@config/design/colors";
 import { spacingToCSSVars } from "@config/design/spacing";
+import { EMBED_THEME_BOOT_SCRIPT } from "@utils/media/embedThemeBootScript";
 
 const defaultMode = ColorData.colors.mode;
 
@@ -23,11 +24,13 @@ ${borderRadiusToCSSVars()}
 	if (mode === "light" || mode === "dark") {
 		document.documentElement.style.colorScheme = mode;
 	}
+	document.documentElement.dataset.theme = mode;
 })();
 </script>
+<script is:inline set:html={EMBED_THEME_BOOT_SCRIPT} />
 <ColorStyles />
 <style is:global>
-@import "@styles/index.css";
+@import "../../styles/index.css";
 </style>
 <style is:global set:html={designTokensCss}></style>
 <Font cssVariable="--font-syne" preload />

@@ -1,0 +1,58 @@
+<div class="hosted-player__chrome" data-hosted-player>
+	<button
+		type="button"
+		class="hosted-player__play"
+		data-play
+		aria-label="Lire"
+		aria-pressed="false"
+	>
+		<span
+			class="hosted-player__icon i-lucide-play size-5"
+			data-play-icon
+			aria-hidden="true"
+		/>
+		<span
+			class="hosted-player__icon i-lucide-pause size-5 hidden"
+			data-pause-icon
+			aria-hidden="true"
+		/>
+	</button>
+	<div class="hosted-player__timeline">
+		<time class="hosted-player__time t-mono-sm" datetime="PT0S" data-current>
+			0:00
+		</time>
+		<input
+			type="range"
+			class="hosted-player__seek"
+			data-seek
+			value="0"
+			min="0"
+			max="100"
+			aria-label="Position dans le média"
+			aria-valuemin="0"
+			aria-valuemax="100"
+			aria-valuenow="0"
+		/>
+		<time class="hosted-player__time t-mono-sm" datetime="PT0S" data-duration>
+			0:00
+		</time>
+	</div>
+	<button
+		type="button"
+		class="hosted-player__mute"
+		data-mute
+		aria-label="Couper le son"
+		aria-pressed="false"
+	>
+		<span
+			class="hosted-player__icon i-lucide-volume-2 size-4"
+			data-volume-on
+			aria-hidden="true"
+		/>
+		<span
+			class="hosted-player__icon i-lucide-volume-x size-4 hidden"
+			data-volume-off
+			aria-hidden="true"
+		/>
+	</button>
+</div>

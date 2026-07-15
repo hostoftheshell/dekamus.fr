@@ -26,6 +26,19 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 	</div>
 </header>
 
+<script is:inline>
+(() => {
+	const header = document.currentScript?.previousElementSibling;
+	if (!(header instanceof HTMLElement) || !header.classList.contains("site-header")) {
+		return;
+	}
+	document.documentElement.style.setProperty(
+		"--site-header-height",
+		`${header.offsetHeight}px`,
+	);
+})();
+</script>
+
 <script>
 (() => {
 	const DESKTOP_MQ = window.matchMedia("(min-width: 768px)");
@@ -240,6 +253,11 @@ import ThemeToggle from "@components/utils/ThemeToggle.astro";
 </script>
 
 <style>
+:root {
+	/* p-4 * 2 + max(logo chrome, 3rem trigger) + pill vertical padding */
+	--site-header-height: calc(var(--sp-4) * 2 + 3rem + 1vw);
+}
+
 .site-header {
 	transition:
 		background-color 200ms ease,

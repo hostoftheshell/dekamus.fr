@@ -4,9 +4,12 @@ import {
 	audioEmbedHeight,
 	extractAudioEmbedUrl,
 } from "@utils/media/normalizeEmbed";
+import { resolveAudioSource } from "@utils/media/resolveKeystaticSource";
+import HostedMediaCaption from "./HostedMediaCaption.astro";
+import HostedMediaControls from "./HostedMediaControls.astro";
 
 interface Props {
-	platform:
+	platform?:
 		| "spotify"
 		| "deezer"
 		| "soundcloud"
@@ -15,47 +18,59 @@ interface Props {
 		| "hosted";
 	embedUrl?: string;
 	src?: string;
+	source?: {
+		discriminant:
+			| "spotify"
+			| "deezer"
+			| "soundcloud"
+			| "radio-france"
+			| "arte"
+			| "hosted";
+		value: {
+			embedUrl?: string;
+			src?: string;
+			vttSrc?: string;
+			title?: string;
+			date?: string;
+			description?: string;
+		};
+	};
+	accessibleTitle?: string;
+	/** @deprecated use accessibleTitle */
 	title?: string;
 	vttSrc?: string;
 	transcriptUrl?: string;
 }
 
 const {
-	platform,
-	embedUrl = "",
-	src = "",
-	title = "Audio",
-	vttSrc,
+	accessibleTitle: accessibleTitleProp,
+	title: legacyTitle,
 	transcriptUrl,
+	...rest
 } = Astro.props;
+const accessibleTitle = accessibleTitleProp ?? legacyTitle ?? "Audio";
+const { platform, embedUrl, src, vttSrc, metadata } = resolveAudioSource(rest);
 
 const isEmbed = platform !== "hosted";
+const embedPlatform = isEmbed
+	? (platform as "spotify" | "deezer" | "soundcloud" | "radio-france" | "arte")
+	: null;
 const embed =
-	isEmbed && embedUrl
-		? extractAudioEmbedUrl(
-				platform as
-					| "spotify"
-					| "deezer"
-					| "soundcloud"
-					| "radio-france"
-					| "arte",
-				embedUrl,
-			)
-		: null;
+	isEmbed && embedUrl && embedPlatform ? extractAudioEmbedUrl(embedUrl) : null;
 const iframeSrc = embed?.valid ? embed.value : "";
-const iframeHeight = isEmbed ? audioEmbedHeight(platform) : 0;
+const iframeHeight = embedPlatform ? audioEmbedHeight(embedPlatform) : 0;
 ---
 
 <figure class="audio-player stack-sm">
-	{isEmbed && iframeSrc ? (
+	{isEmbed && iframeSrc && embedPlatform ? (
 		<div
-			class="w-full overflow-hidden rounded"
+			class="media-embed-frame media-embed-frame--audio"
 			style={`height: ${iframeHeight}px`}
 		>
 			<iframe
 				class="h-full w-full border-0"
 				src={iframeSrc}
-				title={title}
+				title={accessibleTitle}
 				width="100%"
 				height={iframeHeight}
 				loading="eager"
@@ -64,28 +79,33 @@ const iframeHeight = isEmbed ? audioEmbedHeight(platform) : 0;
 				allowfullscreen
 			/>
 		</div>
-	) : !isEmbed && src && vttSrc ? (
-		<>
-			<audio class="w-full" controls preload="metadata" src={src}>
-				<track
-					kind="captions"
-					src={vttSrc}
-					srclang="fr"
-					label="Français"
-					default
-				/>
-			</audio>
-			<div
-				class="audio-captions t-body min-h-[1.5em] text-muted"
-				aria-live="polite"
-			/>
-		</>
 	) : !isEmbed && src ? (
-		// biome-ignore lint/a11y/useMediaCaption: vttSrc and transcriptUrl are optional editorial fields
-		<audio class="w-full" controls preload="metadata" src={src} />
+		<>
+			{/* biome-ignore lint/a11y/useMediaCaption: vttSrc and transcriptUrl are optional editorial fields */}
+			<audio preload="metadata" src={src} hidden>
+				{vttSrc ? (
+					<track
+						kind="captions"
+						src={vttSrc}
+						srclang="fr"
+						label="Français"
+						default
+					/>
+				) : null}
+			</audio>
+			<HostedMediaControls />
+			{vttSrc ? (
+				<div
+					class="audio-captions t-body min-h-[1.5em] text-muted"
+					aria-live="polite"
+				/>
+			) : null}
+		</>
 	) : (
 		<p class="t-body text-muted">Source audio invalide.</p>
 	)}
+
+	{!isEmbed && metadata && <HostedMediaCaption metadata={metadata} />}
 
 	{transcriptUrl && (
 		<figcaption class="t-body text-muted">
@@ -97,23 +117,7 @@ const iframeHeight = isEmbed ? audioEmbedHeight(platform) : 0;
 </figure>
 
 <script>
-document.querySelectorAll("figure.audio-player audio").forEach((element) => {
-	if (!(element instanceof HTMLAudioElement)) return;
-	const audio = element;
-	if (!audio.querySelector("track")) return;
-	const captions = audio.closest("figure")?.querySelector(".audio-captions");
-	if (!captions) return;
-	const track = audio.textTracks[0];
-	if (!track) return;
-	track.mode = "showing";
-	track.addEventListener("cuechange", () => {
-		const cue = track.activeCues?.[0];
-		captions.textContent = cue instanceof VTTCue ? cue.text : "";
-	});
-});
+import { initAudioPlayers } from "./hostedMediaPlayer";
+
+initAudioPlayers();
 </script>
-
-
-<style>
-
-</style>

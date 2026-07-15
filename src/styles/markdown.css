@@ -126,6 +126,26 @@
 	color: color-mix(in oklch, var(--color-muted) 80%, transparent);
 }
 
+.markdown :where(figcaption.media-caption .media-caption__title) {
+	font-weight: 600;
+	font-style: normal;
+	margin: 0;
+}
+
+.markdown :where(figcaption.media-caption .media-caption__date) {
+	display: block;
+	margin-top: 0.25rem;
+	font-size: 0.8375rem;
+}
+
+.markdown :where(figcaption.media-caption .media-caption__description) {
+	margin-top: 0.35rem;
+	font-size: 0.77rem;
+	font-style: italic;
+	font-weight: 300;
+	line-height: 1.6;
+}
+
 .markdown :is(h1, h2, h3, h4, h5, h6, img, figure) + :is(img, figure) {
 	margin-top: var(--sp-4);
 }

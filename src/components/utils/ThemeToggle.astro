@@ -6,7 +6,7 @@ const defaultMode = ColorData.colors.mode;
 
 <button
 	type="button"
-	class="theme-toggle nav-pill-target hover:text-accent transition-colors"
+	class="theme-toggle nav-pill-target transition-colors"
 	aria-label="Toggle theme"
 	data-default-mode={defaultMode}
 	data-pill-directional
@@ -19,10 +19,20 @@ const defaultMode = ColorData.colors.mode;
 </button>
 
 <script>
+import { getSiteColorScheme } from "@utils/theme/resolveSiteColorScheme";
+
 (() => {
 	type ThemeMode = "auto" | "light" | "dark";
 
 	const STORAGE_KEY = "theme:mode";
+
+	function dispatchThemeChange(mode: ThemeMode) {
+		document.dispatchEvent(
+			new CustomEvent("dekamus:theme-change", {
+				detail: { mode, scheme: getSiteColorScheme() },
+			}),
+		);
+	}
 
 	function applyMode(mode: ThemeMode) {
 		const root = document.documentElement;
@@ -32,6 +42,7 @@ const defaultMode = ColorData.colors.mode;
 			root.style.colorScheme = mode;
 		}
 		root.dataset.theme = mode;
+		dispatchThemeChange(mode);
 	}
 
 	function readStoredMode(): ThemeMode | null {
@@ -108,7 +119,10 @@ const defaultMode = ColorData.colors.mode;
 
 	const media = window.matchMedia("(prefers-color-scheme: dark)");
 	media.addEventListener("change", () => {
-		if (currentMode === "auto") render();
+		if (currentMode === "auto") {
+			render();
+			dispatchThemeChange(currentMode);
+		}
 	});
 })();
 </script>
@@ -128,6 +142,10 @@ const defaultMode = ColorData.colors.mode;
 	color: var(--color-primary);
 	font: inherit;
 	line-height: 1;
+}
+
+.theme-toggle:hover {
+	color: var(--color-accent);
 }
 
 .theme-toggle:focus-visible {

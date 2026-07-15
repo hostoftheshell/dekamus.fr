@@ -1,37 +1,201 @@
 ---
 // SYNC WITH keystatic.config.ts → mdxComponentBlocks.VideoEmbed
-import { videoEmbedSrc } from "@utils/media/normalizeEmbed";
+import { dailymotionId, videoEmbedSrc } from "@utils/media/normalizeEmbed";
+import { resolveVideoSource } from "@utils/media/resolveKeystaticSource";
+import HostedMediaCaption from "./HostedMediaCaption.astro";
+import HostedMediaControls from "./HostedMediaControls.astro";
 
 interface Props {
-	platform: "youtube" | "vimeo" | "dailymotion" | "hosted";
+	platform?: "youtube" | "vimeo" | "dailymotion" | "hosted";
 	url?: string;
 	src?: string;
+	source?: {
+		discriminant: "youtube" | "vimeo" | "dailymotion" | "hosted";
+		value: {
+			url?: string;
+			embedUrl?: string;
+			src?: string;
+			title?: string;
+			date?: string;
+			description?: string;
+		};
+	};
+	accessibleTitle?: string;
+	/** @deprecated use accessibleTitle */
 	title?: string;
 }
 
-const { platform, url = "", src = "", title = "Vidéo" } = Astro.props;
+const {
+	accessibleTitle: accessibleTitleProp,
+	title: legacyTitle,
+	...rest
+} = Astro.props;
+const accessibleTitle = accessibleTitleProp ?? legacyTitle ?? "Vidéo";
+const { platform, url, src, metadata } = resolveVideoSource(rest);
+const embedOrigin = Astro.url.origin;
 
-const embed = platform !== "hosted" ? videoEmbedSrc(platform, url) : null;
+const embed =
+	platform !== "hosted" ? videoEmbedSrc(platform, url, { embedOrigin }) : null;
 const embedSrc = embed?.valid ? embed.value : "";
+const dailymotionVideoId =
+	platform === "dailymotion" ? dailymotionId(url) : null;
+const dailymotionThumbnail = dailymotionVideoId?.valid
+	? `https://www.dailymotion.com/thumbnail/video/${dailymotionVideoId.value}`
+	: "";
 ---
 
-<figure class="stack-sm">
+<figure class="video-player stack-sm">
 	{platform === "hosted" && src ? (
-		<video class="w-full rounded" controls preload="metadata" src={src}>
-			<track kind="captions" />
-		</video>
+		<>
+			<div class="video-player__media">
+				{/* biome-ignore lint/a11y/useMediaCaption: captions are optional editorial fields */}
+				<video preload="metadata" playsinline src={src}>
+					<track kind="captions" />
+				</video>
+			</div>
+			<HostedMediaControls />
+			<HostedMediaCaption metadata={metadata} />
+		</>
+	) : platform === "dailymotion" && embedSrc ? (
+		<div
+			class="video-embed-facade aspect-video w-full overflow-hidden rounded"
+			data-embed-base={embedSrc}
+			data-embed-platform="dailymotion"
+			data-embed-title={accessibleTitle}
+		>
+			<button
+				type="button"
+				class="video-embed-facade__button h-full w-full border-0 p-0 cursor-pointer"
+				aria-label={`Lire la vidéo : ${accessibleTitle}`}
+			>
+				{dailymotionThumbnail ? (
+					<img
+						class="h-full w-full object-cover"
+						src={dailymotionThumbnail}
+						alt=""
+						loading="lazy"
+						decoding="async"
+					/>
+				) : (
+					<span class="video-embed-facade__fallback t-body">Lire la vidéo</span>
+				)}
+				<span class="video-embed-facade__play" aria-hidden="true" />
+			</button>
+		</div>
 	) : embedSrc ? (
-		<div class="aspect-video w-full overflow-hidden rounded">
+		<div
+			class={`media-embed-frame media-embed-frame--video aspect-video w-full${platform === "vimeo" ? " media-embed-frame--vimeo" : ""}`}
+		>
 			<iframe
 				class="h-full w-full border-0"
-				src={embedSrc}
-				title={title}
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+				data-embed-base={embedSrc}
+				data-embed-platform={platform}
+				title={accessibleTitle}
+				referrerpolicy="strict-origin-when-cross-origin"
+				allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 				allowfullscreen
 				loading="lazy"
 			/>
 		</div>
+		<script is:inline>
+			(function () {
+				var frame = document.currentScript?.previousElementSibling;
+				var iframe =
+					frame?.querySelector?.(
+						"iframe[data-embed-base][data-embed-platform]",
+					) ?? null;
+				if (iframe && window.__dekamusApplyEmbedTheme) {
+					window.__dekamusApplyEmbedTheme(iframe);
+				}
+			})();
+		</script>
 	) : (
 		<p class="t-body text-muted">URL vidéo invalide.</p>
 	)}
 </figure>
+
+<style>
+.video-player__media {
+	overflow: hidden;
+	width: 100%;
+	background: var(--color-bgCard);
+	border: 1px solid color-mix(in oklch, var(--color-muted) 18%, transparent);
+	border-radius: var(--radius-sm);
+}
+
+.video-player__media video {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.video-embed-facade__button {
+	position: relative;
+	display: block;
+	background: oklch(from var(--color-surface) l c h / 0.9);
+}
+
+.video-embed-facade__fallback {
+	display: grid;
+	place-items: center;
+	min-height: 100%;
+}
+
+.video-embed-facade__play {
+	position: absolute;
+	inset: 0;
+	margin: auto;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 9999px;
+	background: oklch(from var(--color-surface) l c h / 0.85);
+	box-shadow: 0 0 0 0.25rem oklch(from var(--color-fg) l c h / 0.15);
+}
+
+.video-embed-facade__play::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	margin: auto;
+	width: 0;
+	height: 0;
+	border-top: 0.7rem solid transparent;
+	border-bottom: 0.7rem solid transparent;
+	border-left: 1.1rem solid currentColor;
+	transform: translateX(15%);
+}
+</style>
+
+<script>
+import { resolveThemedEmbedSrc } from "@utils/media/themedEmbeds";
+import { initVideoPlayers } from "./hostedMediaPlayer";
+
+initVideoPlayers();
+
+document.querySelectorAll(".video-embed-facade").forEach((facade) => {
+	if (!(facade instanceof HTMLElement)) return;
+
+	const button = facade.querySelector("button");
+	const embedBase = facade.dataset.embedBase;
+	const embedPlatform = facade.dataset.embedPlatform ?? "dailymotion";
+	const embedTitle = facade.dataset.embedTitle ?? "Vidéo";
+	if (!button || !embedBase) return;
+
+	button.addEventListener(
+		"click",
+		() => {
+			const iframe = document.createElement("iframe");
+			iframe.className = "h-full w-full border-0";
+			iframe.src = resolveThemedEmbedSrc(embedPlatform, embedBase);
+			iframe.title = embedTitle;
+			iframe.referrerPolicy = "strict-origin-when-cross-origin";
+			iframe.allow =
+				"accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+			iframe.allowFullscreen = true;
+			iframe.loading = "lazy";
+			facade.replaceChildren(iframe);
+		},
+		{ once: true },
+	);
+});
+</script>

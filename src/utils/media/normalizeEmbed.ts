@@ -29,24 +29,42 @@ export function vimeoId(value: string): NormalizeResult<string> {
 }
 
 export function dailymotionId(value: string): NormalizeResult<string> {
-	const match = value.match(/dailymotion\.com\/video\/([\w]+)/);
-	return match?.[1]
-		? { valid: true, value: match[1] }
-		: { valid: false, reason: "not a Dailymotion URL" };
+	const trimmed = value.trim();
+	if (!trimmed) return { valid: false, reason: "empty" };
+
+	const patterns = [
+		/dailymotion\.com\/player\.html\?video=([\w]+)/,
+		/dailymotion\.com\/embed\/video\/([\w]+)/,
+		/dailymotion\.com\/video\/([\w]+)/,
+	];
+
+	for (const pattern of patterns) {
+		const match = trimmed.match(pattern);
+		if (match?.[1]) return { valid: true, value: match[1] };
+	}
+
+	return { valid: false, reason: "not a Dailymotion URL" };
 }
 
 export function videoEmbedSrc(
 	platform: "youtube" | "vimeo" | "dailymotion",
 	url: string,
+	options?: { embedOrigin?: string },
 ): NormalizeResult<string> {
 	if (platform === "youtube") {
 		const id = youtubeId(url);
-		return id.valid
-			? {
-					valid: true,
-					value: `https://www.youtube-nocookie.com/embed/${id.value}`,
-				}
-			: id;
+		if (!id.valid) return id;
+
+		const params = new URLSearchParams();
+		if (options?.embedOrigin) {
+			params.set("origin", options.embedOrigin);
+		}
+		const query = params.toString();
+
+		return {
+			valid: true,
+			value: `https://www.youtube.com/embed/${id.value}${query ? `?${query}` : ""}`,
+		};
 	}
 	if (platform === "vimeo") {
 		const id = vimeoId(url);
@@ -54,19 +72,24 @@ export function videoEmbedSrc(
 			? { valid: true, value: `https://player.vimeo.com/video/${id.value}` }
 			: id;
 	}
+	const trimmed = url.trim();
+	if (/^https:\/\/geo\.dailymotion\.com\/player\.html\?video=[\w]+/.test(trimmed)) {
+		return { valid: true, value: trimmed };
+	}
+	if (/^https:\/\/www\.dailymotion\.com\/embed\/video\/[\w]+/.test(trimmed)) {
+		return { valid: true, value: trimmed };
+	}
+
 	const id = dailymotionId(url);
 	return id.valid
 		? {
 				valid: true,
-				value: `https://www.dailymotion.com/embed/video/${id.value}`,
+				value: `https://geo.dailymotion.com/player.html?video=${id.value}`,
 			}
 		: id;
 }
 
-export function extractAudioEmbedUrl(
-	_platform: "spotify" | "deezer" | "soundcloud" | "radio-france" | "arte",
-	url: string,
-): NormalizeResult<string> {
+export function extractAudioEmbedUrl(url: string): NormalizeResult<string> {
 	const trimmed = url.trim();
 	if (!trimmed) return { valid: false, reason: "empty" };
 	try {
@@ -75,6 +98,36 @@ export function extractAudioEmbedUrl(
 	} catch {
 		return { valid: false, reason: "invalid URL" };
 	}
+}
+
+export type AudioEmbedPlatform =
+	| "spotify"
+	| "deezer"
+	| "soundcloud"
+	| "radio-france"
+	| "arte";
+
+export type VideoEmbedPlatform = "youtube" | "vimeo" | "dailymotion";
+
+/** Vimeo dark letterbox + colors — mirrored in embedThemeBootScript.ts */
+const VIMEO_DARK_COLORS = "000000,00adef,ffffff,000000";
+
+export function applyVideoEmbedTheme(
+	platform: VideoEmbedPlatform,
+	url: string,
+	scheme: "light" | "dark",
+): string {
+	if (platform !== "vimeo") return url;
+
+	const parsed = new URL(url);
+	if (scheme === "dark") {
+		parsed.searchParams.set("transparent", "0");
+		parsed.searchParams.set("colors", VIMEO_DARK_COLORS);
+	} else {
+		parsed.searchParams.delete("transparent");
+		parsed.searchParams.delete("colors");
+	}
+	return parsed.toString();
 }
 
 /** Fixed iframe heights — required for cross-browser embed rendering (esp. Firefox). */

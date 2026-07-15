@@ -25,20 +25,30 @@ const isActive =
 
 const variantClasses: Record<NavVariant, string> = {
 	header:
-		"t-nav text-primary hover:text-accent transition-colors decoration-none",
+		"t-nav hover:text-accent transition-colors decoration-none",
 	"header-mobile":
-		"t-nav-mobile text-primary hover:text-accent transition-colors decoration-none",
-	footer:
-		"t-body text-sm text-muted hover:text-primary transition-colors decoration-none",
-	member:
-		"t-body text-muted hover:text-primary transition-colors decoration-none",
+		"t-nav-mobile hover:text-accent transition-colors decoration-none",
+	footer: "t-body text-sm hover:text-primary transition-colors decoration-none",
+	member: "t-body hover:text-primary transition-colors decoration-none",
 };
+
+const defaultTextColors: Record<NavVariant, string> = {
+	header: "text-primary",
+	"header-mobile": "text-primary",
+	footer: "text-muted",
+	member: "text-muted",
+};
+
+const activeClassHasTextColor =
+	isActive && activeClass !== undefined && /\btext-/.test(activeClass);
 
 const classList = [
 	variant === "header" || variant === "header-mobile"
 		? "flex w-full items-center gap-1"
 		: "inline-flex items-center gap-1",
 	variantClasses[variant],
+	!(isActive && activeClass && activeClassHasTextColor) &&
+		defaultTextColors[variant],
 	isActive && activeClass,
 ]
 	.filter(Boolean)

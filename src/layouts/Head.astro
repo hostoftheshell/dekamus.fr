@@ -2,11 +2,14 @@
 import { getMemberProfiles } from "@config/content/members";
 import type { HeadProps } from "@config/types";
 import { resolveHeadMeta } from "@utils/head-meta";
+import { SITE_URL } from "@utils/schema/site-wide";
 import HeadDesign from "./html-head/HeadDesign.astro";
 import HeadSeo from "./html-head/HeadSeo.astro";
 
 const members = await getMemberProfiles();
-const meta = resolveHeadMeta(Astro.props as HeadProps, Astro.url.href, members);
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const canonicalUrl = path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
+const meta = resolveHeadMeta(Astro.props as HeadProps, canonicalUrl, members);
 ---
 
 <head>
@@ -14,6 +17,7 @@ const meta = resolveHeadMeta(Astro.props as HeadProps, Astro.url.href, members);
 	<HeadDesign />
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
+	<meta name="referrer" content="strict-origin-when-cross-origin">
 	<meta name="generator" content={Astro.generator}>
 	<HeadSeo {...meta} />
 </head>

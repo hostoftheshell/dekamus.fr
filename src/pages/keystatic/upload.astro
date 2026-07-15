@@ -1,0 +1,255 @@
+---
+import { getMembers } from "@config/content/members";
+import {
+	AUDIO_UPLOAD_MAX_BYTES,
+	formatUploadBytes,
+	VIDEO_UPLOAD_MAX_BYTES,
+	VTT_UPLOAD_MAX_BYTES,
+} from "@utils/media/mediaUpload";
+
+if (import.meta.env.PROD) {
+	return Astro.redirect("/404");
+}
+
+const members = await getMembers();
+---
+
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="robots" content="noindex" />
+		<title>Upload médias — Keystatic (dev)</title>
+		<style>
+			:root {
+				color-scheme: light dark;
+				font-family: system-ui, sans-serif;
+				line-height: 1.5;
+			}
+
+			body {
+				margin: 0 auto;
+				max-width: 40rem;
+				padding: 1.5rem;
+			}
+
+			form {
+				display: grid;
+				gap: 1rem;
+			}
+
+			label {
+				display: grid;
+				gap: 0.35rem;
+				font-weight: 600;
+			}
+
+			select,
+			input[type="file"],
+			button {
+				font: inherit;
+			}
+
+			button {
+				cursor: pointer;
+				padding: 0.6rem 1rem;
+			}
+
+			.hint,
+			.status {
+				margin: 0;
+				font-size: 0.95rem;
+			}
+
+			.hint {
+				color: #666;
+			}
+
+			.status[data-kind="error"] {
+				color: #b00020;
+			}
+
+			.status[data-kind="success"] {
+				color: #0a7a2f;
+			}
+
+			output {
+				display: block;
+				padding: 0.75rem;
+				border: 1px solid #ccc;
+				border-radius: 0.35rem;
+				font-family: ui-monospace, monospace;
+				word-break: break-all;
+			}
+
+			.actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Upload médias (dev)</h1>
+		<p class="hint">
+			Utilisez cette page pour les fichiers audio/vidéo volumineux. Keystatic
+			charge les fichiers entiers en mémoire via son sélecteur intégré — ce qui
+			peut faire planter Firefox. Copiez le chemin généré dans le champ texte
+			Keystatic.
+		</p>
+
+		<form id="media-upload-form">
+			<label>
+				Membre
+				<select name="slug" required>
+					<option value="">Choisir…</option>
+					{
+						members.map((member) => (
+							<option value={member.slug}>{member.name}</option>
+						))
+					}
+				</select>
+			</label>
+
+			<label>
+				Type
+				<select name="kind" required>
+					<option value="audio">
+						Audio (max {formatUploadBytes(AUDIO_UPLOAD_MAX_BYTES)})
+					</option>
+					<option value="video">
+						Vidéo (max {formatUploadBytes(VIDEO_UPLOAD_MAX_BYTES)})
+					</option>
+					<option value="vtt">
+						Sous-titres VTT (max {formatUploadBytes(VTT_UPLOAD_MAX_BYTES)})
+					</option>
+				</select>
+			</label>
+
+			<label>
+				Fichier
+				<input
+					type="file"
+					name="file"
+					required
+					accept=".mp3,.m4a,.aac,.wav,.ogg,.mp4,.webm,.vtt"
+				/>
+			</label>
+
+			<button type="submit">Envoyer</button>
+		</form>
+
+		<p id="upload-status" class="status" hidden></p>
+
+		<div id="upload-result" hidden>
+			<p>Chemin à coller dans Keystatic :</p>
+			<output id="public-path"></output>
+			<div class="actions">
+				<button type="button" id="copy-path">Copier le chemin</button>
+			</div>
+		</div>
+
+		<p class="hint">
+			<a href="/keystatic">Retour à Keystatic</a>
+		</p>
+
+		<script
+			define:vars={{
+				audioMax: AUDIO_UPLOAD_MAX_BYTES,
+				videoMax: VIDEO_UPLOAD_MAX_BYTES,
+				vttMax: VTT_UPLOAD_MAX_BYTES,
+			}}
+		>
+			const form = document.getElementById("media-upload-form");
+			const statusEl = document.getElementById("upload-status");
+			const resultEl = document.getElementById("upload-result");
+			const publicPathEl = document.getElementById("public-path");
+			const copyButton = document.getElementById("copy-path");
+			const kindSelect = form?.querySelector('select[name="kind"]');
+			const fileInput = form?.querySelector('input[type="file"]');
+
+			const limits = { audio: audioMax, video: videoMax, vtt: vttMax };
+
+			function setStatus(message, kind) {
+				if (!(statusEl instanceof HTMLElement)) return;
+				statusEl.hidden = !message;
+				statusEl.textContent = message;
+				statusEl.dataset.kind = kind;
+			}
+
+			function maxForKind(kind) {
+				return limits[kind] ?? audioMax;
+			}
+
+			kindSelect?.addEventListener("change", () => {
+				if (!(fileInput instanceof HTMLInputElement)) return;
+				const kind = kindSelect.value;
+				if (kind === "video") {
+					fileInput.accept = ".mp4,.webm";
+				} else if (kind === "vtt") {
+					fileInput.accept = ".vtt";
+				} else {
+					fileInput.accept = ".mp3,.m4a,.aac,.wav,.ogg";
+				}
+			});
+
+			form?.addEventListener("submit", async (event) => {
+				event.preventDefault();
+				if (!(form instanceof HTMLFormElement)) return;
+
+				resultEl.hidden = true;
+				setStatus("Envoi en cours…", "info");
+
+				const data = new FormData(form);
+				const file = data.get("file");
+				const kind = data.get("kind");
+
+				if (!(file instanceof File)) {
+					setStatus("Fichier manquant.", "error");
+					return;
+				}
+
+				const maxBytes = maxForKind(String(kind));
+				if (file.size > maxBytes) {
+					setStatus(
+						`Fichier trop volumineux (${(file.size / (1024 * 1024)).toFixed(1)} Mo).`,
+						"error",
+					);
+					return;
+				}
+
+				try {
+					const response = await fetch("/api/media/upload", {
+						method: "POST",
+						body: data,
+					});
+					const payload = await response.json();
+
+					if (!response.ok) {
+						setStatus(payload.error ?? "Échec de l’upload.", "error");
+						return;
+					}
+
+					if (!(publicPathEl instanceof HTMLOutputElement)) return;
+					publicPathEl.textContent = payload.publicPath;
+					resultEl.hidden = false;
+					setStatus("Upload terminé.", "success");
+				} catch {
+					setStatus("Erreur réseau pendant l’upload.", "error");
+				}
+			});
+
+			copyButton?.addEventListener("click", async () => {
+				const path = publicPathEl?.textContent;
+				if (!path) return;
+				try {
+					await navigator.clipboard.writeText(path);
+					setStatus("Chemin copié.", "success");
+				} catch {
+					setStatus("Impossible de copier automatiquement.", "error");
+				}
+			});
+		</script>
+	</body>
+</html>

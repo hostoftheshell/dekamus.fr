@@ -1,0 +1,33 @@
+---
+import type { HostedMediaMetadata } from "@utils/media/resolveKeystaticSource";
+
+interface Props {
+	metadata?: HostedMediaMetadata;
+}
+
+const { metadata } = Astro.props;
+
+const formattedDate =
+	metadata?.date &&
+	new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(
+		new Date(metadata.date),
+	);
+---
+
+{
+	metadata && (
+		<figcaption class="media-caption">
+			{metadata.title && (
+				<p class="media-caption__title">{metadata.title}</p>
+			)}
+			{formattedDate && metadata.date && (
+				<time class="media-caption__date" datetime={metadata.date}>
+					{formattedDate}
+				</time>
+			)}
+			{metadata.description && (
+				<p class="media-caption__description">{metadata.description}</p>
+			)}
+		</figcaption>
+	)
+}
